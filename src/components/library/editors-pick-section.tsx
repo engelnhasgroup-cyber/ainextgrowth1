@@ -53,12 +53,16 @@ export function EditorsPickSection({ items }: { items: ItemSummary[] }) {
 
         <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
           {top.map((item, i) => (
-            <div key={item.id} className="relative">
-              <ItemCard item={item} index={i} />
-              <span className="absolute -left-1 -top-2 z-20 inline-flex items-center gap-1 rounded-full bg-violet-500 px-2 py-0.5 text-[9px] font-bold text-white shadow-lg">
-                <Star className="h-2.5 w-2.5 fill-current" />
-                Featured
-              </span>
+            <div key={item.id} className="group/featured relative">
+              {/* gradient border glow */}
+              <div className="pointer-events-none absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-violet-500/30 via-emerald-500/20 to-amber-500/30 opacity-40 blur-sm transition-opacity duration-300 group-hover/featured:opacity-80" />
+              <div className="relative">
+                <ItemCard item={item} index={i} />
+                <span className="absolute -left-1 -top-2 z-20 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-violet-500 to-emerald-500 px-2 py-0.5 text-[9px] font-bold text-white shadow-lg">
+                  <Star className="h-2.5 w-2.5 fill-current" />
+                  Featured
+                </span>
+              </div>
             </div>
           ))}
         </div>

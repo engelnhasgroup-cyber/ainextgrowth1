@@ -106,6 +106,16 @@ export function ShareMenu({ item }: { item: ItemDetail }) {
     }
   }, [item])
 
+  const copyCurl = useCallback(async () => {
+    try {
+      const curl = `curl -s "https://nexusai2026.example.com/api/items/${item.slug}" | jq '.item.promptContent'`
+      await navigator.clipboard.writeText(curl)
+      toast.success('cURL command copied')
+    } catch {
+      toast.error('Could not copy cURL')
+    }
+  }, [item])
+
   const tweet = useCallback(() => {
     const u = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=AI,PromptEngineering,2026`
     window.open(u, '_blank', 'noopener,noreferrer')
@@ -137,6 +147,9 @@ export function ShareMenu({ item }: { item: ItemDetail }) {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={copyJson} className="cursor-pointer text-xs">
           <Copy className="mr-2 h-3.5 w-3.5" /> Copy as JSON (for developers)
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={copyCurl} className="cursor-pointer text-xs">
+          <Copy className="mr-2 h-3.5 w-3.5" /> Copy as cURL command
         </DropdownMenuItem>
         <DropdownMenuItem onClick={copyLink} className="cursor-pointer text-xs">
           {copied ? (

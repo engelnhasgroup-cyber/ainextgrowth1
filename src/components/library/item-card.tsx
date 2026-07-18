@@ -6,6 +6,7 @@ import type { ItemSummary } from '@/lib/types'
 import { useLibrary } from './store'
 import { formatCompact } from './stats-bar'
 import { useBookmarks } from './use-bookmarks'
+import { QuickPreview } from './quick-preview'
 
 const CAT_COLORS: Record<string, string> = {
   'seo-content-marketing': '#10b981',
@@ -47,6 +48,7 @@ export function ItemCard({ item, index = 0 }: { item: ItemSummary; index?: numbe
   const dots = DIFFICULTY_DOTS[item.difficulty] || 2
 
   return (
+    <QuickPreview item={item}>
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -201,6 +203,7 @@ export function ItemCard({ item, index = 0 }: { item: ItemSummary; index?: numbe
         style={{ backgroundColor: color }}
       />
     </motion.div>
+    </QuickPreview>
   )
 }
 
