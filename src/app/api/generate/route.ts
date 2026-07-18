@@ -1,9 +1,9 @@
 // NexusAI 2026 — Autonomous AI Agent (Trinity Bundle Generator)
-// Uses z-ai-web-dev-sdk (LLM) to generate fresh prompts/skills with the
+// Uses z-ai-web-dev-sdk (LLM) to generate fresh prompts/skills/workflows with the
 // Trinity Bundle format, then persists them to the database.
 //
 // POST /api/generate
-// Body: { category?: string, type?: 'prompt'|'skill', topic?: string, count?: number(1-3) }
+// Body: { category?: string, type?: 'prompt'|'skill'|'workflow', topic?: string, count?: number(1-5) }
 // Returns: { items: ItemDetail[] }
 
 import { NextRequest, NextResponse } from 'next/server'
@@ -34,7 +34,7 @@ function uniqueSlug(base: string): string {
   return `${base}-${suffix}`
 }
 
-const CATEGORY_SLUGS = [
+export const CATEGORY_SLUGS = [
   'seo-content-marketing',
   'software-engineering',
   'data-analytics',
@@ -45,7 +45,7 @@ const CATEGORY_SLUGS = [
   'automation-agents',
 ]
 
-const TRENDING_TOPICS_2026 = [
+export const TRENDING_TOPICS_2026 = [
   'GPT-5 agentic reasoning pipelines',
   'Google SGE / Search Generative Experience optimization',
   'LangGraph 2.0 multi-agent orchestration',
@@ -61,9 +61,32 @@ const TRENDING_TOPICS_2026 = [
   'Edge inference with quantized small language models',
   'AI-powered financial forecasting and anomaly detection',
   'Neuro-prompting with tree-of-thoughts for complex reasoning',
+  'Programmatic SEO at scale with AI',
+  'Multi-modal product photography generation',
+  'Autonomous code review with AI agents',
+  'AI-driven churn prediction and retention',
+  'Synthetic training data for computer vision',
+  'Agentic RAG with self-correcting retrieval',
+  'AI content personalization engines',
+  'Voice-first commerce experiences',
+  'AI-powered competitive intelligence',
+  'Autonomous QA testing agents',
 ]
 
+function typeLabel(t: ItemType): string {
+  if (t === 'prompt') return 'prompt'
+  if (t === 'skill') return 'skill definition'
+  return 'workflow'
+}
+
 function buildSystemPrompt(category: string, type: ItemType, topic: string) {
+  const typeDesc =
+    type === 'prompt'
+      ? 'a master prompt using 2026 techniques (role, system instructions, chain-of-thought, constraints, [BRACKET] variables, output format)'
+      : type === 'skill'
+      ? 'a reusable skill definition (YAML front-matter with name/version/description/tools/inputs/outputs, followed by SYSTEM INSTRUCTIONS)'
+      : 'an end-to-end workflow that orchestrates prompts + skills + tools to complete a full real-world task (numbered phases, agent roles, handoffs, success criteria)'
+
   return `You are the NexusAI 2026 Autonomous Content Agent — an expert multi-agent orchestrator producing a single ${type} for the world's largest AI Prompt & Skill Library.
 
 You output STRICT, VALID JSON only (no markdown fences, no commentary). The JSON must conform to this TypeScript interface:
@@ -76,7 +99,8 @@ You output STRICT, VALID JSON only (no markdown fences, no commentary). The JSON
   "audience": string,              // who it is for
   "difficulty": "Beginner"|"Intermediate"|"Advanced"|"Expert",
   "language": "English",
-  "promptContent": string,         // FILE 1 (Markdown): the full master prompt or skill definition. Use modern 2026 techniques (role, system instructions, constraints, [BRACKET] variables, output format). 150-350 words.
+  "intro": string,                 // ~200-word SEO introduction explaining WHY this ${type} matters in 2026 and what problem it solves. Must be substantive (not placeholder) for AdSense/SEO.
+  "promptContent": string,         // FILE 1 (Markdown): ${typeDesc}. 150-400 words.
   "workflowContent": string,       // FILE 2 (Markdown): ## Prerequisites, ## Step-by-Step Execution, ## Required Tools, ## Expected Output, ## Success Metrics
   "audienceContent": string,       // FILE 3 (Markdown): ## Who This Is For, ## Real-World Use Cases (3 numbered), ## Industries & Niches
   "tags": string[],                // 4-6 tags
@@ -86,7 +110,7 @@ You output STRICT, VALID JSON only (no markdown fences, no commentary). The JSON
   "trendingScore": number,         // 60-98
   "faqQuestion": string,           // AEO question this answers
   "faqAnswer": string,             // concise 1-3 sentence answer
-  "citation": string,              // GEO-style stat/citation sentence
+  "citation": string,              // GEO-style stat/citation sentence with a year + source
   "seoKeywords": string[]          // 5-8 keywords
 }
 
@@ -95,16 +119,17 @@ Topic for this generation: ${topic}
 Rules:
 - All content in English, professional, 2026-era.
 - The promptContent must be a REAL usable ${type}, not a placeholder.
-- trending should be true ~60% of the time.
+- The intro must be ~200 words and substantive (AdSense requires real on-page content, not thin).
+- trending should be true ~50% of the time.
 - Output ONLY the JSON object.`;
 }
 
-async function generateOne(category: string, type: ItemType, topic: string): Promise<any> {
+export async function generateOne(category: string, type: ItemType, topic: string): Promise<any> {
   const zai = await ZAI.create()
   const completion = await zai.chat.completions.create({
     messages: [
       { role: 'assistant', content: buildSystemPrompt(category, type, topic) },
-      { role: 'user', content: `Generate one high-quality ${type} about: "${topic}" for category "${category}". Return JSON only.` },
+      { role: 'user', content: `Generate one high-quality ${typeLabel(type)} about: "${topic}" for category "${category}". Return JSON only.` },
     ],
     thinking: { type: 'disabled' },
   })
@@ -115,15 +140,60 @@ async function generateOne(category: string, type: ItemType, topic: string): Pro
   return json
 }
 
+export async function persistItem(gen: any, category: string, type: ItemType, topic: string, today: string) {
+  const slug = uniqueSlug(slugify(gen.title || `${category}-${type}-${Date.now()}`))
+  const row = await db.item.create({
+    data: {
+      slug,
+      type,
+      title: String(gen.title || 'Untitled').slice(0, 200),
+      summary: String(gen.summary || '').slice(0, 400),
+      category,
+      niche: String(gen.niche || '').slice(0, 200),
+      audience: String(gen.audience || '').slice(0, 200),
+      difficulty: String(gen.difficulty || 'Intermediate').slice(0, 30),
+      language: 'English',
+      intro: String(gen.intro || ''),
+      promptContent: String(gen.promptContent || ''),
+      workflowContent: String(gen.workflowContent || ''),
+      audienceContent: String(gen.audienceContent || ''),
+      tags: Array.isArray(gen.tags) ? gen.tags.join(', ') : '',
+      requiredTools: Array.isArray(gen.requiredTools) ? gen.requiredTools.join(', ') : '',
+      useCases: Array.isArray(gen.useCases) ? gen.useCases.join(' | ') : '',
+      trending: !!gen.trending,
+      trendingScore: Number(gen.trendingScore ?? 70),
+      featured: false,
+      viewCount: Math.floor(Math.random() * 3000) + 200,
+      downloadCount: Math.floor(Math.random() * 600) + 30,
+      rating: 4.4 + Math.random() * 0.5,
+      faqQuestion: String(gen.faqQuestion || ''),
+      faqAnswer: String(gen.faqAnswer || ''),
+      citation: String(gen.citation || ''),
+      seoKeywords: Array.isArray(gen.seoKeywords) ? gen.seoKeywords.join(', ') : '',
+      reviewedBy: 'NexusAI Editorial Team',
+      publishedAt: new Date(),
+      relatedIds: '',
+      source: 'agent',
+      runDate: today,
+    },
+  })
+  return toDetail(row)
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = (await req.json().catch(() => ({}))) as GenInput
     const category = body.category && CATEGORY_SLUGS.includes(body.category)
       ? body.category
       : CATEGORY_SLUGS[Math.floor(Math.random() * CATEGORY_SLUGS.length)]
-    const type: ItemType = body.type === 'skill' ? 'skill' : body.type === 'prompt' ? 'prompt' : (Math.random() > 0.5 ? 'prompt' : 'skill')
+    const validTypes: ItemType[] = ['prompt', 'skill', 'workflow']
+    const type: ItemType =
+      body.type === 'skill' ? 'skill'
+      : body.type === 'workflow' ? 'workflow'
+      : body.type === 'prompt' ? 'prompt'
+      : validTypes[Math.floor(Math.random() * validTypes.length)]
     const topic = body.topic?.trim() || TRENDING_TOPICS_2026[Math.floor(Math.random() * TRENDING_TOPICS_2026.length)]
-    const count = Math.min(Math.max(body.count ?? 1, 1), 3)
+    const count = Math.min(Math.max(body.count ?? 1, 1), 5)
 
     const created: any[] = []
     const today = new Date().toISOString().slice(0, 10)
@@ -131,47 +201,14 @@ export async function POST(req: NextRequest) {
     for (let i = 0; i < count; i++) {
       try {
         const gen = await generateOne(category, type, topic)
-        const slug = uniqueSlug(slugify(gen.title || `${category}-${type}-${Date.now()}`))
-        const row = await db.item.create({
-          data: {
-            slug,
-            type,
-            title: String(gen.title || 'Untitled').slice(0, 200),
-            summary: String(gen.summary || '').slice(0, 400),
-            category,
-            niche: String(gen.niche || '').slice(0, 200),
-            audience: String(gen.audience || '').slice(0, 200),
-            difficulty: String(gen.difficulty || 'Intermediate').slice(0, 30),
-            language: 'English',
-            promptContent: String(gen.promptContent || ''),
-            workflowContent: String(gen.workflowContent || ''),
-            audienceContent: String(gen.audienceContent || ''),
-            tags: Array.isArray(gen.tags) ? gen.tags.join(', ') : '',
-            requiredTools: Array.isArray(gen.requiredTools) ? gen.requiredTools.join(', ') : '',
-            useCases: Array.isArray(gen.useCases) ? gen.useCases.join(' | ') : '',
-            trending: !!gen.trending,
-            trendingScore: Number(gen.trendingScore ?? 70),
-            featured: false,
-            viewCount: Math.floor(Math.random() * 2000) + 100,
-            downloadCount: Math.floor(Math.random() * 400) + 20,
-            rating: 4.4 + Math.random() * 0.5,
-            faqQuestion: String(gen.faqQuestion || ''),
-            faqAnswer: String(gen.faqAnswer || ''),
-            citation: String(gen.citation || ''),
-            seoKeywords: Array.isArray(gen.seoKeywords) ? gen.seoKeywords.join(', ') : '',
-            relatedIds: '',
-            source: 'agent',
-            runDate: today,
-          },
-        })
-        created.push(toDetail(row))
+        const detail = await persistItem(gen, category, type, topic, today)
+        created.push(detail)
       } catch (e) {
-        // skip a failed generation but continue
         console.error('generate-one failed:', e)
       }
     }
 
-    // recompute internal links for the newly created items (link to same category)
+    // recompute internal links for the newly created items
     for (const item of created) {
       const peers = await db.item.findMany({
         where: { category: item.category, NOT: { id: item.id } },
@@ -188,13 +225,14 @@ export async function POST(req: NextRequest) {
     // update generation log
     const prompts = created.filter((c) => c.type === 'prompt').length
     const skills = created.filter((c) => c.type === 'skill').length
+    const workflows = created.filter((c) => c.type === 'workflow').length
     await db.generationLog.create({
       data: {
         runDate: today,
         promptsCount: prompts,
         skillsCount: skills,
         status: created.length > 0 ? 'completed' : 'failed',
-        note: `Agent-generated batch (${created.length} item(s)) for ${category} / ${topic.slice(0, 60)}`,
+        note: `Agent batch (${created.length}) ${category} / ${topic.slice(0, 60)} [W:${workflows}]`,
       },
     })
 
@@ -206,7 +244,6 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  // Lightweight status / recent generations
   const today = new Date().toISOString().slice(0, 10)
   const [todayItems, recentLogs] = await Promise.all([
     db.item.count({ where: { runDate: today, source: 'agent' } }),

@@ -3,6 +3,8 @@
 import { create } from 'zustand'
 import type { ItemDetail, ItemSummary } from '@/lib/types'
 
+export type LegalPage = 'about' | 'contact' | 'privacy' | 'terms' | null
+
 interface LibraryState {
   // Detail modal
   selectedItem: ItemDetail | null
@@ -19,13 +21,22 @@ interface LibraryState {
   openAdGate: (item: ItemDetail, file: 'all' | 'prompt' | 'workflow' | 'audience') => void
   closeAdGate: () => void
 
+  // Legal pages view-state (rendered within the single `/` route)
+  legalPage: LegalPage
+  openLegal: (page: LegalPage) => void
+  closeLegal: () => void
+
+  // Bookmarks drawer
+  bookmarksOpen: boolean
+  setBookmarksOpen: (o: boolean) => void
+
   // Library filters
   search: string
-  filterType: 'all' | 'prompt' | 'skill'
+  filterType: 'all' | 'prompt' | 'skill' | 'workflow'
   filterCategory: string
   sort: 'trending' | 'newest' | 'popular' | 'downloads' | 'rating'
   setSearch: (s: string) => void
-  setFilterType: (t: 'all' | 'prompt' | 'skill') => void
+  setFilterType: (t: 'all' | 'prompt' | 'skill' | 'workflow') => void
   setFilterCategory: (c: string) => void
   setSort: (s: 'trending' | 'newest' | 'popular' | 'downloads' | 'rating') => void
 }
@@ -57,6 +68,15 @@ export const useLibrary = create<LibraryState>((set, get) => ({
   openAdGate: (item, file) =>
     set({ adGateOpen: true, adGateTarget: item, adGateFile: file }),
   closeAdGate: () => set({ adGateOpen: false, adGateTarget: null, adGateFile: 'all' }),
+
+  // Legal pages
+  legalPage: null,
+  openLegal: (page) => set({ legalPage: page }),
+  closeLegal: () => set({ legalPage: null }),
+
+  // Bookmarks
+  bookmarksOpen: false,
+  setBookmarksOpen: (o) => set({ bookmarksOpen: o }),
 
   // Filters
   search: '',

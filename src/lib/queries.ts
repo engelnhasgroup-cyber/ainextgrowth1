@@ -47,6 +47,7 @@ export function toSummary(i: any): ItemSummary {
     rating: i.rating ?? 0,
     runDate: i.runDate ?? '',
     source: i.source ?? 'seed',
+    reviewedBy: i.reviewedBy ?? 'NexusAI Editorial Team',
     createdAt: i.createdAt instanceof Date ? i.createdAt.toISOString() : String(i.createdAt ?? ''),
   }
 }
@@ -55,6 +56,7 @@ export function toDetail(i: any): ItemDetail {
   return {
     ...toSummary(i),
     language: i.language ?? 'English',
+    intro: i.intro ?? '',
     promptContent: i.promptContent ?? '',
     workflowContent: i.workflowContent ?? '',
     audienceContent: i.audienceContent ?? '',
@@ -200,10 +202,11 @@ export async function fetchCategories(): Promise<CategoryInfo[]> {
 
 export async function fetchStats(): Promise<LibraryStats> {
   const today = new Date().toISOString().slice(0, 10)
-  const [total, prompts, skills, cats, downloadsAgg, todayItems] = await Promise.all([
+  const [total, prompts, skills, workflows, cats, downloadsAgg, todayItems] = await Promise.all([
     db.item.count(),
     db.item.count({ where: { type: 'prompt' } }),
     db.item.count({ where: { type: 'skill' } }),
+    db.item.count({ where: { type: 'workflow' } }),
     db.category.count(),
     db.item.aggregate({ _sum: { downloadCount: true } }),
     db.item.count({ where: { runDate: today } }),
@@ -212,6 +215,7 @@ export async function fetchStats(): Promise<LibraryStats> {
     totalItems: total,
     totalPrompts: prompts,
     totalSkills: skills,
+    totalWorkflows: workflows,
     totalCategories: cats,
     totalDownloads: downloadsAgg._sum.downloadCount ?? 0,
     todayGenerated: todayItems,

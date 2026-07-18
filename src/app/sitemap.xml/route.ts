@@ -27,7 +27,14 @@ export async function GET() {
     { loc: SITE_URL + '/#categories', changefreq: 'daily', priority: '0.8' },
     { loc: SITE_URL + '/#agent', changefreq: 'daily', priority: '0.7' },
     { loc: SITE_URL + '/#how', changefreq: 'weekly', priority: '0.6' },
+    // Legal pages (AdSense compliance requirement)
+    { loc: SITE_URL + '/?page=about', lastmod: now, changefreq: 'monthly', priority: '0.6' },
+    { loc: SITE_URL + '/?page=contact', lastmod: now, changefreq: 'monthly', priority: '0.6' },
+    { loc: SITE_URL + '/?page=privacy', lastmod: now, changefreq: 'monthly', priority: '0.6' },
+    { loc: SITE_URL + '/?page=terms', lastmod: now, changefreq: 'monthly', priority: '0.6' },
+    // Feeds
     { loc: SITE_URL + '/rss.xml', changefreq: 'hourly', priority: '0.6' },
+    { loc: SITE_URL + '/sitemap.xml', changefreq: 'daily', priority: '0.5' },
   ]
 
   // category landing anchors

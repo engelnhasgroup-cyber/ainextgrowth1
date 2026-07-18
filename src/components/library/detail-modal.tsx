@@ -11,7 +11,7 @@ import ReactMarkdown from 'react-markdown'
 import {
   Download, Eye, Star, Flame, FileText, Workflow, Users, Link2,
   Quote, HelpCircle, Tag, Wrench, ArrowRight, Loader2, Package,
-  Bookmark, Check,
+  Bookmark, Check, Sparkles, BadgeCheck,
 } from 'lucide-react'
 import { useLibrary } from './store'
 import { formatCompact } from './stats-bar'
@@ -207,6 +207,21 @@ export function DetailModal() {
               <div className="px-5 py-5 sm:px-6" ref={contentRef}>
                 {/* Top AdSense slot */}
                 <AdSlot label="AdSense · Top banner (responsive)" className="mb-4" />
+
+                {/* E-E-A-T: SEO intro (~200 words) — AdSense/SEO requirement */}
+                {item.intro && (
+                  <div className="mb-5 rounded-2xl border border-border/60 bg-card/40 p-4">
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-primary">
+                        <Sparkles className="h-3.5 w-3.5" /> Introduction
+                      </div>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
+                        <BadgeCheck className="h-3 w-3" /> {item.reviewedBy}
+                      </span>
+                    </div>
+                    <p className="text-sm leading-relaxed text-foreground/85">{item.intro}</p>
+                  </div>
+                )}
 
                 {/* Download CTA */}
                 <div className="mb-5 overflow-hidden rounded-2xl border border-primary/30 bg-primary/5">

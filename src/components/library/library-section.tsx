@@ -127,17 +127,17 @@ export function LibrarySection({
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             {/* type toggle */}
             <div className="inline-flex rounded-full border border-border/70 bg-card/50 p-1">
-              {(['all', 'prompt', 'skill'] as const).map((t) => (
+              {(['all', 'prompt', 'skill', 'workflow'] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => setFilterType(t)}
-                  className={`relative rounded-full px-4 py-1.5 text-xs font-semibold capitalize transition-colors ${
+                  className={`relative rounded-full px-3 py-1.5 text-xs font-semibold capitalize transition-colors ${
                     filterType === t
                       ? 'bg-primary text-primary-foreground shadow'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
-                  {t === 'all' ? 'All' : t + 's'}
+                  {t === 'all' ? 'All' : t === 'workflow' ? 'Workflows' : t + 's'}
                 </button>
               ))}
             </div>

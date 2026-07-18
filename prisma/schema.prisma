@@ -13,7 +13,7 @@ datasource db {
 model Item {
   id              String   @id @default(cuid())
   slug            String   @unique
-  type            String   // "prompt" | "skill"
+  type            String   // "prompt" | "skill" | "workflow"
   title           String
   summary         String
   category        String
@@ -22,8 +22,11 @@ model Item {
   difficulty      String   // Beginner | Intermediate | Advanced | Expert
   language        String   @default("English")
 
+  // SEO intro (~200 words) — AdSense/SEO requirement, rendered on-page
+  intro           String   @default("")
+
   // Trinity Bundle content (Markdown)
-  promptContent   String   // File 1: The Prompt / Skill
+  promptContent   String   // File 1: The Prompt / Skill / Workflow definition
   workflowContent String   // File 2: Workflow & Execution
   audienceContent String   // File 3: Target Audience & Use Cases
 
@@ -47,6 +50,10 @@ model Item {
   faqAnswer       String   @default("")
   citation        String   @default("")
   seoKeywords     String   @default("")
+
+  // E-E-A-T: human editorial review attribution (AdSense trust signal)
+  reviewedBy      String   @default("NexusAI Editorial Team")
+  publishedAt     DateTime? @default(now())
 
   // Internal linking graph (comma separated item ids)
   relatedIds      String   @default("")

@@ -2,6 +2,7 @@ export interface Stats {
   totalItems: number
   totalPrompts: number
   totalSkills: number
+  totalWorkflows: number
   totalCategories: number
   totalDownloads: number
   todayGenerated: number
@@ -18,7 +19,7 @@ import { FileText, Download, Sparkles, Layers } from 'lucide-react'
 
 export function StatsBar({ stats }: { stats: Stats }) {
   const items = [
-    { label: 'Prompts & Skills', value: formatCompact(stats.totalItems), icon: Sparkles },
+    { label: 'Prompts, Skills & Workflows', value: formatCompact(stats.totalItems), icon: Sparkles },
     { label: 'Trinity MD Files', value: formatCompact(stats.trinityFiles), icon: FileText },
     { label: 'Total Downloads', value: formatCompact(stats.totalDownloads), icon: Download },
     { label: 'Categories', value: String(stats.totalCategories), icon: Layers },

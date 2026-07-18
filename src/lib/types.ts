@@ -1,6 +1,6 @@
 // Shared types for NexusAI 2026
 
-export type ItemType = 'prompt' | 'skill'
+export type ItemType = 'prompt' | 'skill' | 'workflow'
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'
 
 export interface ItemSummary {
@@ -23,11 +23,13 @@ export interface ItemSummary {
   rating: number
   runDate: string
   source: string
+  reviewedBy: string
   createdAt: string
 }
 
 export interface ItemDetail extends ItemSummary {
   language: string
+  intro: string
   promptContent: string
   workflowContent: string
   audienceContent: string
@@ -53,6 +55,7 @@ export interface LibraryStats {
   totalItems: number
   totalPrompts: number
   totalSkills: number
+  totalWorkflows: number
   totalCategories: number
   totalDownloads: number
   todayGenerated: number

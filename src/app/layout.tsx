@@ -76,6 +76,11 @@ export const metadata: Metadata = {
       "200 trending AI prompts & skills generated daily. Trinity Bundles as Markdown. SEO + GEO + AEO optimized.",
   },
   category: "technology",
+  other: {
+    // Google AdSense publisher verification (replace ca-pub-XXXX with real ID before launch)
+    "google-adsense-account": "ca-pub-XXXXXXXXXXXXXXXX",
+    "google-site-verification": "google-site-verification-code-here",
+  },
 };
 
 export const viewport: Viewport = {
@@ -98,6 +103,12 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Google AdSense loader — replace ca-pub-XXXX with real publisher ID before production */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+          crossOrigin="anonymous"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}

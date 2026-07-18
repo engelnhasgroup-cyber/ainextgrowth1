@@ -13,6 +13,7 @@ export function Footer({
 }) {
   const setFilterCategory = useLibrary((s) => s.setFilterCategory)
   const setFilterType = useLibrary((s) => s.setFilterType)
+  const openLegal = useLibrary((s) => s.openLegal)
 
   const goCategory = (slug: string) => {
     setFilterCategory(slug)
@@ -84,11 +85,12 @@ export function Footer({
               <FileText className="h-3.5 w-3.5" /> Resources
             </p>
             <ul className="space-y-1.5 text-sm">
-              <li><a href="#about" className="text-muted-foreground hover:text-primary">About Us</a></li>
-              <li><a href="#privacy" className="text-muted-foreground hover:text-primary">Privacy Policy</a></li>
-              <li><a href="#terms" className="text-muted-foreground hover:text-primary">Terms of Service</a></li>
-              <li><a href="#contact" className="text-muted-foreground hover:text-primary">Contact</a></li>
-              <li><a href="#rss" className="text-muted-foreground hover:text-primary">RSS Feed</a></li>
+              <li><button onClick={() => openLegal('about')} className="text-muted-foreground transition-colors hover:text-primary">About Us</button></li>
+              <li><button onClick={() => openLegal('privacy')} className="text-muted-foreground transition-colors hover:text-primary">Privacy Policy</button></li>
+              <li><button onClick={() => openLegal('terms')} className="text-muted-foreground transition-colors hover:text-primary">Terms of Service</button></li>
+              <li><button onClick={() => openLegal('contact')} className="text-muted-foreground transition-colors hover:text-primary">Contact</button></li>
+              <li><a href="/rss.xml" target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">RSS Feed</a></li>
+              <li><a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">Sitemap</a></li>
             </ul>
           </div>
         </div>

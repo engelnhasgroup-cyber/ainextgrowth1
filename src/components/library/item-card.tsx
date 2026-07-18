@@ -26,7 +26,6 @@ export function ItemCard({ item, index = 0 }: { item: ItemSummary; index?: numbe
   const openDetail = useLibrary((s) => s.openDetail)
   const { has, toggle } = useBookmarks()
   const color = CAT_COLORS[item.category] || '#10b981'
-  const isPrompt = item.type === 'prompt'
   const saved = has(item.id)
 
   return (
@@ -47,12 +46,14 @@ export function ItemCard({ item, index = 0 }: { item: ItemSummary; index?: numbe
           <div className="flex items-center gap-1.5">
             <span
               className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
-                isPrompt
+                item.type === 'prompt'
                   ? 'bg-emerald-500/15 text-emerald-400'
-                  : 'bg-violet-500/15 text-violet-300'
+                  : item.type === 'skill'
+                  ? 'bg-violet-500/15 text-violet-300'
+                  : 'bg-amber-500/15 text-amber-400'
               }`}
             >
-              {isPrompt ? 'Prompt' : 'Skill'}
+              {item.type === 'workflow' ? 'Workflow' : item.type}
             </span>
             <span
               className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium"
