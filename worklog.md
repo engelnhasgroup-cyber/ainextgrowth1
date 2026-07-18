@@ -825,3 +825,58 @@ Task: QA assessment via agent-browser + VLM, add Quick Preview hover card, toast
 4. **Dedicated category routes**: `/category/[slug]` for SEO.
 5. **Analytics**: Plausible/Umami integration.
 6. **Quick preview optimization**: reduce hover delay to 300ms for faster feedback.
+
+---
+Task ID: 20
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 11)
+Task: QA assessment via agent-browser + VLM, add animated tabs indicator, Top Rated section.
+
+## Current Project Status Assessment
+- Project stable at 49 items (24 prompts, 21 skills, 4 workflows) from Task 19.
+- Dev server running, lint clean, no runtime errors.
+- VLM QA: homepage 8/10, detail modal all features confirmed (tabs, prev/next, share menu).
+- Backfill chunked approach continuing (3 items per run).
+
+## Completed Modifications & Verification
+
+### 1. Animated Tabs Indicator (STYLING — high-impact)
+- **Detail modal Trinity tabs**: replaced default TabsList with custom animated indicator:
+  - `motion.div` with `layoutId="tab-indicator"` creates a sliding background that animates between tabs.
+  - Spring animation (stiffness: 300, damping: 30) for smooth transition.
+  - Indicator positioned absolutely based on active tab (left: 0%, 33.333%, 66.666%).
+  - Primary color background with shadow-lg.
+  - Tabs have `relative z-10` to sit above the indicator.
+  - `data-[state=active]:text-primary-foreground` for proper contrast.
+  - TabsList has border + bg-card/40 for better visual definition.
+- Verified via agent-browser + VLM: "animated sliding indicator moves to the active tab". Clicking Workflow tab moved indicator correctly.
+
+### 2. Top Rated Section (NEW FEATURE)
+- **`top-rated-section.tsx`**: new homepage section showing top 4 items by rating.
+  - Amber "Top Rated · Community Favorites" badge (Trophy icon).
+  - Each card has a gradient rating badge (amber→orange) showing star rating.
+  - "View All Rated" button sets sort to rating and scrolls to library.
+  - Ambient amber gradient glow at top of section.
+  - Uses `SectionReveal` for entrance animation.
+- **`fetchTopRated` query**: orders by rating desc, then downloadCount desc.
+- Integrated into `page.tsx` SSR + library-app (between EditorsPick and Workflows).
+- VLM confirmed: "amber/orange pill badge saying 'Top Rated · Community Favorites'" visible.
+
+### Verification Results (agent-browser + VLM)
+- **Animated tabs**: sliding indicator confirmed, moves on tab click. VLM confirmed "animated sliding indicator moves to the active tab".
+- **Top Rated section**: badge + rating badges on cards confirmed. VLM confirmed "Top Rated · Community Favorites" badge.
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Backfill still incomplete**: ~15 items still need intros. Chunked approach working (3 items/run). Needs ~5 more runs.
+2. **Category landing sections**: planned but not implemented (deferred — would add SEO content per category).
+3. **Scroll-snap**: planned but not implemented (deferred).
+4. **Print/PDF export**: planned but not implemented (deferred).
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: run `bun run scripts/backfill-chunk.ts 3` in cron every 10 min.
+2. **Print/PDF export**: add print stylesheet + "Export as PDF" button in detail modal.
+3. **Real AdSense publisher ID**: replace placeholder.
+4. **Dedicated category routes**: `/category/[slug]` for SEO.
+5. **Analytics**: Plausible/Umami integration.
+6. **Category landing sections**: SEO content blocks per category on homepage.

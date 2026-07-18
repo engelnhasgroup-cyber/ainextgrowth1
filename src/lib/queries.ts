@@ -161,6 +161,14 @@ export async function fetchTopWorkflows(limit = 4): Promise<ItemSummary[]> {
   return rows.map(toSummary)
 }
 
+export async function fetchTopRated(limit = 4): Promise<ItemSummary[]> {
+  const rows = await db.item.findMany({
+    orderBy: [{ rating: 'desc' }, { downloadCount: 'desc' }],
+    take: Math.min(Math.max(limit, 1), 20),
+  })
+  return rows.map(toSummary)
+}
+
 export async function fetchBySlug(slug: string): Promise<ItemDetail | null> {
   const row = await db.item.findUnique({ where: { slug } })
   if (!row) return null
