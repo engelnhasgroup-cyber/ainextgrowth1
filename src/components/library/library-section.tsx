@@ -208,25 +208,37 @@ export function LibrarySection({
           <div className="flex flex-wrap items-center gap-1.5">
             <button
               onClick={() => setFilterCategory('all')}
-              className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                 filterCategory === 'all'
                   ? 'bg-primary text-primary-foreground'
                   : 'border border-border/60 bg-card/40 text-muted-foreground hover:text-foreground'
               }`}
             >
               All Categories
+              <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
+                filterCategory === 'all' ? 'bg-primary-foreground/20' : 'bg-muted/60'
+              }`}>
+                {categories.reduce((sum, c) => sum + (c.itemCount || 0), 0)}
+              </span>
             </button>
             {categories.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setFilterCategory(c.slug)}
-                className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                   filterCategory === c.slug
                     ? 'bg-primary text-primary-foreground'
                     : 'border border-border/60 bg-card/40 text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {c.name}
+                {c.itemCount != null && (
+                  <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
+                    filterCategory === c.slug ? 'bg-primary-foreground/20' : 'bg-muted/60'
+                  }`}>
+                    {c.itemCount}
+                  </span>
+                )}
               </button>
             ))}
             {activeFilters > 0 && (

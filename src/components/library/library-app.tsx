@@ -10,6 +10,7 @@ import { RecentSection } from './recent-section'
 import { CategoriesSection } from './categories-section'
 import { HowItWorksSection } from './how-it-works'
 import { WorkflowsSection } from './workflows-section'
+import { EditorsPickSection } from './editors-pick-section'
 import { LibrarySection } from './library-section'
 import { AgentPanel } from './agent-panel'
 import { Footer } from './footer'
@@ -26,6 +27,7 @@ export function LibraryApp({
   trending,
   recent,
   workflows,
+  featured,
   initialItems,
   initialTotal,
 }: {
@@ -34,6 +36,7 @@ export function LibraryApp({
   trending: ItemSummary[]
   recent: ItemSummary[]
   workflows: ItemSummary[]
+  featured: ItemSummary[]
   initialItems: ItemSummary[]
   initialTotal: number
 }) {
@@ -80,6 +83,7 @@ export function LibraryApp({
         <TrendingSection trending={trending} />
         <RecentSection items={recent} />
         <CategoriesSection categories={categories} />
+        <EditorsPickSection items={featured} />
         <WorkflowsSection items={workflows} />
         <HowItWorksSection />
         <LibrarySection

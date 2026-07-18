@@ -19,6 +19,37 @@ export function Hero({ stats }: { stats: Stats }) {
       <div className="absolute inset-0 bg-grid opacity-60" />
       <div className="absolute inset-0 bg-radial-glow" />
 
+      {/* Animated gradient orbs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          animate={{
+            x: [0, 60, 0],
+            y: [0, -40, 0],
+            scale: [1, 1.15, 1],
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -left-20 top-10 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl"
+        />
+        <motion.div
+          animate={{
+            x: [0, -50, 0],
+            y: [0, 30, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          className="absolute -right-20 top-40 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl"
+        />
+        <motion.div
+          animate={{
+            x: [0, 40, 0],
+            y: [0, -20, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+          className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-amber-500/8 blur-3xl"
+        />
+      </div>
+
       {/* Floating decorative badges (desktop only) */}
       <div className="pointer-events-none absolute inset-0 hidden lg:block">
         {FLOATING_BADGES.map((b, i) => (

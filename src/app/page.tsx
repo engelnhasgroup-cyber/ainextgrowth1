@@ -7,6 +7,7 @@ import {
   fetchItems,
   fetchRecent,
   fetchTopWorkflows,
+  fetchFeatured,
 } from '@/lib/queries'
 
 // Revalidate frequently so newly-generated agent items appear.
@@ -14,13 +15,14 @@ export const revalidate = 60
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const [stats, categories, trending, initial, recent, workflows] = await Promise.all([
+  const [stats, categories, trending, initial, recent, workflows, featured] = await Promise.all([
     fetchStats(),
     fetchCategories(),
     fetchTrending(8),
     fetchItems({ sort: 'trending', limit: 24, offset: 0 }),
     fetchRecent(4),
     fetchTopWorkflows(4),
+    fetchFeatured(4),
   ])
 
   return (
@@ -32,6 +34,7 @@ export default async function Home() {
         trending={trending}
         recent={recent}
         workflows={workflows}
+        featured={featured}
         initialItems={initial.items}
         initialTotal={initial.total}
       />

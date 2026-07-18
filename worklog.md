@@ -483,3 +483,74 @@ Task: QA assessment via agent-browser + VLM, add sticky TOC sidebar, reading tim
 5. **Analytics**: Plausible/Umami integration for real engagement tracking.
 6. **Search results page**: dedicated `/search?q=` route for indexable search pages.
 7. **Item count badges on category chips**: show count next to each category in library filter chips.
+
+---
+Task ID: 15
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 6)
+Task: QA assessment via agent-browser + VLM, add animated hero orbs, Editor's Pick section, category count badges, Copy Bundle feature, Sponsored ad labels.
+
+## Current Project Status Assessment
+- Project stable at 49 items (24 prompts, 21 skills, 4 workflows) from Task 14.
+- Dev server running, lint clean, no runtime errors.
+- VLM QA: homepage 8/10, footer 8/10, detail modal features all working.
+- Backfill chunked approach working (processing 3 items per run).
+
+## Completed Modifications & Verification
+
+### 1. Animated Hero Gradient Orbs (STYLING — high-impact)
+- **3 animated gradient orbs** added to hero background:
+  - Emerald orb (left, 72×72, 18s animation loop)
+  - Violet orb (right, 80×80, 22s animation, 2s delay)
+  - Amber orb (bottom-center, 64×64, 16s animation, 4s delay)
+- Each orb uses `blur-3xl` + framer-motion `animate` with x/y/scale keyframes for organic floating movement.
+- `pointer-events-none` so they don't interfere with interactions.
+- VLM confirmed: "animated gradient orbs are present", hero rated 8/10.
+
+### 2. Editor's Pick / Featured Section (NEW FEATURE)
+- **`editors-pick-section.tsx`**: new homepage section showing 4 featured items with violet "Editor's Pick · Hand-Selected" badge (Award icon).
+- Each card has a violet "Featured" badge (Star icon) in top-left corner.
+- "Top Rated" button sets sort to rating and scrolls to library.
+- Ambient violet gradient glow at top of section.
+- `fetchFeatured` query integrated into `page.tsx` SSR.
+- VLM confirmed: "violet/purple pill badge with 'Editor's Pick · Hand-Selected'" visible.
+
+### 3. Category Count Badges on Library Filter Chips (NEW FEATURE)
+- **Library section filter chips**: each category chip now shows item count in a small badge (e.g., "All Categories 49", "Business & Strategy 6", "SEO & Content Marketing 7").
+- "All Categories" shows total count (sum of all categories).
+- Count badge uses `bg-muted/60` (inactive) or `bg-primary-foreground/20` (active) for proper contrast.
+- Verified via agent-browser snapshot: chips show counts correctly.
+
+### 4. Copy Full Trinity Bundle (NEW FEATURE)
+- **Share menu**: new "Copy full Trinity Bundle" option added.
+- Combines all 3 files (prompt + workflow + audience) into a single markdown string with proper headings, separators, and attribution footer.
+- Toast notification: "Full Trinity Bundle copied to clipboard".
+- Verified via agent-browser: menu item present, click executes copy.
+
+### 5. Sponsored Ad Label (STYLING — AdSense compliance)
+- **AdSlot redesigned**: "Ad" label replaced with "Sponsored" label (left-aligned) with amber dot indicator.
+- Uses `bg-foreground/10 backdrop-blur` for better visibility.
+- More professional and AdSense-policy-friendly labeling.
+- VLM confirmed: "SPONSORED with amber dot" visible on ad slots.
+
+### Verification Results (agent-browser + VLM)
+- **Homepage**: 8/10 — animated gradient orbs confirmed.
+- **Editor's Pick**: violet badge + Featured card badges confirmed.
+- **Category chips**: count badges confirmed ("All Categories 49", "Business & Strategy 6", etc.).
+- **Detail modal**: "Sponsored" ad label with amber dot, "5 min read", Contents/Save/Share, Copy Bundle option all confirmed.
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Backfill still incomplete**: ~30 items still need intros. Chunked approach works (3 items/run) but needs ~10 more runs. Recommend: cron job every 10 min.
+2. **Compare items feature**: planned but not implemented (deferred — would need a comparison modal with side-by-side item details).
+3. **Section entrance animations**: planned but not implemented (deferred — framer-motion whileInView already used on cards, sections could benefit too).
+4. **Rate limiting**: LLM API 429s still occur but chunked backfill handles them gracefully.
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: run `bun run scripts/backfill-chunk.ts 3` in cron every 10 min until all intros generated.
+2. **OG image generation**: dynamic per-item Open Graph images for social sharing.
+3. **Real AdSense publisher ID**: replace `ca-pub-XXXXXXXXXXXXXXXX` placeholder.
+4. **Dedicated category routes**: `/category/[slug]` for deeper SEO indexability.
+5. **Analytics**: Plausible/Umami integration for real engagement tracking.
+6. **Compare items feature**: side-by-side comparison modal for 2-3 items.
+7. **Search results page**: dedicated `/search?q=` route for indexable search pages.

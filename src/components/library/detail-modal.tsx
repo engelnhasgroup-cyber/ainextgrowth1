@@ -38,8 +38,9 @@ function AdSlot({ label, className }: { label: string; className?: string }) {
       className={`ad-slot relative grid min-h-[100px] place-items-center overflow-hidden rounded-xl border border-border/60 ${className ?? ''}`}
       aria-label="advertisement"
     >
-      <span className="absolute right-2 top-2 rounded-md bg-foreground/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-foreground/80 backdrop-blur">
-        Ad
+      <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-md bg-foreground/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-foreground/70 backdrop-blur">
+        <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+        Sponsored
       </span>
       <div className="px-4 text-center">
         <p className="text-xs font-semibold text-foreground/80">{label}</p>
