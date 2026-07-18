@@ -71,7 +71,7 @@ export function Hero({ stats }: { stats: Stats }) {
           </p>
 
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button size="lg" className="h-12 rounded-full px-7 text-base glow-emerald" asChild>
+            <Button size="lg" className="btn-press h-12 rounded-full px-7 text-base glow-emerald" asChild>
               <a href="#trending">
                 <Zap className="mr-2 h-4 w-4" />
                 Explore Trending Today
@@ -80,7 +80,7 @@ export function Hero({ stats }: { stats: Stats }) {
             <Button
               size="lg"
               variant="outline"
-              className="h-12 rounded-full px-7 text-base"
+              className="btn-press h-12 rounded-full px-7 text-base"
               asChild
             >
               <a href="#agent">

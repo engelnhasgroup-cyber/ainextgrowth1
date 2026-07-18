@@ -331,3 +331,82 @@ Task: QA assessment via agent-browser + VLM, fix visual issues, add new features
 5. **Dedicated category routes**: `/category/[slug]` real routes for deeper SEO indexability.
 6. **Analytics integration**: Plausible/Umami for view/download tracking.
 7. **Search results page**: dedicated `/search?q=` route for indexable search pages.
+
+---
+Task ID: 13
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 4)
+Task: QA assessment via agent-browser + VLM, add Command Palette (Cmd+K), grid/list view toggle, Top Workflows section, mobile nav fixes, micro-animations, backfill intros.
+
+## Current Project Status Assessment
+- Project stable at 48 items (24 prompts, 21 skills, 3 workflows) from Task 12.
+- Dev server running, lint clean, no runtime errors.
+- VLM visual QA: homepage 8/10, library grid 9/10, detail modal intro+reviewedBy working.
+- Backfill script repeatedly dies due to LLM rate limiting (429s); restarted with 4s delay.
+
+## Completed Modifications & Verification
+
+### 1. Command Palette (NEW — high-impact feature)
+- **`command-palette.tsx`**: full Cmd+K / Ctrl+K command palette using shadcn `CommandDialog` (cmdk).
+- **Live search**: queries `/api/items?search=` with debounced input, shows up to 8 matching items with type icons, niche, rating, trending flame.
+- **Navigation group**: Home, Browse Prompts/Skills/Workflows, Meet the AI Agent.
+- **Sort group**: Trending, Newest, Most Viewed, Most Downloaded.
+- **Pages group**: About, Contact, Privacy, Terms, RSS Feed.
+- **Keyboard shortcut**: global `Cmd+K` / `Ctrl+K` listener toggles the palette.
+- **Navbar integration**: "Search ⌘K" button in navbar (desktop) + search icon button (mobile) triggers the palette.
+- Verified via agent-browser: Cmd+K opens palette, search "RAG" returns RAG items, all 14 options render.
+
+### 2. Grid/List View Toggle (NEW FEATURE)
+- **`item-list-item.tsx`**: new compact horizontal list-row component with type icon block, title, summary, stats (views/downloads/rating), bookmark button, left accent bar.
+- **Library section**: view mode toggle (LayoutGrid/List icons) in the filters bar, switches between card grid and list view.
+- Verified via agent-browser + VLM: list view rated 8/10 ("clear, functional list layout with good information density").
+
+### 3. Top Workflows Section (NEW FEATURE)
+- **`workflows-section.tsx`**: dedicated homepage section showing top 4 workflow items with amber "End-to-End Agentic Workflows" badge.
+- **`fetchTopWorkflows` query** added to queries.ts.
+- Integrated into `page.tsx` SSR + library-app between Categories and How-It-Works.
+- "All Workflows" button filters library to workflow type.
+- VLM: 9/10, badge + cards confirmed visible.
+
+### 4. Mobile Nav Touch Target Fixes (STYLING — accessibility)
+- **Navbar height**: increased from `h-11` to `h-12` for better touch ergonomics.
+- **Desktop nav buttons**: `min-h-[36px]` enforced (was no min height).
+- **Mobile menu items**: `min-h-[44px]` enforced (WCAG touch target standard).
+- **Mobile toggle**: `h-9` button (was smaller), better spacing.
+- **Footer links**: `min-h-[32px]` + `flex items-center` for proper tap targets.
+- **Mobile search**: dedicated `h-9 w-9` icon button in navbar for search (triggers command palette).
+
+### 5. Micro-Animations (STYLING — polish)
+- **New CSS keyframes**: `shimmer`, `fade-in-up`, `pulse-glow`.
+- **New utility classes**: `.animate-fade-in-up`, `.animate-pulse-glow`, `.shimmer`, `.btn-press` (active:scale-0.96).
+- **Hero CTA buttons**: `btn-press` class added for tactile press feedback.
+- Available for future use on skeletons (shimmer), notifications (pulse-glow), and entrance animations (fade-in-up).
+
+### 6. Backfill Intros (INFRASTRUCTURE — ongoing)
+- **`scripts/backfill-intros.ts`**: generates ~200-word SEO intros for 38 legacy items with empty `intro` field.
+- Fixed Prisma query (simplified `where: { intro: '' }`).
+- 4s delay between items to mitigate rate limiting.
+- Running in background: 1/38 done so far (rate limited but progressing).
+
+### Verification Results (agent-browser + VLM)
+- **Homepage**: 8/10 — "bold typography, modern dark theme, cohesive".
+- **Command palette**: Cmd+K opens, search returns items, all 14 navigation/sort/page options render.
+- **List view**: 8/10 — "clear, functional, good information density".
+- **Workflows section**: 9/10 — badge + cards confirmed.
+- **Library grid**: 9/10 (from prior round, maintained).
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Rate limiting (critical)**: LLM API 429s severely throttle backfill. 38 items still need intros. Each takes ~4s + retry delays. Recommend: production API tier or chunked cron (5 items/run).
+2. **Backfill incomplete**: only 2/38 intros generated across multiple attempts. Script keeps dying on repeated 429s.
+3. **Mobile viewport testing**: agent-browser `--viewport` flag not applying CSS breakpoints correctly (renders desktop layout at 390px). CSS is correct (`hidden md:flex` / `md:hidden`); limitation is in the testing tool, not the code.
+4. **Sticky TOC sidebar**: planned for detail modal but not implemented this round (deferred to next phase due to time).
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: run backfill in multiple sessions or use a cron job that processes 3-5 items per run.
+2. **Sticky TOC sidebar**: implement a sticky table-of-contents in the detail modal (desktop) that stays visible while scrolling content.
+3. **OG image generation**: dynamic per-item Open Graph images for social sharing.
+4. **Real AdSense publisher ID**: replace `ca-pub-XXXXXXXXXXXXXXXX` placeholder.
+5. **Dedicated category routes**: `/category/[slug]` for deeper SEO indexability.
+6. **Analytics**: Plausible/Umami integration for view/download tracking.
+7. **Search results page**: dedicated `/search?q=` route for indexable search pages.

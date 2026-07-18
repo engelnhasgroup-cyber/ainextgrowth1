@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { CategoryInfo, ItemSummary, LibraryStats } from '@/lib/types'
 import { Header } from './header'
 import { Navbar } from './navbar'
@@ -9,12 +9,14 @@ import { TrendingSection } from './trending-section'
 import { RecentSection } from './recent-section'
 import { CategoriesSection } from './categories-section'
 import { HowItWorksSection } from './how-it-works'
+import { WorkflowsSection } from './workflows-section'
 import { LibrarySection } from './library-section'
 import { AgentPanel } from './agent-panel'
 import { Footer } from './footer'
 import { DetailModal } from './detail-modal'
 import { AdGateModal } from './ad-gate-modal'
 import { LegalPages } from './legal-pages'
+import { CommandPalette } from './command-palette'
 import { useLibrary } from './store'
 
 export function LibraryApp({
@@ -22,6 +24,7 @@ export function LibraryApp({
   categories,
   trending,
   recent,
+  workflows,
   initialItems,
   initialTotal,
 }: {
@@ -29,10 +32,12 @@ export function LibraryApp({
   categories: CategoryInfo[]
   trending: ItemSummary[]
   recent: ItemSummary[]
+  workflows: ItemSummary[]
   initialItems: ItemSummary[]
   initialTotal: number
 }) {
   const { openDetail, openLegal, legalPage } = useLibrary()
+  const [cmdOpen, setCmdOpen] = useState(false)
 
   // Deep-link support: /?item=<slug> or /?page=<legal> on load
   useEffect(() => {
@@ -58,7 +63,9 @@ export function LibraryApp({
     return (
       <div id="top" className="flex min-h-screen flex-col">
         <Header stats={stats} />
+        <Navbar onOpenSearch={() => setCmdOpen(true)} />
         <LegalPages />
+        <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
       </div>
     )
   }
@@ -66,12 +73,13 @@ export function LibraryApp({
   return (
     <div id="top" className="flex min-h-screen flex-col">
       <Header stats={stats} />
-      <Navbar />
+      <Navbar onOpenSearch={() => setCmdOpen(true)} />
       <main className="flex-1">
         <Hero stats={stats} />
         <TrendingSection trending={trending} />
         <RecentSection items={recent} />
         <CategoriesSection categories={categories} />
+        <WorkflowsSection items={workflows} />
         <HowItWorksSection />
         <LibrarySection
           categories={categories}
@@ -90,6 +98,7 @@ export function LibraryApp({
       {/* Modals & overlays */}
       <DetailModal />
       <AdGateModal />
+      <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
     </div>
   )
 }

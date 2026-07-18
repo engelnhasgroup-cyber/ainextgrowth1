@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import { Search, SlidersHorizontal, X, Loader2 } from 'lucide-react'
+import { Search, SlidersHorizontal, X, Loader2, LayoutGrid, List } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import type { CategoryInfo, ItemSummary, ItemType } from '@/lib/types'
 import { useLibrary } from './store'
 import { ItemCard, ItemCardSkeleton } from './item-card'
+import { ItemListItem } from './item-list-item'
 import { motion } from 'framer-motion'
 
 const SORT_OPTIONS = [
@@ -33,6 +34,7 @@ export function LibrarySection({
   const [loading, setLoading] = useState(false)
   const [offset, setOffset] = useState(initialItems.length)
   const [searchInput, setSearchInput] = useState(search)
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const reqId = useRef(0)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -163,7 +165,7 @@ export function LibrarySection({
               )}
             </div>
 
-            {/* sort */}
+            {/* sort + view toggle */}
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="h-4 w-4 text-muted-foreground" />
               <select
@@ -178,6 +180,27 @@ export function LibrarySection({
                   </option>
                 ))}
               </select>
+              {/* view mode toggle */}
+              <div className="inline-flex rounded-full border border-border/70 bg-card/50 p-0.5">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`grid h-9 w-9 place-items-center rounded-full transition-colors ${
+                    viewMode === 'grid' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                  aria-label="Grid view"
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`grid h-9 w-9 place-items-center rounded-full transition-colors ${
+                    viewMode === 'list' ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                  aria-label="List view"
+                >
+                  <List className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -231,7 +254,7 @@ export function LibrarySection({
           </div>
         </div>
 
-        {/* grid */}
+        {/* grid / list */}
         {items.length === 0 && !loading ? (
           <div className="grid place-items-center rounded-2xl border border-dashed border-border/70 py-20 text-center">
             <div>
@@ -243,13 +266,23 @@ export function LibrarySection({
               </Button>
             </div>
           </div>
-        ) : (
+        ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((item, i) => (
               <ItemCard key={item.id} item={item} index={i} />
             ))}
             {loading &&
               Array.from({ length: 4 }).map((_, i) => <ItemCardSkeleton key={`s-${i}`} />)}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {items.map((item, i) => (
+              <ItemListItem key={item.id} item={item} index={i} />
+            ))}
+            {loading &&
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={`s-${i}`} className="h-20 animate-pulse rounded-xl border border-border/60 bg-card/40" />
+              ))}
           </div>
         )}
 
