@@ -144,6 +144,23 @@ export async function fetchFeatured(limit = 8): Promise<ItemSummary[]> {
   return rows.map(toSummary)
 }
 
+export async function fetchRecent(limit = 8): Promise<ItemSummary[]> {
+  const rows = await db.item.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: Math.min(Math.max(limit, 1), 50),
+  })
+  return rows.map(toSummary)
+}
+
+export async function fetchTopWorkflows(limit = 4): Promise<ItemSummary[]> {
+  const rows = await db.item.findMany({
+    where: { type: 'workflow' },
+    orderBy: [{ trendingScore: 'desc' }, { viewCount: 'desc' }],
+    take: Math.min(Math.max(limit, 1), 20),
+  })
+  return rows.map(toSummary)
+}
+
 export async function fetchBySlug(slug: string): Promise<ItemDetail | null> {
   const row = await db.item.findUnique({ where: { slug } })
   if (!row) return null

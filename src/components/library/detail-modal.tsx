@@ -19,6 +19,7 @@ import { ShareMenu, CopyPromptButton } from './share-menu'
 import { useBookmarks } from './use-bookmarks'
 import { useScrollProgress } from './use-scroll-progress'
 import { TableOfContents, extractToc } from './table-of-contents'
+import { RatingWidget } from './rating-widget'
 
 const CAT_COLORS: Record<string, string> = {
   'seo-content-marketing': '#10b981',
@@ -34,16 +35,16 @@ const CAT_COLORS: Record<string, string> = {
 function AdSlot({ label, className }: { label: string; className?: string }) {
   return (
     <div
-      className={`ad-slot relative grid min-h-[96px] place-items-center overflow-hidden rounded-xl border border-border/50 ${className ?? ''}`}
+      className={`ad-slot relative grid min-h-[100px] place-items-center overflow-hidden rounded-xl border border-border/60 ${className ?? ''}`}
       aria-label="advertisement"
     >
-      <span className="absolute right-2 top-2 rounded bg-foreground/10 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-foreground/60">
-        Advertisement
+      <span className="absolute right-2 top-2 rounded-md bg-foreground/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-foreground/80 backdrop-blur">
+        Ad
       </span>
       <div className="px-4 text-center">
-        <p className="text-[11px] font-medium text-foreground/70">{label}</p>
-        <p className="mt-0.5 text-[9px] text-muted-foreground">
-          Google AdSense · responsive unit
+        <p className="text-xs font-semibold text-foreground/80">{label}</p>
+        <p className="mt-1 text-[9px] text-foreground/60">
+          Google AdSense · responsive display unit
         </p>
       </div>
     </div>
@@ -380,6 +381,15 @@ export function DetailModal() {
                       ))}
                     </div>
                   </div>
+                </div>
+
+                {/* User engagement: rating widget */}
+                <div className="mb-5">
+                  <RatingWidget
+                    itemId={item.id}
+                    baseRating={item.rating}
+                    downloadCount={item.downloadCount}
+                  />
                 </div>
 
                 {/* Internal links — related items */}

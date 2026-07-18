@@ -81,6 +81,30 @@ function LegalShell({
       </div>
 
       <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-16">
+        {/* Breadcrumb */}
+        <nav className="mb-6 flex items-center gap-1.5 text-xs text-muted-foreground" aria-label="Breadcrumb">
+          <button onClick={() => useLibrary.getState().closeLegal()} className="hover:text-foreground">
+            Home
+          </button>
+          <span>/</span>
+          <span className="font-medium text-foreground">{title.split(' ').slice(0, 2).join(' ')}</span>
+        </nav>
+
+        {/* Breadcrumb JSON-LD for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://nexusai2026.example.com/' },
+                { '@type': 'ListItem', position: 2, name: title, item: `https://nexusai2026.example.com/?page=${page}` },
+              ],
+            }),
+          }}
+        />
+
         <header className="mb-8 border-b border-border/60 pb-6">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <Sparkles className="h-3.5 w-3.5" />

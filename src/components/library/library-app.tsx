@@ -6,6 +6,7 @@ import { Header } from './header'
 import { Navbar } from './navbar'
 import { Hero } from './hero'
 import { TrendingSection } from './trending-section'
+import { RecentSection } from './recent-section'
 import { CategoriesSection } from './categories-section'
 import { HowItWorksSection } from './how-it-works'
 import { LibrarySection } from './library-section'
@@ -20,12 +21,14 @@ export function LibraryApp({
   stats,
   categories,
   trending,
+  recent,
   initialItems,
   initialTotal,
 }: {
   stats: LibraryStats
   categories: CategoryInfo[]
   trending: ItemSummary[]
+  recent: ItemSummary[]
   initialItems: ItemSummary[]
   initialTotal: number
 }) {
@@ -67,6 +70,7 @@ export function LibraryApp({
       <main className="flex-1">
         <Hero stats={stats} />
         <TrendingSection trending={trending} />
+        <RecentSection items={recent} />
         <CategoriesSection categories={categories} />
         <HowItWorksSection />
         <LibrarySection

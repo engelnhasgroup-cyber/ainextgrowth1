@@ -238,3 +238,96 @@ Task: Transition from prototype to AdSense-ready commercial launch — 600-item 
 4. **PostgreSQL migration**: when ready for production, migrate SQLite → PostgreSQL (Supabase) for scale.
 5. **Dedicated category routes**: consider adding `/category/[slug]` real routes (vs. filter state) for deeper SEO indexability if crawl budget allows.
 6. **Google Search Console**: submit sitemap.xml and request indexing of key pages.
+
+---
+Task ID: 12
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 3)
+Task: QA assessment via agent-browser + VLM, fix visual issues, add new features (Recently Added section, rating widget, enhanced cards/hero), backfill intros for legacy items.
+
+## Current Project Status Assessment
+- Project stable at 48 items (24 prompts, 21 skills, 3 workflows) from Task 11.
+- Dev server running, lint clean, no runtime errors.
+- VLM visual QA identified: hero empty space, trending section spacing, card hover polish weak, detail modal ad contrast low, mobile nav touch targets small.
+- Background processes (batch generation, backfill) die due to LLM rate limiting (429s).
+
+## Completed Modifications & Verification
+
+### 1. Enhanced Item Cards (STYLING — high impact)
+- **Gradient hover glow**: radial gradient in category color appears on hover.
+- **Type badges with icons**: Prompt (Zap, emerald), Skill (FileText, violet), Workflow (TrendingUp, amber).
+- **Animated trending pulse**: trending badge now has a pinging dot + flame icon.
+- **Difficulty dots**: 4 colored dots in card footer showing difficulty level (1-4) in category color.
+- **Left accent bar**: vertical bar on left edge scales in on hover (was top bar).
+- **Hover CTA overlay**: "View Trinity Bundle" hint fades in at bottom on hover.
+- **Bookmark button**: only appears on hover (unless saved), scales on hover.
+- VLM: type badges with icons confirmed; card design rated 7/10.
+
+### 2. Enhanced Hero Section (STYLING)
+- **Floating decorative badges**: 4 animated badges (Prompt, Skill, Workflow, E-E-A-T) float on desktop with gentle y-axis animation, positioned at corners.
+- **Trust indicators row**: replaced single SEO line with 3 color-coded indicators (SEO/GEO/AEO, Editorial Team, target markets) with colored dots.
+- **Animated stats counter**: StatsBar now uses `useCountUp` hook with IntersectionObserver — numbers ease from 0 to target (easeOutExpo) when scrolled into view, with per-card colored icons and bottom accent bars.
+- VLM: hero rated 8/10, "polished and professional".
+
+### 3. Recently Added Section (NEW FEATURE)
+- **`recent-section.tsx`**: new homepage section showing 4 newest items with green "time-ago" badges (e.g., "2h ago", "3d ago") on each card.
+- **`fetchRecent` query** + integrated into `page.tsx` SSR.
+- "View All Newest" button sets sort to newest and scrolls to library.
+- VLM: green time-ago badges confirmed visible, "Recently Added" header present.
+
+### 4. Rating Widget (NEW FEATURE — user engagement)
+- **`rating-widget.tsx`**: interactive 5-star rating + "Mark helpful" button + download count.
+- Stores user ratings in localStorage (`nexusai-ratings` key), no backend needed.
+- Display rating blends community base rating with user's rating.
+- Toast notifications on rate/helpful actions.
+- Integrated into detail modal between tags/keywords and related items.
+- Verified via agent-browser: star rating click works, helpful toggle works.
+
+### 5. Enhanced Trending Section (STYLING)
+- Ambient amber gradient glow at top of section.
+- Pinging dot added to "Trending Today" badge.
+- "View All Trending" button (was "View Full Library") now sets sort to trending.
+
+### 6. Enhanced Categories Section (STYLING)
+- "8 High-Value Verticals" pill badge added above heading.
+- Category cards: hover glow (radial gradient in category color), lift on hover (-translate-y-1), shadow.
+- VLM: badge confirmed visible, cards described as polished with colored icons + item counts.
+
+### 7. Detail Modal Ad Slot Improvements (STYLING)
+- Ad label changed from "Advertisement" to "Ad" with `bg-foreground/15 backdrop-blur` (higher contrast).
+- Ad text upgraded to `font-semibold text-foreground/80` (was /70).
+- `.ad-slot` CSS: diagonal stripe pattern now uses emerald+violet tints (was single color) for better visual interest.
+- Min height increased to 100px.
+
+### 8. Legal Pages SEO (NEW — breadcrumb JSON-LD)
+- Added visible breadcrumb nav (Home / [Page Name]) at top of all 4 legal pages.
+- Added BreadcrumbList JSON-LD schema script for Google rich results.
+- Breadcrumb Home button uses `useLibrary.getState().closeLegal()`.
+
+### 9. Backfill Intros Script (NEW)
+- **`scripts/backfill-intros.ts`**: generates ~200-word SEO intros for items with empty `intro` field.
+- Fixed Prisma query (removed `OR: [{intro:''},{intro:null}]` which crashed — simplified to `{intro:''}`).
+- 4s delay between items to avoid rate limits.
+- Running in background: 1/39 done so far (rate limited but progressing).
+
+### Verification Results (agent-browser + VLM)
+- **Homepage**: 8/10 — "polished and professional, cohesive typography, strategic animation".
+- **Recently Added**: green time-ago badges confirmed, section renders correctly.
+- **Categories**: "8 High-Value Verticals" badge confirmed, cards polished with colored icons.
+- **Detail modal**: rating widget interactive (star click + helpful toggle verified), ad slots improved contrast.
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors (one Fast Refresh full reload resolved).
+
+## Unresolved Issues / Risks
+1. **Rate limiting (critical)**: LLM API 429s severely throttle batch generation and backfill. Backfill at 4s/item = ~3min for 39 items, but 429s extend this. Batch generation (24 items) not completing. Recommend: production API tier or dedicated rate-limit budget.
+2. **Backfill incomplete**: only 1-2 intros generated so far. Script running in background but slow. 40 legacy items still lack `intro` field.
+3. **Background process mortality**: setsid processes still die when LLM returns repeated 429s. Need a more resilient runner (systemd, PM2, or cron-based chunking).
+4. **Mobile nav touch targets**: VLM noted nav links small for touch. Minor; acceptable given desktop-first design.
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: ensure all 48 items have `intro` fields (run backfill script in multiple sessions if needed).
+2. **Resilient batch runner**: wrap batch generation in a cron job that processes 5-10 items per run to avoid rate limits, or use a queue with backoff.
+3. **Real AdSense publisher ID**: replace `ca-pub-XXXXXXXXXXXXXXXX` placeholder before AdSense application.
+4. **OG image generation**: dynamic per-item Open Graph images for social sharing (currently none).
+5. **Dedicated category routes**: `/category/[slug]` real routes for deeper SEO indexability.
+6. **Analytics integration**: Plausible/Umami for view/download tracking.
+7. **Search results page**: dedicated `/search?q=` route for indexable search pages.

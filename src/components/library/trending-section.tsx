@@ -1,6 +1,6 @@
 'use client'
 
-import { Flame, ArrowRight } from 'lucide-react'
+import { Flame, ArrowRight, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { ItemSummary } from '@/lib/types'
 import { ItemCard } from './item-card'
@@ -11,17 +11,24 @@ export function TrendingSection({
 }: {
   trending: ItemSummary[]
 }) {
-  const openDetail = useLibrary((s) => s.openDetail)
+  const setSort = useLibrary((s) => s.setSort)
   if (trending.length === 0) return null
 
   const top = trending.slice(0, 8)
 
   return (
-    <section id="trending" className="relative scroll-mt-20 border-b border-border/60 py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section id="trending" className="relative scroll-mt-20 overflow-hidden border-b border-border/60 py-12 sm:py-16">
+      {/* ambient glow */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-amber-500/5 to-transparent" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-400">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-400" />
+              </span>
               <Flame className="h-3.5 w-3.5" />
               Trending Today · Auto-Generated
             </div>
@@ -33,11 +40,19 @@ export function TrendingSection({
               scores and engagement across the library.
             </p>
           </div>
-          <Button variant="outline" size="sm" className="shrink-0" asChild>
-            <a href="#library">
-              View Full Library
-              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-            </a>
+          <Button
+            variant="outline"
+            size="sm"
+            className="shrink-0 rounded-full"
+            onClick={() => {
+              setSort('trending')
+              setTimeout(() => {
+                document.getElementById('library')?.scrollIntoView({ behavior: 'smooth' })
+              }, 50)
+            }}
+          >
+            <TrendingUp className="mr-1.5 h-3.5 w-3.5" />
+            View All Trending
           </Button>
         </div>
 

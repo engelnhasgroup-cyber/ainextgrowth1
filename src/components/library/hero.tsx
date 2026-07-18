@@ -1,16 +1,47 @@
 'use client'
 
-import { Sparkles, ArrowRight, Zap, Bot } from 'lucide-react'
+import { Sparkles, ArrowRight, Zap, Bot, ShieldCheck, FileText, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { StatsBar, type Stats } from './stats-bar'
 import { TrendingTicker } from './trending-ticker'
 import { motion } from 'framer-motion'
+
+const FLOATING_BADGES = [
+  { icon: FileText, label: 'Prompt', color: '#10b981', top: '12%', left: '6%', delay: 0 },
+  { icon: Sparkles, label: 'Skill', color: '#8b5cf6', top: '68%', left: '4%', delay: 0.4 },
+  { icon: Download, label: 'Workflow', color: '#f59e0b', top: '20%', left: '90%', delay: 0.2 },
+  { icon: ShieldCheck, label: 'E-E-A-T', color: '#06b6d4', top: '74%', left: '92%', delay: 0.6 },
+]
 
 export function Hero({ stats }: { stats: Stats }) {
   return (
     <section className="relative overflow-hidden border-b border-border/60">
       <div className="absolute inset-0 bg-grid opacity-60" />
       <div className="absolute inset-0 bg-radial-glow" />
+
+      {/* Floating decorative badges (desktop only) */}
+      <div className="pointer-events-none absolute inset-0 hidden lg:block">
+        {FLOATING_BADGES.map((b, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 + b.delay }}
+            className="absolute flex items-center gap-1.5 rounded-full border border-border/60 bg-card/70 px-3 py-1.5 text-[11px] font-semibold backdrop-blur"
+            style={{ top: b.top, left: b.left }}
+          >
+            <motion.span
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3 + i, repeat: Infinity, ease: 'easeInOut', delay: b.delay }}
+              className="flex items-center gap-1.5"
+            >
+              <b.icon className="h-3 w-3" style={{ color: b.color }} />
+              <span style={{ color: b.color }}>{b.label}</span>
+            </motion.span>
+          </motion.div>
+        ))}
+      </div>
+
       <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -59,10 +90,20 @@ export function Hero({ stats }: { stats: Stats }) {
             </Button>
           </div>
 
-          <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-            <Sparkles className="h-3 w-3 text-primary" />
-            SEO · GEO · AEO optimized for high-value markets (USA, UK, Canada, Australia)
-            <ArrowRight className="h-3 w-3" />
+          {/* Trust indicators row */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              SEO · GEO · AEO Optimized
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+              Reviewed by Editorial Team
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              USA · UK · CA · AU Markets
+            </span>
           </div>
         </motion.div>
 
