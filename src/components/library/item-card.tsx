@@ -1,6 +1,6 @@
 'use client'
 
-import { Flame, Eye, Download, Star, FileText, Bookmark, Zap, TrendingUp } from 'lucide-react'
+import { Flame, Eye, Download, Star, FileText, Bookmark, Zap, TrendingUp, GitCompare } from 'lucide-react'
 import { motion } from 'framer-motion'
 import type { ItemSummary } from '@/lib/types'
 import { useLibrary } from './store'
@@ -37,9 +37,11 @@ export function typeLabel(type: string) {
 
 export function ItemCard({ item, index = 0 }: { item: ItemSummary; index?: number }) {
   const openDetail = useLibrary((s) => s.openDetail)
+  const { compareIds, toggleCompare } = useLibrary()
   const { has, toggle } = useBookmarks()
   const color = CAT_COLORS[item.category] || '#10b981'
   const saved = has(item.id)
+  const inCompare = compareIds.includes(item.id)
   const typeMeta = TYPE_META[item.type] || TYPE_META.prompt
   const TypeIcon = typeMeta.icon
   const dots = DIFFICULTY_DOTS[item.difficulty] || 2
@@ -155,23 +157,43 @@ export function ItemCard({ item, index = 0 }: { item: ItemSummary; index?: numbe
         </div>
       </button>
 
-      {/* bookmark button */}
-      <button
-        onClick={(e) => {
-          e.stopPropagation()
-          toggle(item)
-        }}
-        className={`absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-full backdrop-blur transition-all hover:scale-110 ${
-          saved ? 'bg-amber-500/20' : 'bg-background/80 opacity-0 group-hover:opacity-100'
-        }`}
-        aria-label={saved ? 'Remove bookmark' : 'Add bookmark'}
-      >
-        <Bookmark
-          className={`h-3.5 w-3.5 transition-colors ${
-            saved ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground hover:text-foreground'
+      {/* top-right action buttons */}
+      <div className="absolute right-2 top-2 z-10 flex gap-1">
+        {/* compare button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleCompare(item.id)
+          }}
+          className={`grid h-7 w-7 place-items-center rounded-full backdrop-blur transition-all hover:scale-110 ${
+            inCompare ? 'bg-violet-500/20' : 'bg-background/80 opacity-0 group-hover:opacity-100'
           }`}
-        />
-      </button>
+          aria-label={inCompare ? 'Remove from compare' : 'Add to compare'}
+        >
+          <GitCompare
+            className={`h-3.5 w-3.5 transition-colors ${
+              inCompare ? 'text-violet-300' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          />
+        </button>
+        {/* bookmark button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            toggle(item)
+          }}
+          className={`grid h-7 w-7 place-items-center rounded-full backdrop-blur transition-all hover:scale-110 ${
+            saved ? 'bg-amber-500/20' : 'bg-background/80 opacity-0 group-hover:opacity-100'
+          }`}
+          aria-label={saved ? 'Remove bookmark' : 'Add bookmark'}
+        >
+          <Bookmark
+            className={`h-3.5 w-3.5 transition-colors ${
+              saved ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground hover:text-foreground'
+            }`}
+          />
+        </button>
+      </div>
 
       {/* left accent bar */}
       <span

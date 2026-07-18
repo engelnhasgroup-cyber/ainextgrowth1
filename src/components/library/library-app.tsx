@@ -19,6 +19,7 @@ import { AdGateModal } from './ad-gate-modal'
 import { LegalPages } from './legal-pages'
 import { CommandPalette } from './command-palette'
 import { BackToTop } from './back-to-top'
+import { CompareModal, CompareBar } from './compare-modal'
 import { useLibrary } from './store'
 
 export function LibraryApp({
@@ -104,6 +105,8 @@ export function LibraryApp({
       <DetailModal />
       <AdGateModal />
       <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
+      <CompareModal />
+      <CompareBar />
       <BackToTop />
     </div>
   )

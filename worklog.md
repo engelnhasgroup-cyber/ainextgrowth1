@@ -554,3 +554,67 @@ Task: QA assessment via agent-browser + VLM, add animated hero orbs, Editor's Pi
 5. **Analytics**: Plausible/Umami integration for real engagement tracking.
 6. **Compare items feature**: side-by-side comparison modal for 2-3 items.
 7. **Search results page**: dedicated `/search?q=` route for indexable search pages.
+
+---
+Task ID: 16
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 7)
+Task: QA assessment via agent-browser + VLM, add Compare items feature, dynamic OG image generation, section entrance animations.
+
+## Current Project Status Assessment
+- Project stable at 49 items (24 prompts, 21 skills, 4 workflows) from Task 15.
+- Dev server running, lint clean, no runtime errors.
+- VLM QA: homepage 8/10, detail modal all features confirmed (Sponsored label, reading time, Contents/Save/Share).
+- Backfill chunked approach continuing (3 items per run).
+
+## Completed Modifications & Verification
+
+### 1. Compare Items Feature (NEW — high-impact)
+- **Store state**: `compareIds` (max 3), `toggleCompare`, `clearCompare`, `compareOpen`, `setCompareOpen`.
+- **`compare-modal.tsx`**: full side-by-side comparison modal with:
+  - Table layout: Attribute column + one column per item (up to 3).
+  - 10 comparison rows: Type, Category, Difficulty, Audience, Views, Downloads, Rating, Trending, Tools, Tags.
+  - Action row: "View Details" + "Download" buttons per item.
+  - Remove button per item, "Clear all" button.
+  - Fetches full item details via API (slug-based endpoint).
+- **`CompareBar`**: floating bottom-center bar showing "N selected" + "Compare Now" button, appears when items are selected.
+- **Item card integration**: new compare toggle button (GitCompare icon) next to bookmark button, violet when selected.
+- Verified via agent-browser + VLM: selected 2 items → compare bar appeared → modal opened → table showed all attributes. VLM rated 9/10.
+
+### 2. Dynamic OG Image Generation (NEW — SEO/social sharing)
+- **`/og/[slug]/route.ts`**: generates branded 1200×630 SVG Open Graph image per item.
+  - Dark gradient background with type-colored radial glow.
+  - Grid pattern overlay, top accent bar (emerald→violet gradient).
+  - Brand logo + "NexusAI 2026" + "AI Prompt & Skill Library".
+  - Type badge (color-coded) + niche badge.
+  - Large title (up to 70 chars, wraps), summary (up to 120 chars).
+  - Target audience + rating + download count + "Trinity Bundle" badge.
+  - 1-hour cache, SVG format.
+- Verified via curl: returns valid SVG with item data.
+
+### 3. Section Entrance Animations (STYLING — polish)
+- **`section-animations.tsx`**: reusable animation components:
+  - `SectionReveal`: fade-in-up on scroll (whileInView, 0.5s, ease).
+  - `StaggerContainer` + `StaggerItem`: staggered children entrance.
+- Applied to EditorsPickSection (wraps the content div).
+- Available for future sections.
+
+### Verification Results (agent-browser + VLM)
+- **Compare modal**: 9/10 — "well-structured, easy to read, includes all attributes (Type, Category, Difficulty, Audience, Views, Downloads, Rating, Trending)".
+- **Compare bar**: appears when items selected, "Compare Now" button works.
+- **OG image**: returns valid SVG with item title, type badge, stats.
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Backfill still incomplete**: ~27 items still need intros. Chunked approach working (3 items/run). Needs ~9 more runs.
+2. **View history feature**: planned but not implemented (deferred — would need localStorage tracking of viewed items).
+3. **Theme mode toggle**: planned but not implemented (currently dark-only, `enableSystem={false}`).
+4. **OG image is SVG**: some social platforms (Twitter) prefer PNG/JPG. SVG works for most but could be upgraded to PNG via `@vercel/og` or sharp in production.
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: run `bun run scripts/backfill-chunk.ts 3` in cron every 10 min.
+2. **View history drawer**: track viewed items in localStorage, show in a drawer.
+3. **OG image as PNG**: upgrade SVG → PNG using sharp or `@vercel/og` for better social compatibility.
+4. **Real AdSense publisher ID**: replace placeholder.
+5. **Dedicated category routes**: `/category/[slug]` for SEO.
+6. **Analytics**: Plausible/Umami integration.

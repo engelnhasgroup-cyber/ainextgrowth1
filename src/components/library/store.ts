@@ -30,6 +30,13 @@ interface LibraryState {
   bookmarksOpen: boolean
   setBookmarksOpen: (o: boolean) => void
 
+  // Compare feature
+  compareIds: string[]
+  toggleCompare: (id: string) => void
+  clearCompare: () => void
+  compareOpen: boolean
+  setCompareOpen: (o: boolean) => void
+
   // Library filters
   search: string
   filterType: 'all' | 'prompt' | 'skill' | 'workflow'
@@ -77,6 +84,22 @@ export const useLibrary = create<LibraryState>((set, get) => ({
   // Bookmarks
   bookmarksOpen: false,
   setBookmarksOpen: (o) => set({ bookmarksOpen: o }),
+
+  // Compare (max 3 items)
+  compareIds: [],
+  toggleCompare: (id) =>
+    set((state) => {
+      if (state.compareIds.includes(id)) {
+        return { compareIds: state.compareIds.filter((x) => x !== id) }
+      }
+      if (state.compareIds.length >= 3) {
+        return { compareIds: [...state.compareIds.slice(1), id] }
+      }
+      return { compareIds: [...state.compareIds, id] }
+    }),
+  clearCompare: () => set({ compareIds: [], compareOpen: false }),
+  compareOpen: false,
+  setCompareOpen: (o) => set({ compareOpen: o }),
 
   // Filters
   search: '',

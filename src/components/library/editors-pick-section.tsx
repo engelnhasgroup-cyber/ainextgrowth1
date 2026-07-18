@@ -4,6 +4,7 @@ import { Star, ArrowRight, Award } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { ItemSummary } from '@/lib/types'
 import { ItemCard } from './item-card'
+import { SectionReveal } from './section-animations'
 import { useLibrary } from './store'
 
 export function EditorsPickSection({ items }: { items: ItemSummary[] }) {
@@ -18,7 +19,7 @@ export function EditorsPickSection({ items }: { items: ItemSummary[] }) {
       {/* ambient glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-violet-500/5 to-transparent" />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
+      <SectionReveal className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-7 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-semibold text-violet-300">
@@ -61,7 +62,7 @@ export function EditorsPickSection({ items }: { items: ItemSummary[] }) {
             </div>
           ))}
         </div>
-      </div>
+      </SectionReveal>
     </section>
   )
 }
