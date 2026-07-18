@@ -106,7 +106,7 @@ export function AgentPanel({
             </div>
 
             <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center">
-              <Button onClick={runAgent} disabled={busy} size="lg" className="rounded-full glow-violet">
+              <Button onClick={runAgent} disabled={busy} size="lg" className="btn-press rounded-full glow-violet">
                 {busy ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Agents working…
@@ -123,6 +123,42 @@ export function AgentPanel({
                 </span>
               )}
             </div>
+
+            {/* Live generation progress animation */}
+            {busy && (
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500" />
+                    </span>
+                    Agent swarm processing…
+                  </span>
+                  <span className="tabular-nums">~15s</span>
+                </div>
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                  <div className="h-full rounded-full bg-gradient-to-r from-violet-500 via-emerald-500 to-violet-500 bg-[length:200%_100%] [animation:gradient-shift_2s_ease_infinite]" style={{ width: '70%' }} />
+                </div>
+                <div className="grid grid-cols-6 gap-1">
+                  {['Research', 'Generate', 'Frontend', 'Backend', 'SEO', 'DevOps'].map((phase, i) => (
+                    <div key={phase} className="flex flex-col items-center gap-1">
+                      <div
+                        className="grid h-7 w-full place-items-center rounded-md border text-[8px] font-bold transition-colors"
+                        style={{
+                          borderColor: i <= 2 ? 'oklch(0.78 0.19 162 / 0.4)' : 'oklch(1 0 0 / 0.1)',
+                          backgroundColor: i <= 2 ? 'oklch(0.78 0.19 162 / 0.1)' : 'transparent',
+                          color: i <= 2 ? 'oklch(0.78 0.19 162)' : 'oklch(0.5 0 0)',
+                        }}
+                      >
+                        {i + 1}
+                      </div>
+                      <span className="text-[7px] text-muted-foreground">{phase}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             <p className="mt-2 text-[11px] text-muted-foreground">
               Triggers the live agent (LLM) to author a fresh Trinity Bundle and opens it instantly.
             </p>

@@ -78,6 +78,34 @@ export function ShareMenu({ item }: { item: ItemDetail }) {
     }
   }, [item])
 
+  const copyJson = useCallback(async () => {
+    try {
+      const json = JSON.stringify({
+        id: item.id,
+        slug: item.slug,
+        type: item.type,
+        title: item.title,
+        summary: item.summary,
+        category: item.category,
+        niche: item.niche,
+        audience: item.audience,
+        difficulty: item.difficulty,
+        tags: item.tags,
+        requiredTools: item.requiredTools,
+        useCases: item.useCases,
+        rating: item.rating,
+        viewCount: item.viewCount,
+        downloadCount: item.downloadCount,
+        reviewedBy: item.reviewedBy,
+        source: `${SITE_URL}/?item=${item.slug}`,
+      }, null, 2)
+      await navigator.clipboard.writeText(json)
+      toast.success('Item data copied as JSON')
+    } catch {
+      toast.error('Could not copy JSON')
+    }
+  }, [item])
+
   const tweet = useCallback(() => {
     const u = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=AI,PromptEngineering,2026`
     window.open(u, '_blank', 'noopener,noreferrer')
@@ -106,6 +134,9 @@ export function ShareMenu({ item }: { item: ItemDetail }) {
         </DropdownMenuItem>
         <DropdownMenuItem onClick={copyBundle} className="cursor-pointer text-xs">
           <Copy className="mr-2 h-3.5 w-3.5" /> Copy full Trinity Bundle
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={copyJson} className="cursor-pointer text-xs">
+          <Copy className="mr-2 h-3.5 w-3.5" /> Copy as JSON (for developers)
         </DropdownMenuItem>
         <DropdownMenuItem onClick={copyLink} className="cursor-pointer text-xs">
           {copied ? (

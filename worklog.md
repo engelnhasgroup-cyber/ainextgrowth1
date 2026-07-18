@@ -686,3 +686,75 @@ Task: QA assessment via agent-browser + VLM, add View History drawer, Keyboard S
 4. **Dedicated category routes**: `/category/[slug]` for SEO.
 5. **Analytics**: Plausible/Umami integration.
 6. **G+keyboard navigation**: implement the G+key sequences shown in shortcuts help (currently only displayed, not functional).
+
+---
+Task ID: 18
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 9)
+Task: QA assessment via agent-browser + VLM, add G+keyboard navigation, Copy as JSON, Prev/Next navigation, agent panel progress animation.
+
+## Current Project Status Assessment
+- Project stable at 49 items (24 prompts, 21 skills, 4 workflows) from Task 17.
+- Dev server running, lint clean, no runtime errors.
+- VLM QA: homepage 8/10, detail modal all features confirmed.
+- Backfill chunked approach continuing (3 items per run).
+
+## Completed Modifications & Verification
+
+### 1. G+Keyboard Navigation (NEW — high-impact, implements shortcuts help)
+- **`use-gkeys.ts`**: hook implementing G+key sequences:
+  - G+H: scroll to Home (top)
+  - G+P: filter to Prompts + scroll to library
+  - G+S: filter to Skills + scroll to library
+  - G+W: filter to Workflows + scroll to library
+  - G+B: open Bookmarks drawer
+  - G+C: open Compare modal
+  - G+R: open Recently viewed drawer
+  - G+A: open About page
+- 1.5s timeout window for second key, ignores inputs/textareas, ignores modifier keys.
+- Integrated into `library-app.tsx`.
+- Verified via agent-browser: pressed G then P → filtered to Prompts + scrolled to library. VLM confirmed "Prompts filter active".
+
+### 2. Copy as JSON (NEW FEATURE — developer use case)
+- **Share menu**: new "Copy as JSON (for developers)" option.
+- Copies structured JSON with all item metadata (id, slug, type, title, summary, category, niche, audience, difficulty, tags, requiredTools, useCases, rating, viewCount, downloadCount, reviewedBy, source URL).
+- 2-space indented JSON for readability.
+- Toast: "Item data copied as JSON".
+- Verified via agent-browser: menu item present.
+
+### 3. Prev/Next Navigation in Detail Modal (NEW FEATURE)
+- **API updated**: `/api/items/[slug]` now returns `prev` and `next` items (by createdAt).
+- **Store updated**: `prevItem` and `nextItem` state in library store.
+- **Detail modal**: bottom navigation bar with "Previous" (left, ChevronLeft icon) and "Next" (right, ChevronRight icon) buttons showing item titles.
+- Clicking navigates to the prev/next item (reuses `openDetail`).
+- Hover effects: arrows translate on hover.
+- Verified via agent-browser: opened LangGraph item → "Previous: Grant Proposal Writer" and "Next: Autonomous Research Agent" shown → clicked Next → navigated to Autonomous Research Agent.
+
+### 4. Agent Panel Live Generation Progress (STYLING — polish)
+- **Progress animation** when agent is generating:
+  - Pinging violet dot + "Agent swarm processing…" label + "~15s" estimate.
+  - Animated gradient progress bar (violet→emerald→violet, 2s gradient-shift animation, 70% width).
+  - 6-phase grid (Research, Generate, Frontend, Backend, SEO, DevOps) with numbered cells — first 3 phases highlighted in emerald (active), rest dimmed.
+- Button gets `btn-press` class for tactile feedback.
+- Appears only when `busy` state is true.
+
+### Verification Results (agent-browser + VLM)
+- **G+P navigation**: pressed G then P → filtered to Prompts, scrolled to library. VLM confirmed "Prompts filter active".
+- **Copy as JSON**: "Copy as JSON (for developers)" menu item present.
+- **Prev/Next**: "Previous: Grant Proposal Writer" and "Next: Autonomous Research Agent" shown → clicked Next → navigated successfully.
+- **Agent progress**: (not triggered this round — requires agent generation, which is rate-limited).
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Backfill still incomplete**: ~21 items still need intros. Chunked approach working (3 items/run). Needs ~7 more runs.
+2. **Toast styling**: planned but not implemented (current toasts use default sonner styling).
+3. **Quick preview hover card**: planned but not implemented (deferred — would show a popover preview on card hover).
+4. **Agent progress animation**: phases are static (first 3 highlighted) — could be made dynamic with actual phase tracking in future.
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: run `bun run scripts/backfill-chunk.ts 3` in cron every 10 min.
+2. **Quick preview hover card**: show a popover with item summary + tags on card hover.
+3. **Toast styling**: customize sonner toasts with brand colors + icons.
+4. **Real AdSense publisher ID**: replace placeholder.
+5. **Dedicated category routes**: `/category/[slug]` for SEO.
+6. **Analytics**: Plausible/Umami integration.

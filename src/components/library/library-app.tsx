@@ -22,6 +22,7 @@ import { BackToTop } from './back-to-top'
 import { CompareModal, CompareBar } from './compare-modal'
 import { HistorySheet } from './history-sheet'
 import { ShortcutsHelp, useShortcutsHelpTrigger } from './shortcuts-help'
+import { useGKeyNavigation } from './use-gkeys'
 import { useLibrary } from './store'
 import { useHistory } from './use-history'
 
@@ -47,6 +48,7 @@ export function LibraryApp({
   const { openDetail, openLegal, legalPage, historyOpen, setHistoryOpen } = useLibrary()
   const { add: addHistory } = useHistory()
   const { open: shortcutsOpen, setOpen: setShortcutsOpen } = useShortcutsHelpTrigger()
+  useGKeyNavigation()
   const [cmdOpen, setCmdOpen] = useState(false)
 
   // Track detail opens for history

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { fetchBySlug, fetchRelated, incrementView } from '@/lib/queries'
+import { db } from '@/lib/db'
+import { fetchBySlug, fetchRelated, incrementView, toSummary } from '@/lib/queries'
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -10,5 +11,25 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
   // fire-and-forget view increment
   incrementView(item.id)
   const related = await fetchRelated(item, 4)
-  return NextResponse.json({ item, related })
+
+  // Prev/Next navigation (by createdAt)
+  const [prevRow, nextRow] = await Promise.all([
+    db.item.findFirst({
+      where: { createdAt: { lt: new Date(item.createdAt) } },
+      orderBy: { createdAt: 'desc' },
+      select: { id: true, slug: true, title: true, type: true, niche: true },
+    }),
+    db.item.findFirst({
+      where: { createdAt: { gt: new Date(item.createdAt) } },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true, slug: true, title: true, type: true, niche: true },
+    }),
+  ])
+
+  return NextResponse.json({
+    item,
+    related,
+    prev: prevRow || null,
+    next: nextRow || null,
+  })
 }

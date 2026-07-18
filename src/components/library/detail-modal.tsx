@@ -11,7 +11,7 @@ import ReactMarkdown from 'react-markdown'
 import {
   Download, Eye, Star, Flame, FileText, Workflow, Users, Link2,
   Quote, HelpCircle, Tag, Wrench, ArrowRight, Loader2, Package,
-  Bookmark, Check, Sparkles, BadgeCheck, Clock,
+  Bookmark, Check, Sparkles, BadgeCheck, Clock, ChevronLeft, ChevronRight,
 } from 'lucide-react'
 import { useLibrary } from './store'
 import { formatCompact } from './stats-bar'
@@ -53,7 +53,7 @@ function AdSlot({ label, className }: { label: string; className?: string }) {
 }
 
 export function DetailModal() {
-  const { detailOpen, detailLoading, selectedItem, relatedItems, closeDetail, openDetail, openAdGate } =
+  const { detailOpen, detailLoading, selectedItem, relatedItems, prevItem, nextItem, closeDetail, openDetail, openAdGate } =
     useLibrary()
   const [tab, setTab] = useState<'prompt' | 'workflow' | 'audience'>('prompt')
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -453,6 +453,38 @@ export function DetailModal() {
                       <StickyToc toc={toc} onJump={jumpTo} />
                     </div>
                   </aside>
+                )}
+              </div>
+
+              {/* Prev/Next navigation */}
+              <div className="flex items-center justify-between gap-2 border-t border-border/60 px-5 py-3 sm:px-6">
+                {prevItem ? (
+                  <button
+                    onClick={() => openDetail(prevItem.slug)}
+                    className="group flex min-w-0 flex-1 items-center gap-2 rounded-lg border border-border/50 bg-card/30 px-3 py-2 text-left transition-colors hover:border-primary/40"
+                  >
+                    <ChevronLeft className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-x-0.5" />
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-semibold uppercase tracking-wide text-muted-foreground">Previous</p>
+                      <p className="line-clamp-1 text-xs font-medium">{prevItem.title}</p>
+                    </div>
+                  </button>
+                ) : (
+                  <div className="flex-1" />
+                )}
+                {nextItem ? (
+                  <button
+                    onClick={() => openDetail(nextItem.slug)}
+                    className="group flex min-w-0 flex-1 items-center justify-end gap-2 rounded-lg border border-border/50 bg-card/30 px-3 py-2 text-right transition-colors hover:border-primary/40"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-[9px] font-semibold uppercase tracking-wide text-muted-foreground">Next</p>
+                      <p className="line-clamp-1 text-xs font-medium">{nextItem.title}</p>
+                    </div>
+                    <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                ) : (
+                  <div className="flex-1" />
                 )}
               </div>
             </div>

@@ -9,6 +9,8 @@ interface LibraryState {
   // Detail modal
   selectedItem: ItemDetail | null
   relatedItems: ItemSummary[]
+  prevItem: { slug: string; title: string } | null
+  nextItem: { slug: string; title: string } | null
   detailOpen: boolean
   detailLoading: boolean
   openDetail: (slug: string) => Promise<void>
@@ -55,22 +57,30 @@ interface LibraryState {
 export const useLibrary = create<LibraryState>((set, get) => ({
   selectedItem: null,
   relatedItems: [],
+  prevItem: null,
+  nextItem: null,
   detailOpen: false,
   detailLoading: false,
 
   openDetail: async (slug: string) => {
-    set({ detailOpen: true, detailLoading: true, selectedItem: null, relatedItems: [] })
+    set({ detailOpen: true, detailLoading: true, selectedItem: null, relatedItems: [], prevItem: null, nextItem: null })
     try {
       const res = await fetch(`/api/items/${slug}`)
       if (!res.ok) throw new Error('not found')
       const data = await res.json()
-      set({ selectedItem: data.item, relatedItems: data.related || [], detailLoading: false })
+      set({
+        selectedItem: data.item,
+        relatedItems: data.related || [],
+        prevItem: data.prev || null,
+        nextItem: data.next || null,
+        detailLoading: false,
+      })
     } catch {
       set({ detailLoading: false, detailOpen: false })
     }
   },
 
-  closeDetail: () => set({ detailOpen: false, selectedItem: null, relatedItems: [] }),
+  closeDetail: () => set({ detailOpen: false, selectedItem: null, relatedItems: [], prevItem: null, nextItem: null }),
 
   // Ad-Gate
   adGateOpen: false,
