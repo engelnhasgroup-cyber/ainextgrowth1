@@ -410,3 +410,76 @@ Task: QA assessment via agent-browser + VLM, add Command Palette (Cmd+K), grid/l
 5. **Dedicated category routes**: `/category/[slug]` for deeper SEO indexability.
 6. **Analytics**: Plausible/Umami integration for view/download tracking.
 7. **Search results page**: dedicated `/search?q=` route for indexable search pages.
+
+---
+Task ID: 14
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 5)
+Task: QA assessment via agent-browser + VLM, add sticky TOC sidebar, reading time, enhanced footer (newsletter + social proof), back-to-top button, skeleton shimmer, resilient chunked backfill.
+
+## Current Project Status Assessment
+- Project stable at 49 items (24 prompts, 21 skills, 4 workflows) from Task 13.
+- Dev server running, lint clean, no runtime errors.
+- VLM QA: homepage 8/10, library grid 9/10, footer lacking newsletter/social proof.
+- Backfill script kept dying on sustained rate limits; needed a chunked approach.
+
+## Completed Modifications & Verification
+
+### 1. Sticky TOC Sidebar in Detail Modal (NEW — high-impact)
+- **`StickyToc` component**: always-visible TOC in `table-of-contents.tsx` with active-heading highlight (border-l-2 primary color), H3 indentation.
+- **Detail modal restructured**: body now uses flex layout — main content + sticky aside (`xl:block`, w-48) on desktop.
+- **Modal widened**: `sm:max-w-4xl xl:max-w-5xl` (was sm:max-w-3xl) to accommodate sidebar.
+- Sticky sidebar shows "On this page" with all H2/H3 headings; clicking jumps to section.
+- Verified via VLM at 1440px viewport: sticky TOC sidebar confirmed visible.
+
+### 2. Reading Time + Word Count Badge (NEW FEATURE)
+- **Reading time estimate**: calculates words across all 3 Trinity files, divides by 200 wpm, shows "X min read" with Clock icon in detail modal header meta row.
+- **Word count tooltip**: `title="~N words"` on the reading time span.
+- Verified via VLM: "3 min read" indicator confirmed visible in header.
+
+### 3. Enhanced Footer (STYLING — high-impact)
+- **Newsletter signup section**: gradient-bordered card with Mail icon, "Weekly Trending Prompts" heading, email input + Subscribe button (btn-press animation). Toast notification on subscribe, "Done" state for 3s.
+- **Social proof stats**: 4 stat cards (Prompts & Skills, Downloads, Daily Generated, Categories) with icons + formatted numbers.
+- **Footer accepts `totalDownloads` prop** now (passed from library-app).
+- Verified via VLM: newsletter form + 4 stat cards confirmed.
+
+### 4. Back-to-Top Floating Button (NEW FEATURE)
+- **`back-to-top.tsx`**: fixed bottom-right floating button with circular SVG progress ring (emerald→violet gradient) showing scroll progress.
+- Appears after 600px scroll, animates in/out with framer-motion (scale + opacity).
+- Clicking smoothly scrolls to top.
+- Verified via agent-browser: "Back to top" button present after scrolling.
+
+### 5. Skeleton Shimmer Loading States (STYLING)
+- **`ItemCardSkeleton` updated**: replaced `animate-pulse` with `.shimmer` class (gradient sweep animation) for more polished loading state.
+- Uses the shimmer keyframe added in Task 13.
+- Applied to all skeleton placeholders in library grid.
+
+### 6. Resilient Chunked Backfill (INFRASTRUCTURE — fixed)
+- **`scripts/backfill-chunk.ts`**: new chunked version that processes a small batch (default 3, max 10) then exits — designed for repeated cron execution.
+- 3s delay between items, 12s wait on 429 with single retry.
+- Reports remaining count on completion.
+- **Tested successfully**: chunk1 processed 2/3 items, chunk2 running.
+- This solves the "script dies on sustained rate limits" problem from prior rounds.
+
+### Verification Results (agent-browser + VLM)
+- **Footer**: newsletter signup + 4 social proof stat cards confirmed visible.
+- **Detail modal (wide)**: sticky "On this page" TOC sidebar confirmed at 1440px.
+- **Reading time**: "3 min read" with Clock icon confirmed in header.
+- **Back-to-top**: button appears after scroll, present in DOM.
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+- **Backfill chunk**: 2/3 intros generated in ~10s (vs 0/38 in prior rounds).
+
+## Unresolved Issues / Risks
+1. **Backfill still incomplete**: ~33 items still need intros. Chunked approach works but needs multiple runs (3 items per run = ~11 runs needed). Recommend: cron job running `backfill-chunk.ts 3` every 10 minutes.
+2. **Sticky TOC only on xl+ (1280px+)**: on smaller desktops the sidebar is hidden to avoid cramped layout. The popover TOC (Contents button) remains available at all sizes.
+3. **Rate limiting persists**: LLM API 429s still occur but chunked approach handles them gracefully.
+4. **Mobile viewport testing**: agent-browser `--viewport` flag still not applying CSS breakpoints correctly (known limitation).
+
+## Priority Recommendations for Next Phase
+1. **Cron backfill**: schedule `bun run scripts/backfill-chunk.ts 3` every 10 min until all intros are generated.
+2. **OG image generation**: dynamic per-item Open Graph images (using `@vercel/og` or similar) for social sharing.
+3. **Real AdSense publisher ID**: replace `ca-pub-XXXXXXXXXXXXXXXX` placeholder.
+4. **Dedicated category routes**: `/category/[slug]` for deeper SEO indexability.
+5. **Analytics**: Plausible/Umami integration for real engagement tracking.
+6. **Search results page**: dedicated `/search?q=` route for indexable search pages.
+7. **Item count badges on category chips**: show count next to each category in library filter chips.

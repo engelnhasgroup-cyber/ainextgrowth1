@@ -100,3 +100,42 @@ export function TableOfContents({
     </Popover>
   )
 }
+
+// Always-visible sticky TOC for the detail modal sidebar (desktop).
+export function StickyToc({
+  toc,
+  onJump,
+}: {
+  toc: TocItem[]
+  onJump: (id: string) => void
+}) {
+  const [activeId, setActiveId] = useState<string>('')
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      setActiveId((e as CustomEvent).detail as string)
+    }
+    window.addEventListener('nexusai-toc-active', handler)
+    return () => window.removeEventListener('nexusai-toc-active', handler)
+  }, [])
+
+  if (toc.length === 0) return null
+
+  return (
+    <nav className="space-y-0.5">
+      {toc.map((item) => (
+        <button
+          key={item.id}
+          onClick={() => onJump(item.id)}
+          className={`block w-full truncate border-l-2 py-1 pl-2.5 text-left text-[11px] transition-colors ${
+            activeId === item.id
+              ? 'border-primary font-medium text-primary'
+              : 'border-border/40 text-muted-foreground hover:border-foreground/30 hover:text-foreground'
+          } ${item.level === 3 ? 'pl-5' : ''}`}
+        >
+          {item.text}
+        </button>
+      ))}
+    </nav>
+  )
+}

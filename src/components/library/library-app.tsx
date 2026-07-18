@@ -17,6 +17,7 @@ import { DetailModal } from './detail-modal'
 import { AdGateModal } from './ad-gate-modal'
 import { LegalPages } from './legal-pages'
 import { CommandPalette } from './command-palette'
+import { BackToTop } from './back-to-top'
 import { useLibrary } from './store'
 
 export function LibraryApp({
@@ -93,12 +94,13 @@ export function LibraryApp({
           }}
         />
       </main>
-      <Footer categories={categories} totalItems={stats.totalItems} />
+      <Footer categories={categories} totalItems={stats.totalItems} totalDownloads={stats.totalDownloads} />
 
       {/* Modals & overlays */}
       <DetailModal />
       <AdGateModal />
       <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
+      <BackToTop />
     </div>
   )
 }

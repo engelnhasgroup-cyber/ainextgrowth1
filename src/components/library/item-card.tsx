@@ -184,14 +184,14 @@ export function ItemCard({ item, index = 0 }: { item: ItemSummary; index?: numbe
 
 export function ItemCardSkeleton() {
   return (
-    <div className="h-52 animate-pulse rounded-2xl border border-border/60 bg-card/40 p-4">
+    <div className="h-52 overflow-hidden rounded-2xl border border-border/60 bg-card/40 p-4">
       <div className="mb-3 flex gap-2">
-        <div className="h-4 w-16 rounded bg-muted/60" />
-        <div className="h-4 w-20 rounded bg-muted/40" />
+        <div className="h-4 w-16 rounded shimmer bg-muted/40" />
+        <div className="h-4 w-20 rounded shimmer bg-muted/30" />
       </div>
-      <div className="mb-2 h-4 w-3/4 rounded bg-muted/60" />
-      <div className="mb-4 h-3 w-full rounded bg-muted/40" />
-      <div className="h-3 w-1/2 rounded bg-muted/40" />
+      <div className="mb-2 h-4 w-3/4 rounded shimmer bg-muted/40" />
+      <div className="mb-4 h-3 w-full rounded shimmer bg-muted/30" />
+      <div className="h-3 w-1/2 rounded shimmer bg-muted/30" />
     </div>
   )
 }

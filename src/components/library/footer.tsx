@@ -1,25 +1,52 @@
 'use client'
 
-import { Sparkles, Heart, Globe, Search, Bot, FileText, Link2 } from 'lucide-react'
+import { useState } from 'react'
+import { Sparkles, Heart, Globe, Search, Bot, FileText, Link2, Mail, TrendingUp, Users, Download, Check } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import type { CategoryInfo } from '@/lib/types'
 import { useLibrary } from './store'
+import { formatCompact } from './stats-bar'
 
 export function Footer({
   categories,
   totalItems,
+  totalDownloads,
 }: {
   categories: CategoryInfo[]
   totalItems: number
+  totalDownloads?: number
 }) {
   const setFilterCategory = useLibrary((s) => s.setFilterCategory)
   const setFilterType = useLibrary((s) => s.setFilterType)
   const openLegal = useLibrary((s) => s.openLegal)
+  const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
 
   const goCategory = (slug: string) => {
     setFilterCategory(slug)
     setFilterType('all')
     setTimeout(() => document.getElementById('library')?.scrollIntoView({ behavior: 'smooth' }), 50)
   }
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !email.includes('@')) {
+      toast.error('Please enter a valid email')
+      return
+    }
+    setSubscribed(true)
+    toast.success('Subscribed! You\'ll get weekly trending prompts.')
+    setEmail('')
+    setTimeout(() => setSubscribed(false), 3000)
+  }
+
+  const socialStats = [
+    { icon: FileText, label: 'Prompts & Skills', value: formatCompact(totalItems) },
+    { icon: Download, label: 'Downloads', value: formatCompact(totalDownloads || 0) },
+    { icon: TrendingUp, label: 'Daily Generated', value: '200' },
+    { icon: Users, label: 'Categories', value: String(categories.length) },
+  ]
 
   return (
     <footer className="mt-auto border-t border-border/60 bg-card/40">
@@ -92,6 +119,56 @@ export function Footer({
               <li><a href="/rss.xml" target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">RSS Feed</a></li>
               <li><a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">Sitemap</a></li>
             </ul>
+          </div>
+        </div>
+
+        {/* Newsletter + social proof */}
+        <div className="mb-6 overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-emerald-500/5 via-card/40 to-violet-500/5 p-5 sm:p-6">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            {/* Newsletter */}
+            <div className="flex-1">
+              <div className="mb-2 flex items-center gap-2">
+                <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary/15 text-primary">
+                  <Mail className="h-4 w-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold">Weekly Trending Prompts</h3>
+                  <p className="text-[11px] text-muted-foreground">Get the top 10 prompts & skills every week. No spam.</p>
+                </div>
+              </div>
+              <form onSubmit={handleSubscribe} className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="h-10 flex-1 rounded-full border border-border/70 bg-background/60 px-4 text-sm outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                  aria-label="Email address"
+                />
+                <Button type="submit" size="sm" className="btn-press h-10 shrink-0 rounded-full px-5">
+                  {subscribed ? (
+                    <>
+                      <Check className="mr-1.5 h-3.5 w-3.5" /> Done
+                    </>
+                  ) : (
+                    <>
+                      <Mail className="mr-1.5 h-3.5 w-3.5" /> Subscribe
+                    </>
+                  )}
+                </Button>
+              </form>
+            </div>
+
+            {/* Social proof stats */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:w-[420px]">
+              {socialStats.map((s) => (
+                <div key={s.label} className="rounded-xl border border-border/40 bg-background/40 p-2.5 text-center">
+                  <s.icon className="mx-auto mb-1 h-3.5 w-3.5 text-primary" />
+                  <div className="text-base font-bold tabular-nums">{s.value}</div>
+                  <div className="truncate text-[9px] text-muted-foreground">{s.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

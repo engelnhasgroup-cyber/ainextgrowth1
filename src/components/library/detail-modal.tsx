@@ -11,14 +11,14 @@ import ReactMarkdown from 'react-markdown'
 import {
   Download, Eye, Star, Flame, FileText, Workflow, Users, Link2,
   Quote, HelpCircle, Tag, Wrench, ArrowRight, Loader2, Package,
-  Bookmark, Check, Sparkles, BadgeCheck,
+  Bookmark, Check, Sparkles, BadgeCheck, Clock,
 } from 'lucide-react'
 import { useLibrary } from './store'
 import { formatCompact } from './stats-bar'
 import { ShareMenu, CopyPromptButton } from './share-menu'
 import { useBookmarks } from './use-bookmarks'
 import { useScrollProgress } from './use-scroll-progress'
-import { TableOfContents, extractToc } from './table-of-contents'
+import { TableOfContents, StickyToc, extractToc } from './table-of-contents'
 import { RatingWidget } from './rating-widget'
 
 const CAT_COLORS: Record<string, string> = {
@@ -62,6 +62,14 @@ export function DetailModal() {
 
   const item = selectedItem
   const color = item ? CAT_COLORS[item.category] || '#10b981' : '#10b981'
+
+  // Reading time estimate (based on all 3 Trinity files)
+  const readingTime = item
+    ? Math.max(1, Math.ceil((item.promptContent + item.workflowContent + item.audienceContent).split(/\s+/).length / 200))
+    : 1
+  const wordCount = item
+    ? (item.promptContent + item.workflowContent + item.audienceContent).split(/\s+/).length
+    : 0
 
   // Reset tab + scroll when item changes
   useEffect(() => {
@@ -110,7 +118,7 @@ export function DetailModal() {
 
   return (
     <Dialog open={detailOpen} onOpenChange={(o) => !o && closeDetail()}>
-      <DialogContent className="max-h-[92vh] gap-0 overflow-hidden border-border/70 bg-card p-0 sm:max-w-3xl">
+      <DialogContent className="max-h-[92vh] gap-0 overflow-hidden border-border/70 bg-card p-0 sm:max-w-4xl xl:max-w-5xl">
         {detailLoading || !item ? (
           <div className="grid h-72 place-items-center">
             <Loader2 className="h-7 w-7 animate-spin text-primary" />
@@ -173,6 +181,9 @@ export function DetailModal() {
                   <span className="inline-flex items-center gap-1 text-amber-400">
                     <Star className="h-3.5 w-3.5 fill-current" /> {item.rating.toFixed(1)}
                   </span>
+                  <span className="inline-flex items-center gap-1" title={`~${wordCount} words`}>
+                    <Clock className="h-3.5 w-3.5" /> {readingTime} min read
+                  </span>
                   <span className="hidden items-center gap-1 sm:inline-flex">
                     <Wrench className="h-3.5 w-3.5" /> {item.requiredTools.slice(0, 2).join(' · ')}
                   </span>
@@ -205,7 +216,9 @@ export function DetailModal() {
 
             {/* Body */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto">
-              <div className="px-5 py-5 sm:px-6" ref={contentRef}>
+              <div className="flex gap-0 px-5 py-5 sm:px-6">
+                {/* Main content */}
+                <div className="min-w-0 flex-1" ref={contentRef}>
                 {/* Top AdSense slot */}
                 <AdSlot label="AdSense · Top banner (responsive)" className="mb-4" />
 
@@ -427,6 +440,19 @@ export function DetailModal() {
 
                 {/* bottom AdSense slot */}
                 <AdSlot label="AdSense · Footer banner (responsive)" className="mt-2" />
+                </div>
+
+                {/* Sticky TOC sidebar (desktop only) */}
+                {toc.length > 0 && (
+                  <aside className="sticky top-0 hidden h-fit w-48 shrink-0 pl-4 xl:block">
+                    <div className="rounded-xl border border-border/60 bg-card/30 p-3">
+                      <p className="mb-2 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                        <FileText className="h-3 w-3" /> On this page
+                      </p>
+                      <StickyToc toc={toc} onJump={jumpTo} />
+                    </div>
+                  </aside>
+                )}
               </div>
             </div>
           </div>
