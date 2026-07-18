@@ -268,14 +268,28 @@ export function LibrarySection({
 
         {/* grid / list */}
         {items.length === 0 && !loading ? (
-          <div className="grid place-items-center rounded-2xl border border-dashed border-border/70 py-20 text-center">
-            <div>
-              <Search className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-              <p className="text-sm font-medium">No items match your filters</p>
-              <p className="mt-1 text-xs text-muted-foreground">Try clearing filters or a different keyword.</p>
-              <Button variant="outline" size="sm" className="mt-4" onClick={clearFilters}>
-                Reset filters
-              </Button>
+          <div className="grid place-items-center rounded-2xl border border-dashed border-border/70 bg-card/20 py-20 text-center">
+            <div className="max-w-sm">
+              <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-muted/40">
+                <Search className="h-7 w-7 text-muted-foreground/60" />
+              </div>
+              <p className="text-base font-semibold">No items match your filters</p>
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                Try clearing filters, using a different keyword, or browsing all categories.
+              </p>
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                <Button variant="default" size="sm" className="rounded-full" onClick={clearFilters}>
+                  Reset filters
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full"
+                  asChild
+                >
+                  <a href="#categories">Browse categories</a>
+                </Button>
+              </div>
             </div>
           </div>
         ) : viewMode === 'grid' ? (

@@ -618,3 +618,71 @@ Task: QA assessment via agent-browser + VLM, add Compare items feature, dynamic 
 4. **Real AdSense publisher ID**: replace placeholder.
 5. **Dedicated category routes**: `/category/[slug]` for SEO.
 6. **Analytics**: Plausible/Umami integration.
+
+---
+Task ID: 17
+Agent: Autonomous QA & Feature Growth (webDevReview cron round 8)
+Task: QA assessment via agent-browser + VLM, add View History drawer, Keyboard Shortcuts help, enhanced empty states, animated gradient headline.
+
+## Current Project Status Assessment
+- Project stable at 49 items (24 prompts, 21 skills, 4 workflows) from Task 16.
+- Dev server running, lint clean, no runtime errors.
+- VLM QA: homepage 8/10, detail modal all features confirmed.
+- Backfill chunked approach continuing (3 items per run).
+
+## Completed Modifications & Verification
+
+### 1. View History / Recently Viewed Drawer (NEW — high-impact)
+- **`use-history.ts`**: localStorage-based hook tracking viewed item IDs (max 20).
+  - `add(id)`: moves item to front of history.
+  - `remove(id)`, `clear()`, `count`, `loaded`.
+  - Event-based sync across components (`nexusai-history-changed`).
+- **`history-sheet.tsx`**: Sheet drawer showing recently viewed items with:
+  - Numbered list (1, 2, 3...), type icons, title, niche/rating/views.
+  - Fetches item details via API, preserves history order.
+  - "Clear" button, empty state, localStorage notice.
+- **Header integration**: new History icon button (History icon, cyan accent) in header.
+- **Auto-tracking**: `library-app.tsx` adds items to history when detail modal opens (via `selectedItem` effect).
+- Verified via agent-browser: opened LangGraph item → closed → clicked History button → drawer showed the item.
+
+### 2. Keyboard Shortcuts Help Dialog (NEW FEATURE)
+- **`shortcuts-help.tsx`**: dialog showing 12 keyboard shortcuts in 3 groups:
+  - **Global**: ⌘K (command palette), ? (this help), Esc (close).
+  - **Navigation**: G+H (Home), G+P (Prompts), G+S (Skills), G+W (Workflows), G+B (Bookmarks), G+C (Compare), G+R (Recently viewed).
+  - **Scroll**: ↑ (up), ↓ (down).
+- Each shortcut shows kbd elements with keys.
+- **`?` key trigger**: `useShortcutsHelpTrigger` hook listens for `?` key (ignores when typing in inputs).
+- Verified via agent-browser: pressed `?` → dialog opened with all shortcuts. VLM rated 8/10.
+
+### 3. Enhanced Library Empty State (STYLING)
+- **Redesigned empty state**: larger icon (16×16 rounded container), bolder title, helpful description, two action buttons (Reset filters + Browse categories).
+- Added `bg-card/20` background for better visual separation.
+- More helpful messaging: "Try clearing filters, using a different keyword, or browsing all categories."
+
+### 4. Animated Gradient Headline (STYLING — polish)
+- **`gradient-shift` keyframe**: 6s ease infinite animation shifting background-position 0%→100%→0%.
+- **`.text-gradient` and `.text-gradient-amber`**: now use 3-stop gradients (emerald→violet→emerald, amber→emerald→amber) with 200% background-size for smooth shifting effect.
+- Applied to hero headline ("AI Prompt & Skill" and "2026").
+- Subtle but adds life to the hero section.
+
+### Verification Results (agent-browser + VLM)
+- **History drawer**: opens from header, shows viewed items with metadata, "Recently Viewed" heading confirmed.
+- **Shortcuts help**: `?` key opens dialog, 12 shortcuts in 3 groups, kbd elements confirmed. VLM 8/10.
+- **Empty state**: enhanced with larger icon + two action buttons.
+- **Hero gradient**: animated (6s cycle, subtle in static screenshots).
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Backfill still incomplete**: ~24 items still need intros. Chunked approach working (3 items/run). Needs ~8 more runs.
+2. **Copy as JSON feature**: planned but not implemented (deferred — would add a "Copy as JSON" option for developers).
+3. **Share to GitHub**: planned but not implemented (deferred — would create a gist URL).
+4. **Gradient animation subtle**: 6s cycle may be too slow to notice in quick screenshots but is visible in live interaction.
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: run `bun run scripts/backfill-chunk.ts 3` in cron every 10 min.
+2. **Copy as JSON**: add "Copy as JSON" to share menu for developer use case.
+3. **Real AdSense publisher ID**: replace placeholder.
+4. **Dedicated category routes**: `/category/[slug]` for SEO.
+5. **Analytics**: Plausible/Umami integration.
+6. **G+keyboard navigation**: implement the G+key sequences shown in shortcuts help (currently only displayed, not functional).

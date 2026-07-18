@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Sparkles, Search, Github, Bookmark, Rss } from 'lucide-react'
+import { Sparkles, Search, Github, Bookmark, Rss, History } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useLibrary } from './store'
@@ -11,6 +11,7 @@ import { Stats } from './stats-bar'
 
 export function Header({ stats }: { stats: Stats }) {
   const setSearch = useLibrary((s) => s.setSearch)
+  const setHistoryOpen = useLibrary((s) => s.setHistoryOpen)
   const { count } = useBookmarks()
   const [bookmarksOpen, setBookmarksOpen] = useState(false)
 
@@ -60,6 +61,17 @@ export function Header({ stats }: { stats: Stats }) {
               <span className="font-medium text-foreground">{stats.todayGenerated}+ new today</span>
             </div>
           </div>
+
+          {/* History */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setHistoryOpen(true)}
+            className="hidden h-9 w-9 rounded-full border border-border/60 bg-background/60 backdrop-blur sm:inline-flex"
+            aria-label="Recently viewed"
+          >
+            <History className="h-4 w-4" />
+          </Button>
 
           {/* Bookmarks */}
           <Button

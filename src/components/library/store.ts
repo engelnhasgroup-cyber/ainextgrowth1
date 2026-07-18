@@ -30,6 +30,10 @@ interface LibraryState {
   bookmarksOpen: boolean
   setBookmarksOpen: (o: boolean) => void
 
+  // History drawer
+  historyOpen: boolean
+  setHistoryOpen: (o: boolean) => void
+
   // Compare feature
   compareIds: string[]
   toggleCompare: (id: string) => void
@@ -84,6 +88,10 @@ export const useLibrary = create<LibraryState>((set, get) => ({
   // Bookmarks
   bookmarksOpen: false,
   setBookmarksOpen: (o) => set({ bookmarksOpen: o }),
+
+  // History
+  historyOpen: false,
+  setHistoryOpen: (o) => set({ historyOpen: o }),
 
   // Compare (max 3 items)
   compareIds: [],

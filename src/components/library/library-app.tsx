@@ -20,7 +20,10 @@ import { LegalPages } from './legal-pages'
 import { CommandPalette } from './command-palette'
 import { BackToTop } from './back-to-top'
 import { CompareModal, CompareBar } from './compare-modal'
+import { HistorySheet } from './history-sheet'
+import { ShortcutsHelp, useShortcutsHelpTrigger } from './shortcuts-help'
 import { useLibrary } from './store'
+import { useHistory } from './use-history'
 
 export function LibraryApp({
   stats,
@@ -41,8 +44,18 @@ export function LibraryApp({
   initialItems: ItemSummary[]
   initialTotal: number
 }) {
-  const { openDetail, openLegal, legalPage } = useLibrary()
+  const { openDetail, openLegal, legalPage, historyOpen, setHistoryOpen } = useLibrary()
+  const { add: addHistory } = useHistory()
+  const { open: shortcutsOpen, setOpen: setShortcutsOpen } = useShortcutsHelpTrigger()
   const [cmdOpen, setCmdOpen] = useState(false)
+
+  // Track detail opens for history
+  const selectedItem = useLibrary((s) => s.selectedItem)
+  useEffect(() => {
+    if (selectedItem?.id) {
+      addHistory(selectedItem.id)
+    }
+  }, [selectedItem?.id, addHistory])
 
   // Deep-link support: /?item=<slug> or /?page=<legal> on load
   useEffect(() => {
@@ -107,6 +120,8 @@ export function LibraryApp({
       <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
       <CompareModal />
       <CompareBar />
+      <HistorySheet open={historyOpen} onOpenChange={setHistoryOpen} />
+      <ShortcutsHelp open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       <BackToTop />
     </div>
   )
