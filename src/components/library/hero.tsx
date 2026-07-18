@@ -1,0 +1,79 @@
+'use client'
+
+import { Sparkles, ArrowRight, Zap, Bot } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { StatsBar, type Stats } from './stats-bar'
+import { motion } from 'framer-motion'
+
+export function Hero({ stats }: { stats: Stats }) {
+  return (
+    <section className="relative overflow-hidden border-b border-border/60">
+      <div className="absolute inset-0 bg-grid opacity-60" />
+      <div className="absolute inset-0 bg-radial-glow" />
+      <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mx-auto max-w-3xl text-center"
+        >
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 px-3.5 py-1.5 text-xs font-medium backdrop-blur">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            Autonomous AI Agent live · 200 fresh items generated daily
+          </div>
+
+          <h1 className="text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+            The Largest <span className="text-gradient">AI Prompt & Skill</span>
+            <br className="hidden sm:block" /> Library for{' '}
+            <span className="text-gradient-amber">2026</span>
+          </h1>
+
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg">
+            Millions of neuro-engineered prompts and agentic skills — curated and generated daily
+            by an autonomous 20-agent swarm. Every item ships as a{' '}
+            <strong className="text-foreground">Trinity Bundle</strong>: the prompt, the workflow,
+            and the target audience — downloadable as Markdown.
+          </p>
+
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button size="lg" className="h-12 rounded-full px-7 text-base glow-emerald" asChild>
+              <a href="#trending">
+                <Zap className="mr-2 h-4 w-4" />
+                Explore Trending Today
+              </a>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-12 rounded-full px-7 text-base"
+              asChild
+            >
+              <a href="#agent">
+                <Bot className="mr-2 h-4 w-4" />
+                Meet the AI Agent
+              </a>
+            </Button>
+          </div>
+
+          <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+            <Sparkles className="h-3 w-3 text-primary" />
+            SEO · GEO · AEO optimized for high-value markets (USA, UK, Canada, Australia)
+            <ArrowRight className="h-3 w-3" />
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mx-auto mt-10 max-w-4xl"
+        >
+          <StatsBar stats={stats} />
+        </motion.div>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,88 @@
+// NexusAI 2026 — AI Prompt & Skill Library
+// Prisma schema (SQLite)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Item {
+  id              String   @id @default(cuid())
+  slug            String   @unique
+  type            String   // "prompt" | "skill"
+  title           String
+  summary         String
+  category        String
+  niche           String
+  audience        String
+  difficulty      String   // Beginner | Intermediate | Advanced | Expert
+  language        String   @default("English")
+
+  // Trinity Bundle content (Markdown)
+  promptContent   String   // File 1: The Prompt / Skill
+  workflowContent String   // File 2: Workflow & Execution
+  audienceContent String   // File 3: Target Audience & Use Cases
+
+  // Comma/pipe separated (SQLite primitives can't be lists)
+  tags            String   @default("")
+  requiredTools   String   @default("")
+  useCases        String   @default("")
+
+  // Trending & curation
+  trending        Boolean  @default(false)
+  trendingScore   Int      @default(0)
+  featured        Boolean  @default(false)
+
+  // Engagement signals
+  viewCount       Int      @default(0)
+  downloadCount   Int      @default(0)
+  rating          Float    @default(5.0)
+
+  // SEO / GEO / AEO fields
+  faqQuestion     String   @default("")
+  faqAnswer       String   @default("")
+  citation        String   @default("")
+  seoKeywords     String   @default("")
+
+  // Internal linking graph (comma separated item ids)
+  relatedIds      String   @default("")
+
+  // Generation provenance
+  source          String   @default("seed") // "seed" | "agent"
+  runDate         String   @default("")     // YYYY-MM-DD of generation
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([type])
+  @@index([category])
+  @@index([trending])
+  @@index([featured])
+  @@index([slug])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  icon        String
+  color       String
+  createdAt   DateTime @default(now())
+}
+
+model GenerationLog {
+  id           String   @id @default(cuid())
+  runDate      String   // YYYY-MM-DD
+  promptsCount Int      @default(0)
+  skillsCount  Int      @default(0)
+  status       String   @default("completed")
+  note         String   @default("")
+  createdAt    DateTime @default(now())
+
+  @@index([runDate])
+}
