@@ -3,6 +3,7 @@
 import { Sparkles, ArrowRight, Zap, Bot } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { StatsBar, type Stats } from './stats-bar'
+import { TrendingTicker } from './trending-ticker'
 import { motion } from 'framer-motion'
 
 export function Hero({ stats }: { stats: Stats }) {
@@ -26,7 +27,7 @@ export function Hero({ stats }: { stats: Stats }) {
           </div>
 
           <h1 className="text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-            The Largest <span className="text-gradient">AI Prompt & Skill</span>
+            The Largest <span className="text-gradient">AI Prompt &amp; Skill</span>
             <br className="hidden sm:block" /> Library for{' '}
             <span className="text-gradient-amber">2026</span>
           </h1>
@@ -74,6 +75,8 @@ export function Hero({ stats }: { stats: Stats }) {
           <StatsBar stats={stats} />
         </motion.div>
       </div>
+
+      <TrendingTicker />
     </section>
   )
 }

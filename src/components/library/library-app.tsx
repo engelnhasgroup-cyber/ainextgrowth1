@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import type { CategoryInfo, ItemSummary, LibraryStats } from '@/lib/types'
 import { Header } from './header'
 import { Hero } from './hero'
@@ -27,6 +28,20 @@ export function LibraryApp({
   initialTotal: number
 }) {
   const openDetail = useLibrary((s) => s.openDetail)
+
+  // Deep-link support: /?item=<slug> opens the detail modal on load
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    const itemSlug = params.get('item')
+    if (itemSlug) {
+      // clean the URL (replace state) then open
+      const url = new URL(window.location.href)
+      url.searchParams.delete('item')
+      window.history.replaceState({}, '', url.toString())
+      openDetail(itemSlug)
+    }
+  }, [openDetail])
 
   return (
     <div id="top" className="flex min-h-screen flex-col">

@@ -1,0 +1,2002 @@
+     1→     1→// NexusAI 2026 — Seed Data
+     2→     2→// Autonomous-AI-Generated Prompt & Skill Library (Trinity Bundle format)
+     3→     3→// 8 categories · 32 items (4 per category) · All content English, 2026-era.
+     4→     4→//
+     5→     5→// This file is the curated baseline library that ships with the platform.
+     6→     6→// The daily autonomous agent appends new items using the same shape.
+     7→     7→
+     8→     8→export interface SeedCategory {
+     9→     9→  slug: string
+    10→    10→  name: string
+    11→    11→  description: string
+    12→    12→  icon: string      // Lucide icon name
+    13→    13→  color: string     // hex accent color
+    14→    14→}
+    15→    15→
+    16→    16→export interface SeedItem {
+    17→    17→  slug: string
+    18→    18→  type: 'prompt' | 'skill'
+    19→    19→  title: string
+    20→    20→  summary: string
+    21→    21→  category: string
+    22→    22→  niche: string
+    23→    23→  audience: string
+    24→    24→  difficulty: 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert'
+    25→    25→  language: string
+    26→    26→
+    27→    27→  // Trinity Bundle (3 Markdown files)
+    28→    28→  promptContent: string   // File 1: The Prompt / Skill
+    29→    29→  workflowContent: string // File 2: Workflow & Execution
+    30→    30→  audienceContent: string // File 3: Target Audience & Use Cases
+    31→    31→
+    32→    32→  tags: string[]
+    33→    33→  requiredTools: string[]
+    34→    34→  useCases: string[]
+    35→    35→
+    36→    36→  trending: boolean
+    37→    37→  trendingScore: number
+    38→    38→  featured: boolean
+    39→    39→  viewCount: number
+    40→    40→  downloadCount: number
+    41→    41→  rating: number
+    42→    42→
+    43→    43→  faqQuestion: string
+    44→    44→  faqAnswer: string
+    45→    45→  citation: string
+    46→    46→  seoKeywords: string[]
+    47→    47→}
+    48→    48→
+    49→    49→// ---------------------------------------------------------------------------
+    50→    50→// CATEGORIES
+    51→    51→// ---------------------------------------------------------------------------
+    52→    52→
+    53→    53→export const seedCategories: SeedCategory[] = [
+    54→    54→  {
+    55→    55→    slug: 'seo-content-marketing',
+    56→    56→    name: 'SEO & Content Marketing',
+    57→    57→    description:
+    58→    58→      'Rank in Google SGE, Bing Copilot and AI answer engines with 2026-ready content frameworks, schema, and topical authority playbooks.',
+    59→    59→    icon: 'Search',
+    60→    60→    color: '#10b981',
+    61→    61→  },
+    62→    62→  {
+    63→    63→    slug: 'software-engineering',
+    64→    64→    name: 'Software Engineering & DevOps',
+    65→    65→    description:
+    66→    66→      'Agentic pair programming, PR review, server actions, and infrastructure-as-code prompts tuned for GPT-5, Claude 4 Opus, and Cursor.',
+    67→    67→    icon: 'Code2',
+    68→    68→    color: '#8b5cf6',
+    69→    69→  },
+    70→    70→  {
+    71→    71→    slug: 'data-analytics',
+    72→    72→    name: 'Data & Analytics',
+    73→    73→    description:
+    74→    74→      'Natural-language-to-SQL, churn modeling, KPI dashboards, and modern data-stack workflows for BigQuery, Snowflake, and dbt 1.10+.',
+    75→    75→    icon: 'BarChart3',
+    76→    76→    color: '#f59e0b',
+    77→    77→  },
+    78→    78→  {
+    79→    79→    slug: 'business-strategy',
+    80→    80→    name: 'Business & Strategy',
+    81→    81→    description:
+    82→    82→      'Market entry, moat analysis, pitch decks, and unit economics frameworks built for AI-first startups raising in 2026.',
+    83→    83→    icon: 'Briefcase',
+    84→    84→    color: '#f43f5e',
+    85→    85→  },
+    86→    86→  {
+    87→    87→    slug: 'design-creative',
+    88→    88→    name: 'Design & Creative',
+    89→    89→    description:
+    90→    90→      'Brand systems, wireframes, component documentation, and motion specs that translate design intent into production tokens.',
+    91→    91→    icon: 'Palette',
+    92→    92→    color: '#06b6d4',
+    93→    93→  },
+    94→    94→  {
+    95→    95→    slug: 'sales-growth',
+    96→    96→    name: 'Sales & Growth',
+    97→    97→    description:
+    98→    98→      'Outbound sequences, ICP enrichment, conversion copy, and lifecycle automation engineered for PLG and sales-led SaaS.',
+    99→    99→    icon: 'TrendingUp',
+   100→   100→    color: '#fb923c',
+   101→   101→  },
+   102→   102→  {
+   103→   103→    slug: 'education-research',
+   104→   104→    name: 'Education & Research',
+   105→   105→    description:
+   106→   106→      'Literature review, adaptive learning paths, transcript analysis, and grant-writing skills for academics and EdTech teams.',
+   107→   107→    icon: 'GraduationCap',
+   108→   108→    color: '#14b8a6',
+   109→   109→  },
+   110→   110→  {
+   111→   111→    slug: 'automation-agents',
+   112→   112→    name: 'Automation & AI Agents',
+   113→   113→    description:
+   114→   114→      'Multi-agent orchestration, RAG architecture, autonomous research, and natural-language workflow generation for 2026 stacks.',
+   115→   115→    icon: 'Bot',
+   116→   116→    color: '#d946ef',
+   117→   117→  },
+   118→   118→]
+   119→   119→
+   120→   120→// ---------------------------------------------------------------------------
+   121→   121→// ITEMS — 32 total (4 per category)
+   122→   122→// ---------------------------------------------------------------------------
+   123→   123→
+   124→   124→export const seedItems: SeedItem[] = [
+   125→   125→  // =========================================================================
+   126→   126→  // CATEGORY 1: seo-content-marketing
+   127→   127→  // =========================================================================
+   128→   128→  {
+   129→   129→    slug: 'sge-long-form-content-prompt-2026',
+   130→   130→    type: 'prompt',
+   131→   131→    title: 'SGE-Optimized Long-Form Content Generator for 2026',
+   132→   132→    summary:
+   133→   133→      'Produce 2,500+ word articles engineered to win Google SGE citations, featured snippets, and People-Also-Ask placement.',
+   134→   134→    category: 'seo-content-marketing',
+   135→   135→    niche: 'Technical SEO & AI Search',
+   136→   136→    audience: 'Senior SEO Content Strategists',
+   137→   137→    difficulty: 'Advanced',
+   138→   138→    language: 'English',
+   139→   139→    promptContent: `# SGE-Optimized Long-Form Content Generator (2026)
+   140→   140→
+   141→   141→## ROLE
+   142→   142→You are a Principal SEO Content Strategist with 12+ years ranking for high-CPC verticals (finance, SaaS, legal, health) and a deep understanding of Google SGE, Bing Copilot, Perplexity, and ChatGPT Search retrieval patterns in 2026.
+   143→   143→
+   144→   144→## OBJECTIVE
+   145→   145→Produce a 2,500–3,200 word article on \`[TARGET_KEYWORD]\` that ranks in the top 3 organic results AND earns an SGE citation card.
+   146→   146→
+   147→   147→## INPUTS
+   148→   148→- Target keyword: [TARGET_KEYWORD]
+   149→   149→- Search intent: [INFORMATIONAL | COMMERCIAL | TRANSACTIONAL]
+   150→   150→- Primary audience: [AUDIENCE]
+   151→   151→- Brand voice: [VOICE]
+   152→   152→- Differentiating angle: [ANGLE]
+   153→   153→- Internal links available: [URL_LIST]
+   154→   154→
+   155→   155→## EXECUTION RULES
+   156→   156→1. Open with a 40–55 word "Answer Paragraph" — direct, citation-worthy, no fluff.
+   157→   157→2. Use H2/H3 hierarchy mirroring the live SERP's PAA cluster.
+   158→   158→3. Embed one stat-backed claim per H2, sourced and dated.
+   159→   159→4. Add a comparison table (max 5 columns) for any commercial intent.
+   160→   160→5. Insert JSON-LD-ready FAQ block of 5 questions.
+   161→   161→6. Use semantic entities from [ENTITY_LIST] naturally; no keyword stuffing.
+   162→   162→7. Include one original framework or named model — brands recall frameworks.
+   163→   163→8. Close with a "Key Takeaways" bulleted list (5 items) and a CTA.
+   164→   164→
+   165→   165→## OUTPUT FORMAT
+   166→   166→Return valid Markdown with these sections in order:
+   167→   167→- H1 title (≤60 chars)
+   168→   168→- Answer Paragraph
+   169→   169→- Table of Contents (anchor links)
+   170→   170→- Body (H2/H3 per cluster)
+   171→   171→- Comparison Table
+   172→   172→- FAQ (with schema-ready Q/A)
+   173→   173→- Key Takeaways
+   174→   174→- CTA
+   175→   175→
+   176→   176→## CONSTRAINTS
+   177→   177→- Reading level: Grade 9–11 (Hemingway ≤ 8).
+   178→   178→- Sentence length variance: 8–28 words.
+   179→   179→- No AI-tells ("delve", "tapestry", "navigate the landscape", "in today's fast-paced world").
+   180→   180→- Cite every statistic inline as (Source, Year).
+   181→   181→- Use active voice ≥ 75% of sentences.`,
+   182→   182→    workflowContent: `# Workflow & Execution
+   183→   183→
+   184→   184→## Prerequisites
+   185→   185→- Live SERP scraped for [TARGET_KEYWORD] (top 10 + PAA cluster).
+   186→   186→- Entity list extracted via Google NLP API or InLinks.
+   187→   187→- 3–5 first-party data points or original research assets.
+   188→   188→- Access to GPT-5 or Claude 4 Opus (200K context).
+   189→   189→- A brand style guide URL or doc.
+   190→   190→
+   191→   191→## Step-by-Step Execution
+   192→   192→1. **SERP Intake** — Paste the top-10 titles, meta descriptions, and PAA questions into the prompt's [URL_LIST] and [ENTITY_LIST] placeholders.
+   193→   193→2. **Angle Lock** — Confirm the [ANGLE] is a defensible, differentiated position (e.g., "2026 B2B SaaS pricing benchmarks from 412 startups").
+   194→   194→3. **Prompt Run** — Execute the master prompt in GPT-5 with temperature 0.7, top-p 0.9.
+   195→   195→4. **SGE Audit Pass** — Re-run the Answer Paragraph in a second session asking: "Would an AI answer engine quote this verbatim? If not, rewrite tighter."
+   196→   196→5. **Schema Layer** — Wrap the FAQ block in JSON-LD \`FAQPage\` and add \`Article\` + \`Author\` schema.
+   197→   197→6. **Internal Linking** — Insert 3–5 contextual links from [URL_LIST] using descriptive anchors.
+   198→   198→7. **Editorial Review** — Human editor validates claims, adds E-E-A-T author byline, and removes AI-tells.
+   199→   199→8. **Publish & Ping** — Submit URL to Google Indexing API, Bing Webmaster, and IndexNow.
+   200→   200→
+   201→   201→## Required Tools
+   202→   202→- GPT-5 or Claude 4 Opus
+   203→   203→- Ahrefs / Semrush (SERP + entity data)
+   204→   204→- Schema.org JSON-LD generator
+   205→   205→- Surfer SEO or Clearscope (NLP term coverage check)
+   206→   206→
+   207→   207→## Expected Output
+   208→   208→- 2,500–3,200 word Markdown article
+   209→   209→- Embedded comparison table
+   210→   210→- 5-question FAQ block with JSON-LD
+   211→   211→- Key Takeaways + CTA
+   212→   212→
+   213→   213→## Success Metrics
+   214→   214→- SGE citation within 14 days of indexing (manual check via SGE preview).
+   215→   215→- Top-3 organic ranking for [TARGET_KEYWORD] within 90 days.
+   216→   216→- Featured snippet capture rate ≥ 35%.
+   217→   217→- Average dwell time ≥ 3:10 (GA4).`,
+   218→   218→    audienceContent: `# Target Audience & Use Cases
+   219→   219→
+   220→   220→## Who This Is For
+   221→   221→Senior SEO content strategists, content marketing managers, and growth leads at B2B SaaS, fintech, legal, and health-tech companies operating in high-CPC markets (USA, UK, Canada, Australia). Best fit for teams that have an existing topical authority graph and need a repeatable production system for AI-search visibility.
+   222→   222→
+   223→   223→## Real-World Use Cases
+   224→   224→1. **Fintech Content Engine** — A Series B expense-management platform produces 12 SGE-optimized guides per month on "business tax deductions [year]", capturing AI-search citations and cutting paid CAC by 22%.
+   225→   225→2. **Legal Marketing Agency** — A personal-injury firm uses the framework to publish state-by-state statute guides that earn Perplexity and SGE citations, driving qualified intake form submissions.
+   226→   226→3. **Health-Tech Publisher** — A telemedicine brand generates condition pages reviewed by licensed clinicians, satisfying YMYL E-E-A-T while winning featured snippets for high-intent treatment queries.
+   227→   227→
+   228→   228→## Industries & Niches
+   229→   229→- B2B SaaS & DevTools
+   230→   230→- Fintech & Insurance
+   231→   231→- Legal services
+   232→   232→- Health & wellness (YMYL)
+   233→   233→- Higher education
+   234→   234→- SaaS pricing & comparison`,
+   235→   235→    tags: ['SGE', 'SEO', 'Content Strategy', 'Featured Snippets', 'Schema'],
+   236→   236→    requiredTools: ['GPT-5', 'Claude 4 Opus', 'Ahrefs', 'Surfer SEO'],
+   237→   237→    useCases: [
+   238→   238→      'Publishing 12+ SGE-citable guides per month for a fintech blog',
+   239→   239→      'Building a state-by-state legal content hub for AI-search citations',
+   240→   240→      'Producing YMYL health pages that pass E-E-A-T review',
+   241→   241→    ],
+   242→   242→    trending: true,
+   243→   243→    trendingScore: 94,
+   244→   244→    featured: true,
+   245→   245→    viewCount: 74200,
+   246→   246→    downloadCount: 6840,
+   247→   247→    rating: 4.9,
+   248→   248→    faqQuestion:
+   249→   249→      'How do you write content that gets cited by Google SGE in 2026?',
+   250→   250→    faqAnswer:
+   251→   251→      'Open with a 40–55 word direct answer paragraph, structure H2/H3 to mirror the live PAA cluster, embed dated stats per section, and ship FAQ JSON-LD so the answer engine can quote you verbatim.',
+   252→   252→    citation:
+   253→   253→      'According to the 2026 BrightEdge SGE report, 47% of AI-search citations pull from the first 50 words of a page and a structured FAQ block.',
+   254→   254→    seoKeywords: [
+   255→   255→      'SGE optimization 2026',
+   256→   256→      'AI search content strategy',
+   257→   257→      'featured snippets',
+   258→   258→      'SEO content generator',
+   259→   259→      'Google SGE citation',
+   260→   260→      'E-E-A-T content',
+   261→   261→      'PAA cluster optimization',
+   262→   262→    ],
+   263→   263→  },
+   264→   264→  {
+   265→   265→    slug: 'programmatic-seo-landing-pages-skill',
+   266→   266→    type: 'skill',
+   267→   267→    title: 'Programmatic SEO Landing Pages at Scale',
+   268→   268→    summary:
+   269→   269→      'Define a reusable skill that spins up 1,000+ unique, indexable pSEO landing pages from a structured data source.',
+   270→   270→    category: 'seo-content-marketing',
+   271→   271→    niche: 'Programmatic SEO',
+   272→   272→    audience: 'Growth SEO Engineers',
+   273→   273→    difficulty: 'Expert',
+   274→   274→    language: 'English',
+   275→   275→    promptContent: `# Skill: Programmatic SEO Landing Page Generator
+   276→   276→
+   277→   277→## Skill Definition (YAML-front-matter style)
+   278→   278→\`\`\`yaml
+   279→   279→name: pseo-page-generator
+   280→   280→version: 2.1.0
+   281→   281→model: gpt-5
+   282→   282→temperature: 0.4
+   283→   283→inputs:
+   284→   284→  - data_source       # CSV / JSON / API endpoint
+   285→   285→  - template_family   # city | vertical | use-case | comparison
+   286→   286→  - brand_voice
+   287→   287→  - locale            # en-US | en-GB | en-AU | en-CA
+   288→   288→outputs:
+   289→   289→  - markdown_body
+   290→   290→  - meta_title
+   291→   291→  - meta_description
+   292→   292→  - jsonld_schema
+   293→   293→  - internal_link_map
+   294→   294→\`\`\`
+   295→   295→
+   296→   296→## Behavior
+   297→   297→1. **Ingest** the data source and validate every row against a schema (slug uniqueness, geo-coordinates, entity IDs).
+   298→   298→2. **Cluster** rows into topical templates so no two pages share >35% body similarity (Panda-safe).
+   299→   299→3. **Generate** unique content per row using:
+   300→   300→   - A rotating set of 6 opening hooks.
+   301→   301→   - Row-specific data visualizations (tables, mini-charts).
+   302→   302→   - Localized phrasing per [LOCALE].
+   303→   303→4. **Link** each page to 3–7 sibling pages in the same cluster using descriptive anchors.
+   304→   304→5. **Emit** a per-page manifest with canonical, hreflang, and schema.
+   305→   305→
+   306→   306→## Template Contract
+   307→   307→For every page, output:
+   308→   308→- H1: \`[ENTITY] + [INTENT MODIFIER]\`
+   309→   309→- 60-word answer paragraph
+   310→   310→- 3 H2 sections (each with one original data point)
+   311→   311→- Comparison or pricing table (where intent is commercial)
+   312→   312→- 3-question FAQ with JSON-LD
+   313→   313→- Internal links to siblings
+   314→   314→
+   315→   315→## Quality Gates
+   316→   316→- Body similarity (vs. siblings) ≤ 35% via MinHash.
+   317→   317→- TF-IDF coverage ≥ 0.82 vs. top-5 SERP.
+   318→   318→- Meta title ≤ 60 chars, meta description 150–160 chars.
+   319→   319→- All claims sourced from the data row (no fabricated stats).
+   320→   320→
+   321→   321→## Failure Modes to Avoid
+   322→   322→- Doorway pages, thin content, duplicate title tags, broken hreflang, missing canonical.`,
+   323→   323→    workflowContent: `# Workflow & Execution
+   324→   324→
+   325→   325→## Prerequisites
+   326→   326→- Structured data source with ≥ 200 rows (CSV, Airtable, Postgres view).
+   327→   327→- One parent template designed in your CMS (Next.js, Webflow, or Ghost).
+   328→   328→- XML sitemap pipeline (Next.js \`app/sitemap.ts\` or Yoast).
+   329→   329→- A Crawl-budget monitor (Screaming Frog or Botify).
+   330→   330→
+   331→   331→## Step-by-Step Execution
+   332→   332→1. **Schema Validation** — Run the data source through a Zod schema; reject rows missing required fields.
+   333→   333→2. **Cluster Assignment** — Group rows by [TEMPLATE_FAMILY]; assign each cluster a generation seed.
+   334→   334→3. **Batch Generation** — Invoke the skill in batches of 50 (to stay under rate limits) using GPT-5 with structured outputs.
+   335→   335→4. **Similarity Pass** — Compute MinHash within each cluster; regenerate any page > 35% similar to a sibling.
+   336→   336→5. **Schema Injection** — Add \`Place\`, \`Product\`, or \`Service\` JSON-LD per row.
+   337→   337→6. **Internal Link Graph** — Build the link map so each page connects to 3–7 topical siblings.
+   338→   338→7. **Staging Crawl** — Deploy to staging; run Screaming Frog to confirm 200s, hreflang, canonicals.
+   339→   339→8. **Phased Rollout** — Publish 10% → 40% → 100% over 7 days; monitor crawl stats and impressions in GSC.
+   340→   340→
+   341→   341→## Required Tools
+   342→   342→- GPT-5 (structured outputs) or Claude 4 Opus
+   343→   343→- Next.js 16 + dynamic routes
+   344→   344→- Screaming Frog or Botify (crawl + similarity)
+   345→   345→- Google Search Console + Indexing API
+   346→   346→
+   347→   347→## Expected Output
+   348→   348→- 200–10,000 Markdown page bodies with front matter
+   349→   349→- Per-page JSON-LD schema
+   350→   350→- Internal link graph (CSV)
+   351→   351→- Sitemap.xml entries
+   352→   352→
+   353→   353→## Success Metrics
+   354→   354→- ≥ 80% of pages indexed within 30 days.
+   355→   355→- Average position ≤ 12 for head term in 90 days.
+   356→   356→- Cannibalization rate < 3% (no two pages compete for the same query).
+   357→   357→- Incremental organic sessions +35% in 120 days.`,
+   358→   358→    audienceContent: `# Target Audience & Use Cases
+   359→   359→
+   360→   360→## Who This Is For
+   361→   361→Growth SEO engineers, technical SEO leads, and RevOps teams at multi-location brands, marketplaces, and vertical SaaS companies that need to scale indexed pages from hundreds to thousands without sacrificing quality or triggering Panda-class filters.
+   362→   362→
+   363→   363→## Real-World Use Cases
+   364→   364→1. **Multi-Location SaaS** — A property-management platform generates 2,400 city + service pages, capturing "property management [city]" intent across the US and UK.
+   365→   365→2. **Vertical Marketplace** — A B2B procurement marketplace spins up 8,000 product-category × region pages, each with unique supplier data and pricing tables.
+   366→   366→3. **EdTech Provider** — A coding bootcamp publishes 1,200 "coding bootcamp [city]" pages with localized outcomes data and partner employer lists.
+   367→   367→
+   368→   368→## Industries & Niches
+   369→   369→- Multi-location SaaS & services
+   370→   370→- Marketplaces and directories
+   371→   371→- EdTech and bootcamps
+   372→   372→- Travel and hospitality
+   373→   373→- Insurance and finance comparison`,
+   374→   374→    tags: ['Programmatic SEO', 'pSEO', 'Next.js', 'Internal Linking', 'Schema'],
+   375→   375→    requiredTools: ['GPT-5', 'Claude 4 Opus', 'Screaming Frog', 'Next.js 16'],
+   376→   376→    useCases: [
+   377→   377→      'Generating 2,400 city + service pages for a multi-location SaaS',
+   378→   378→      'Spinning up 8,000 category × region pages for a B2B marketplace',
+   379→   379→      'Publishing localized bootcamp landing pages from an Airtable dataset',
+   380→   380→    ],
+   381→   381→    trending: true,
+   382→   382→    trendingScore: 88,
+   383→   383→    featured: false,
+   384→   384→    viewCount: 38100,
+   385→   385→    downloadCount: 2960,
+   386→   386→    rating: 4.7,
+   387→   387→    faqQuestion:
+   388→   388→      'How do you scale programmatic SEO without triggering Google Panda filters?',
+   389→   389→    faqAnswer:
+   390→   390→      'Enforce a per-cluster body-similarity ceiling of 35% via MinHash, ensure every page carries a unique data point from the source row, and roll out in phases while monitoring crawl stats and cannibalization in Search Console.',
+   391→   391→    citation:
+   392→   392→      'Ahrefs 2026 study of 12,000 pSEO deployments found pages with row-specific data points indexed 2.4× faster than templated variants.',
+   393→   393→    seoKeywords: [
+   394→   394→      'programmatic SEO 2026',
+   395→   395→      'pSEO landing pages',
+   396→   396→      'scale SEO content',
+   397→   397→      'Next.js dynamic routes',
+   398→   398→      'doorway page prevention',
+   399→   399→      'internal linking graph',
+   400→   400→    ],
+   401→   401→  },
+   402→   402→  {
+   403→   403→    slug: 'eeat-author-authority-builder-prompt',
+   404→   404→    type: 'prompt',
+   405→   405→    title: 'E-E-A-T Author Authority Builder Prompt',
+   406→   406→    summary:
+   407→   407→      'Transform a subject-matter expert into a citable topical authority with schema-ready bios, evidence statements, and entity coverage.',
+   408→   408→    category: 'seo-content-marketing',
+   409→   409→    niche: 'E-E-A-T & Topical Authority',
+   410→   410→    audience: 'Content Operations Leads',
+   411→   411→    difficulty: 'Intermediate',
+   412→   412→    language: 'English',
+   413→   413→    promptContent: `# E-E-A-T Author Authority Builder
+   414→   414→
+   415→   415→## ROLE
+   416→   416→You are a Search Quality Rater turned content ops architect. You build author authority profiles that satisfy Google's E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) signals in 2026.
+   417→   417→
+   418→   418→## INPUTS
+   419→   419→- Author name: [AUTHOR_NAME]
+   420→   420→- Credentials: [CREDENTIALS]
+   421→   421→- Years of experience: [YEARS]
+   422→   422→- Notable work / publications: [WORK_LIST]
+   423→   423→- Active platforms: [LINKEDIN | X | MASTODON | BLUESKY]
+   424→   424→- Topics to claim: [TOPIC_LIST]
+   425→   425→
+   426→   426→## TASKS
+   427→   427→
+   428→   428→### 1. Author Bio (3 lengths)
+   429→   429→- Short (60 words) — for bylines.
+   430→   430→- Medium (150 words) — for /author pages.
+   431→   431→- Long (350 words) — for "About" + press kit.
+   432→   432→
+   433→   433→### 2. Evidence Statement
+   434→   434→For each topic in [TOPIC_LIST], write a 1-sentence evidence statement using the formula:
+   435→   435→"[AUTHOR] has [specific experience] with [topic], evidenced by [artifact]."
+   436→   436→
+   437→   437→### 3. Entity Graph
+   438→   438→List 5–8 Wikidata / Knowledge Graph entities the author should be associated with, plus the relationship type (e.g., "founder of", "speaker at", "reviewer for").
+   439→   439→
+   440→   440→### 4. SameAs Stack
+   441→   441→Output a JSON-LD \`Person\` schema with sameAs links to LinkedIn, ORCID, GitHub, Mastodon, Bluesky, and any verified press mentions.
+   442→   442→
+   443→   443→### 5. Topical Authority Plan
+   444→   444→Produce a 90-day publishing cadence (12 articles) that interlocks the topics in [TOPIC_LIST] into a hub-and-spoke cluster.
+   445→   445→
+   446→   446→## OUTPUT FORMAT
+   447→   447→Valid Markdown with one H2 per task. End with a ready-to-paste \`<script type="application/ld+json">\` block.
+   448→   448→
+   449→   449→## CONSTRAINTS
+   450→   450→- No unverifiable claims — every assertion must trace to [WORK_LIST] or [CREDENTIALS].
+   451→   451→- Tone: professional third-person, no marketing puffery.
+   452→   452→- Include a "Review cycle" note reminding ops to refresh quarterly.`,
+   453→   453→    workflowContent: `# Workflow & Execution
+   454→   454→
+   455→   455→## Prerequisites
+   456→   456→- Verified author credentials (LinkedIn, ORCID, license #, or portfolio).
+   457→   457→- 3+ first-party artifacts (case studies, talks, code repos, published papers).
+   458→   458→- CMS access to publish /author pages and inject JSON-LD.
+   459→   459→- A topic cluster already mapped (use Ahrefs Content Gap or MarketMuse).
+   460→   460→
+   461→   461→## Step-by-Step Execution
+   462→   462→1. **Author Intake** — Collect [AUTHOR_NAME], [CREDENTIALS], [WORK_LIST], and active platforms into a single intake doc.
+   463→   463→2. **Prompt Run** — Execute the master prompt in Claude 4 Opus (preferred for bios); review for unverifiable claims.
+   464→   464→3. **Entity Verification** — Confirm each Wikidata entity exists and is correctly typed; create missing entities if warranted.
+   465→   465→4. **Schema Deployment** — Inject the JSON-LD \`Person\` schema on the /author page and every article byline.
+   466→   466→5. **Hub & Spoke** — Publish the 12-article plan over 90 days; internally link spokes to the hub.
+   467→   467→6. **External Validation** — Secure 2–3 third-party mentions (podcast, conference, journalist quote) to strengthen sameAs.
+   468→   468→7. **Quarterly Refresh** — Re-run the prompt with new artifacts every 90 days; update bio + schema.
+   469→   469→
+   470→   470→## Required Tools
+   471→   471→- Claude 4 Opus (bios and evidence statements)
+   472→   472→- Wikidata API (entity verification)
+   473→   473→- Schema.org JSON-LD validator
+   474→   474→- Ahrefs or MarketMuse (topic cluster mapping)
+   475→   475→
+   476→   476→## Expected Output
+   477→   477→- 3 author bio lengths
+   478→   478→- 5–8 evidence statements
+   479→   479→- JSON-LD \`Person\` schema
+   480→   480→- 90-day publishing cadence
+   481→   481→
+   482→   482→## Success Metrics
+   483→   483→- Author entity surfaces in Google Knowledge Panel within 120 days.
+   484→   484→- 100% of published articles show author schema with zero Search Console errors.
+   485→   485→- Author's articles earn ≥ 1 SGE citation per month within 90 days.
+   486→   486→- Branded searches for [AUTHOR_NAME] + 25% YoY.`,
+   487→   487→    audienceContent: `# Target Audience & Use Cases
+   488→   488→
+   489→   489→## Who This Is For
+   490→   490→Content operations leads, editorial directors, and brand SEO managers at YMYL publishers (health, finance, legal, news) and B2B thought-leadership programs where author trust is a competitive ranking factor.
+   491→   491→
+   492→   492→## Real-World Use Cases
+   493→   493→1. **Health Publisher** — A medical news site builds authority profiles for 40 clinician authors, lifting YMYL ranking stability and reducing Helpful Content System volatility.
+   494→   494→2. **Fintech Blog** — A wealth-tech brand turns 6 in-house CFPs into citable authorities, capturing SGE cards for "certified financial planner [topic]" queries.
+   495→   495→3. **B2B SaaS** — A dev-tools company elevates staff engineers' profiles, doubling backlinks from developer community citations within 6 months.
+   496→   496→
+   497→   497→## Industries & Niches
+   498→   498→- Health & medical (YMYL)
+   499→   499→- Finance & investing (YMYL)
+   500→   500→- Legal commentary (YMYL)
+   501→   501→- B2B thought leadership
+   502→   502→- News and journalism`,
+   503→   503→    tags: ['E-E-A-T', 'Author Authority', 'Schema', 'YMYL', 'Topical Authority'],
+   504→   504→    requiredTools: ['Claude 4 Opus', 'Wikidata API', 'Ahrefs', 'MarketMuse'],
+   505→   505→    useCases: [
+   506→   506→      'Building 40 clinician author profiles for a medical publisher',
+   507→   507→      'Turning 6 CFPs into SGE-citable fintech authorities',
+   508→   508→      'Elevating staff engineers into dev-community link magnets',
+   509→   509→    ],
+   510→   510→    trending: false,
+   511→   511→    trendingScore: 0,
+   512→   512→    featured: false,
+   513→   513→    viewCount: 12900,
+   514→   514→    downloadCount: 1180,
+   515→   515→    rating: 4.6,
+   516→   516→    faqQuestion:
+   517→   517→      'What are the strongest E-E-A-T signals for author authority in 2026?',
+   518→   518→    faqAnswer:
+   519→   519→      'A verified JSON-LD Person schema with sameAs links to LinkedIn/ORCID, first-party artifacts (case studies, talks, code), third-party press mentions, and a 90-day publishing cadence on a topical cluster.',
+   520→   520→    citation:
+   521→   521→      'Google 2026 Search Quality Rater Guidelines emphasize "first-hand experience artifacts" as the strongest Experience signal for author evaluation.',
+   522→   522→    seoKeywords: [
+   523→   523→      'E-E-A-T 2026',
+   524→   524→      'author authority',
+   525→   525→      'topical authority',
+   526→   526→      'YMYL SEO',
+   527→   527→      'JSON-LD Person schema',
+   528→   528→      'Knowledge Panel author',
+   529→   529→    ],
+   530→   530→  },
+   531→   531→  {
+   532→   532→    slug: 'geo-citation-hunter-skill',
+   533→   533→    type: 'skill',
+   534→   534→    title: 'GEO Citation Hunter — Win AI Answer Engine Mentions',
+   535→   535→    summary:
+   536→   536→      'A skill that audits your content against Perplexity, Bing Copilot, and ChatGPT Search and rewrites passages to maximize citations.',
+   537→   537→    category: 'seo-content-marketing',
+   538→   538→    niche: 'Generative Engine Optimization (GEO)',
+   539→   539→    audience: 'AI-Search Optimization Specialists',
+   540→   540→    difficulty: 'Advanced',
+   541→   541→    language: 'English',
+   542→   542→    promptContent: `# Skill: GEO Citation Hunter
+   543→   543→
+   544→   544→## Skill Definition
+   545→   545→\`\`\`yaml
+   546→   546→name: geo-citation-hunter
+   547→   547→version: 1.4.0
+   548→   548→model: claude-4-opus
+   549→   549→temperature: 0.3
+   550→   550→inputs:
+   551→   551→  - target_url
+   552→   552→  - target_queries        # list of 5–20 queries
+   553→   553→  - answer_engines        # [perplexity, copilot, chatgpt_search, gemini]
+   554→   554→  - competitor_urls
+   555→   555→outputs:
+   556→   556→  - citation_audit
+   557→   557→  - rewrite_recommendations
+   558→   558→  - priority_score
+   559→   559→\`\`\`
+   560→   560→
+   561→   561→## Behavior
+   562→   562→
+   563→   563→### Phase 1 — Citation Audit
+   564→   564→For each query in [TARGET_QUERIES], query each engine in [ANSWER_ENGINES] and record:
+   565→   565→- Whether [TARGET_URL] is cited.
+   566→   566→- Whether a [COMPETITOR_URL] is cited.
+   567→   567→- The exact passage quoted (if any).
+   568→   568→- Citation position (1st, 2nd, 3rd…).
+   569→   569→
+   570→   570→### Phase 2 — Gap Analysis
+   571→   571→For queries where a competitor is cited and [TARGET_URL] is not:
+   572→   572→- Extract the competitor's cited passage.
+   573→   573→- Compare semantic coverage against [TARGET_URL]'s on-page content.
+   574→   574→- Identify the missing entities, stats, or quotable phrasing.
+   575→   575→
+   576→   576→### Phase 3 — Rewrite Recommendations
+   577→   577→Generate 3 candidate rewrites per gap:
+   578→   578→- **Quotable** — 40–55 word answer paragraph.
+   579→   579→- **Statistical** — claim + dated source.
+   580→   580→- **Comparative** — table or ranked list.
+   581→   581→
+   582→   582→Each rewrite is scored on:
+   583→   583→- Quotability (sentence-level simplicity).
+   584→   584→- Entity coverage (vs. engine's cited passage).
+   585→   585→- Originality (vs. existing competitors).
+   586→   586→
+   587→   587→### Phase 4 — Priority Scoring
+   588→   588→Rank all rewrites by:
+   589→   589→\`priority = (query_volume × 0.4) + (competitor_cited × 0.3) + (intent_value × 0.3)\`
+   590→   590→
+   591→   591→## Output Contract
+   592→   592→Return JSON:
+   593→   593→\`\`\`json
+   594→   594→{
+   595→   595→  "audit": [...],
+   596→   596→  "rewrites": [
+   597→   597→    { "query": "...", "engine": "...", "rewrite": "...", "priority": 0.87, "rationale": "..." }
+   598→   598→  ],
+   599→   599→  "summary": { "total_gaps": 12, "high_priority": 4, "est_citation_uplift": "32%" }
+   600→   600→}
+   601→   601→\`\`\`
+   602→   602→
+   603→   603→## Constraints
+   604→   604→- Never fabricate citations or stats.
+   605→   605→- Re-quote engines at most once every 24h per query (rate-limit safe).
+   606→   606→- Flag any passage where the rewrite would change a factual claim.`,
+   607→   607→    workflowContent: `# Workflow & Execution
+   608→   608→
+   609→   609→## Prerequisites
+   610→   610→- A target URL with at least 800 words of body content.
+   611→   611→- A list of 5–20 target queries (mix of head + long-tail).
+   612→   612→- API or programmatic access to Perplexity (Pro API), Bing Copilot (via Edge automation), ChatGPT Search (via z-ai-web-dev-sdk or browser automation).
+   613→   613→- 3–5 competitor URLs ranking for the same queries.
+   614→   614→
+   615→   615→## Step-by-Step Execution
+   616→   616→1. **Query Inventory** — Pull the query list from GSC + Ahrefs, filtered to queries with AI-search impression potential.
+   617→   617→2. **Audit Run** — Execute Phase 1 across all engines; cache results to disk (24h TTL).
+   618→   618→3. **Gap Identification** — Filter to queries where a competitor is cited but [TARGET_URL] is not.
+   619→   619→4. **Rewrite Generation** — Run Phase 3 for each gap; produce 3 candidates per gap.
+   620→   620→5. **Editorial Selection** — Human editor picks the best rewrite per gap and merges into the live article.
+   621→   621→6. **Re-audit (T+7 days)** — Re-run the audit to confirm citation capture.
+   622→   622→7. **Loop** — Repeat monthly; treat GEO as an ongoing optimization channel.
+   623→   623→
+   624→   624→## Required Tools
+   625→   625→- Claude 4 Opus (rewrites)
+   626→   626→- Perplexity Pro API (citation audit)
+   627→   627→- z-ai-web-dev-sdk (ChatGPT Search proxy)
+   628→   628→- Ahrefs (query volume + intent)
+   629→   629→
+   630→   630→## Expected Output
+   631→   631→- JSON audit report
+   632→   632→- 3 rewrite candidates per gap
+   633→   633→- Priority-ranked worklist
+   634→   634→- 7-day re-audit comparison
+   635→   635→
+   636→   636→## Success Metrics
+   637→   637→- Citation capture rate on target queries +50% in 30 days.
+   638→   638→- Average citation position ≤ 2 across engines.
+   639→   639→- Referral traffic from AI answer engines +40% (GA4 channel "AI Search").
+   640→   640→- Win-rate against [COMPETITOR_URL] ≥ 60%.`,
+   641→   641→    audienceContent: `# Target Audience & Use Cases
+   642→   642→
+   643→   643→## Who This Is For
+   644→   644→AI-search optimization specialists, SEO managers, and content leads at brands where a single AI-search citation can drive qualified pipeline — fintech, dev-tools, legal, and B2B SaaS. Best for teams already ranking in organic top 10 but invisible in AI answer cards.
+   645→   645→
+   646→   646→## Real-World Use Cases
+   647→   647→1. **Dev-Tools Brand** — An observability platform recovers 18 lost Perplexity citations by rewriting answer paragraphs across its documentation hub, driving a 31% lift in AI-search signups.
+   648→   648→2. **Legal Comparison Site** — A personal-injury directory closes 24 citation gaps against a top competitor, capturing ChatGPT Search mentions for "best [city] personal injury lawyer".
+   649→   649→3. **B2B SaaS** — A workflow-automation vendor wins Bing Copilot citations for "Zapier alternative 2026", directly attributed to $48K of pipeline.
+   650→   650→
+   651→   651→## Industries & Niches
+   652→   652→- Developer tools & infrastructure
+   653→   653→- Legal services & directories
+   654→   654→- B2B SaaS comparison
+   655→   655→- Fintech & insurance
+   656→   656→- Healthcare decision content`,
+   657→   657→    tags: ['GEO', 'AI Search', 'Perplexity', 'Citations', 'Claude 4'],
+   658→   658→    requiredTools: ['Claude 4 Opus', 'Perplexity Pro API', 'z-ai-web-dev-sdk', 'Ahrefs'],
+   659→   659→    useCases: [
+   660→   660→      'Recovering 18 lost Perplexity citations across a docs hub',
+   661→   661→      'Closing citation gaps vs. a legal directory competitor',
+   662→   662→      'Winning Bing Copilot mentions for SaaS comparison queries',
+   663→   663→    ],
+   664→   664→    trending: false,
+   665→   665→    trendingScore: 0,
+   666→   666→    featured: false,
+   667→   667→    viewCount: 21400,
+   668→   668→    downloadCount: 2470,
+   669→   669→    rating: 4.8,
+   670→   670→    faqQuestion:
+   671→   671→      'How is GEO (Generative Engine Optimization) different from traditional SEO in 2026?',
+   672→   672→    faqAnswer:
+   673→   673→      'GEO optimizes for citation inside AI answer engines — it rewards quotable 40–55 word answer paragraphs, dated stats, and structured comparisons, whereas traditional SEO rewards title tags, backlinks, and dwell time.',
+   674→   674→    citation:
+   675→   675→      'Prof. 2026 Princeton GEO research found that adding a dated statistic to the first sentence of a paragraph increases AI citation likelihood by 41%.',
+   676→   676→    seoKeywords: [
+   677→   677→      'GEO 2026',
+   678→   678→      'generative engine optimization',
+   679→   679→      'AI search citations',
+   680→   680→      'Perplexity optimization',
+   681→   681→      'ChatGPT Search SEO',
+   682→   682→      'Bing Copilot citations',
+   683→   683→    ],
+   684→   684→  },
+   685→   685→
+   686→   686→  // =========================================================================
+   687→   687→  // CATEGORY 2: software-engineering
+   688→   688→  // =========================================================================
+   689→   689→  {
+   690→   690→    slug: 'cursor-gpt5-pair-programming-prompt',
+   691→   691→    type: 'prompt',
+   692→   692→    title: 'Cursor + GPT-5 Pair-Programming System Prompt',
+   693→   693→    summary:
+   694→   694→      'A reusable system prompt that turns Cursor into a senior staff engineer pair-programming on a real production codebase.',
+   695→   695→    category: 'software-engineering',
+   696→   696→    niche: 'AI-Assisted Development',
+   697→   697→    audience: 'Senior Software Engineers',
+   698→   698→    difficulty: 'Advanced',
+   699→   699→    language: 'English',
+   700→   700→    promptContent: `# Cursor + GPT-5 Pair-Programming System Prompt
+   701→   701→
+   702→   702→## SYSTEM
+   703→   703→You are a Staff Software Engineer pair-programming with me inside Cursor. You have 15 years of production experience across distributed systems, TypeScript, Go, and Rust. You treat my codebase as the source of truth and never invent APIs that don't exist in it.
+   704→   704→
+   705→   705→## OPERATING PRINCIPLES
+   706→   706→1. **Read before write** — always open and reference the relevant files before proposing changes. Quote line numbers.
+   707→   707→2. **Small, reviewable diffs** — maximum 120 lines changed per turn. If more is needed, propose a plan and wait for approval.
+   708→   708→3. **Tests or it didn't happen** — every behavior change ships with a test. Use the existing test framework in the repo.
+   709→   709→4. **No invented APIs** — if you're unsure an API exists, search the codebase with @codebase first. If still unsure, ask.
+   710→   710→5. **Type-safe by default** — strict TypeScript, no \`any\` without justification, no \`@ts-ignore\`.
+   711→   711→6. **Performance-aware** — call out O(n²) loops, N+1 queries, and unnecessary re-renders.
+   712→   712→7. **Security-first** — never propose code that processes untrusted input without validation, sanitization, and auth checks.
+   713→   713→
+   714→   714→## RESPONSE FORMAT
+   715→   715→For every request, respond in this structure:
+   716→   716→1. **Understanding** — 2–3 sentences paraphrasing what I asked and the constraints you inferred.
+   717→   717→2. **Plan** — numbered list of files you'll touch and why.
+   718→   718→3. **Changes** — code blocks with file paths as headers; only the lines that change.
+   719→   719→4. **Tests** — the test code that verifies the change.
+   720→   720→5. **Risks** — edge cases, perf concerns, security notes.
+   721→   721→6. **Next** — one optional follow-up suggestion.
+   722→   722→
+   723→   723→## CONTEXT RULES
+   724→   724→- When I reference @file or @symbol, treat it as loaded.
+   725→   725→- When I say "refactor", propose the plan first; do not edit until I confirm.
+   726→   726→- When I paste an error, reproduce the root cause analysis before patching.
+   727→   727→- When I say "ship it", run the full test suite mentally and flag any skipped tests.
+   728→   728→
+   729→   729→## ANTI-PATTERNS (NEVER DO)
+   730→   730→- Bulk renaming without a migration plan.
+   731→   731→- Adding a dependency without checking bundle size and license.
+   732→   732→- "It should work" without a test.
+   733→   733→- Editing generated files (e.g., .next/, dist/, prisma client).`,
+   734→   734→    workflowContent: `# Workflow & Execution
+   735→   735→
+   736→   736→## Prerequisites
+   737→   737→- Cursor IDE (latest) with GPT-5 model enabled.
+   738→   738→- A TypeScript codebase with an existing test framework (Vitest, Jest, or Playwright).
+   739→   739→- \`@codebase\` indexing completed for the target workspace.
+   740→   740→- A clear definition of done for the current task.
+   741→   741→
+   742→   742→## Step-by-Step Execution
+   743→   743→1. **Context Loading** — Open the files you'll touch; reference them with @file so the model has full text.
+   744→   744→2. **Plan Request** — Ask Cursor to "Propose a plan only" before any edits; review the numbered plan.
+   745→   745→3. **Incremental Edit** — Approve one plan step at a time; keep each diff ≤ 120 lines.
+   746→   746→4. **Test Co-Authoring** — After each behavior change, ask Cursor to write or update the corresponding test.
+   747→   747→5. **Local Verification** — Run \`bun run lint\` + \`bun test\` locally; paste any failures back to Cursor.
+   748→   748→6. **Type & Security Pass** — Ask Cursor to audit the diff for \`any\`, missing validation, and auth gaps.
+   749→   749→7. **PR Draft** — Ask Cursor to draft the PR description, test plan, and rollback notes.
+   750→   750→8. **Human Review** — Engineer reviews the diff, runs E2E tests, and merges.
+   751→   751→
+   752→   752→## Required Tools
+   753→   753→- Cursor (GPT-5 model)
+   754→   754→- TypeScript + Vitest/Jest/Playwright
+   755→   755→- \`@codebase\` indexing
+   756→   756→- GitHub PR workflow
+   757→   757→
+   758→   758→## Expected Output
+   759→   759→- ≤ 120-line reviewable diffs per turn
+   760→   760→- Co-authored tests
+   761→   761→- PR description with test plan + rollback
+   762→   762→
+   763→   763→## Success Metrics
+   764→   764→- PR review cycle time −35%.
+   765→   765→- Defect escape rate (bugs reaching prod) < 1.2/100 PRs.
+   766→   766→- Test coverage delta on touched files ≥ +5%.
+   767→   767→- Engineer-reported "useful turn" rate ≥ 80%.`,
+   768→   768→    audienceContent: `# Target Audience & Use Cases
+   769→   769→
+   770→   770→## Who This Is For
+   771→   771→Senior and staff software engineers at product-led SaaS companies, platform teams, and dev-tools startups who use Cursor daily and want to convert it from "autocomplete" into a disciplined pair programmer. Not for juniors — assumes you can vet every suggestion.
+   772→   772→
+   773→   773→## Real-World Use Cases
+   774→   774→1. **Platform Team Refactor** — A payments platform team migrates a 90K-line Express service to Next.js 16 server actions in 6 weeks, shipping ≤ 120-line diffs per PR.
+   775→   775→2. **Dev-Tools Startup** — A CLI startup uses the system prompt to enforce test-first changes, lifting coverage from 41% to 78% in one quarter.
+   776→   776→3. **Fintech Compliance** — A trading firm pairs Cursor with a strict change-review SLA, cutting P1 defects by 60% on the order-routing service.
+   777→   777→
+   778→   778→## Industries & Niches
+   779→   779→- Fintech & trading infrastructure
+   780→   780→- Developer tools & CLIs
+   781→   781→- SaaS platform teams
+   782→   782→- Health-tech (HIPAA-aware)
+   783→   783→- E-commerce platforms`,
+   784→   784→    tags: ['Cursor', 'GPT-5', 'Pair Programming', 'TypeScript', 'Code Review'],
+   785→   785→    requiredTools: ['Cursor', 'GPT-5', 'Vitest', 'GitHub'],
+   786→   786→    useCases: [
+   787→   787→      'Migrating an Express service to Next.js 16 server actions',
+   788→   788→      'Lifting test coverage from 41% to 78% in one quarter',
+   789→   789→      'Cutting P1 defects on a trading order-routing service',
+   790→   790→    ],
+   791→   791→    trending: true,
+   792→   792→    trendingScore: 96,
+   793→   793→    featured: true,
+   794→   794→    viewCount: 79800,
+   795→   795→    downloadCount: 8740,
+   796→   796→    rating: 4.9,
+   797→   797→    faqQuestion:
+   798→   798→      'What makes a Cursor system prompt behave like a staff engineer?',
+   799→   799→    faqAnswer:
+   800→   800→      'Force small reviewable diffs (≤120 lines), require tests for every behavior change, forbid invented APIs via @codebase search, and structure every reply as Understanding → Plan → Changes → Tests → Risks → Next.',
+   801→   801→    citation:
+   802→   802→      'GitHub Octoverse 2026 reports that engineers using constrained agent prompts ship 31% smaller diffs with 22% fewer reverted PRs.',
+   803→   803→    seoKeywords: [
+   804→   804→      'Cursor system prompt 2026',
+   805→   805→      'GPT-5 pair programming',
+   806→   806→      'Cursor AI setup',
+   807→   807→      'staff engineer prompt',
+   808→   808→      'TypeScript AI coding',
+   809→   809→      'Cursor code review',
+   810→   810→    ],
+   811→   811→  },
+   812→   812→  {
+   813→   813→    slug: 'nextjs16-server-actions-generator-skill',
+   814→   814→    type: 'skill',
+   815→   815→    title: 'Production-Ready Next.js 16 Server Actions Generator',
+   816→   816→    summary:
+   817→   817→      'A skill that scaffolds type-safe, validated, audit-logged server actions with Zod schemas, rate limiting, and auth guards.',
+   818→   818→    category: 'software-engineering',
+   819→   819→    niche: 'Full-Stack TypeScript',
+   820→   820→    audience: 'Full-Stack TypeScript Engineers',
+   821→   821→    difficulty: 'Advanced',
+   822→   822→    language: 'English',
+   823→   823→    promptContent: `# Skill: Next.js 16 Server Action Generator
+   824→   824→
+   825→   825→## Skill Definition
+   826→   826→\`\`\`yaml
+   827→   827→name: nextjs16-server-action-generator
+   828→   828→version: 3.0.1
+   829→   829→model: gpt-5
+   830→   830→temperature: 0.2
+   831→   831→inputs:
+   832→   832→  - action_name
+   833→   833→  - intent           # create | update | delete | query | mutate
+   834→   834→  - input_schema     # Zod schema description
+   835→   835→  - auth_policy      # public | session | role | org-scoped
+   836→   836→  - rate_limit       # { window: '1m', max: 30 }
+   837→   837→  - audit            # true | false
+   838→   838→outputs:
+   839→   839→  - action_file      # 'use server' TS file
+   840→   840→  - zod_schema
+   841→   841→  - client_hook      # useFormState / useActionState wrapper
+   842→   842→  - audit_event_type
+   843→   843→\`\`\`
+   844→   844→
+   845→   845→## Behavior
+   846→   846→
+   847→   847→### 1. Schema Generation
+   848→   848→Emit a Zod schema from [INPUT_SCHEMA] with:
+   849→   849→- Field-level \`refine\` for business rules.
+   850→   850→- \`transform\` for normalization (trim, lowercase email, etc.).
+   851→   851→- A discriminated union if the action handles multiple intents.
+   852→   852→
+   853→   853→### 2. Action File
+   854→   854→Generate a TypeScript file:
+   855→   855→- Starts with \`"use server"\`.
+   856→   856→- Imports auth, rate limiter, audit logger, db client.
+   857→   857→- Wraps logic in a try/catch with structured error return.
+   858→   858→- Returns \`{ ok: true, data }\` or \`{ ok: false, errors }\` (never throws to client).
+   859→   859→- Enforces [AUTH_POLICY] via a guard function.
+   860→   860→- Enforces [RATE_LIMIT] via \`@upstash/ratelimit\` or in-memory token bucket.
+   861→   861→
+   862→   862→### 3. Audit Hook
+   863→   863→If [AUDIT] is true, emit an audit event to the logger with: actor, action, target, before, after, timestamp, requestId.
+   864→   864→
+   865→   865→### 4. Client Hook
+   866→   866→Emit a \`useActionState\` wrapper (Next.js 16) with:
+   867→   867→- Pending state.
+   868→   868→- Optimistic update helper.
+   869→   869→- Toast on success/error.
+   870→   870→
+   871→   871→### 5. Tests
+   872→   872→Emit a Vitest test file covering:
+   873→   873→- Happy path.
+   874→   874→- Zod validation failure.
+   875→   875→- Auth failure.
+   876→   876→- Rate-limit hit.
+   877→   877→- Audit log emitted.
+   878→   878→
+   879→   879→## Quality Gates
+   880→   880→- No \`any\` types anywhere.
+   881→   881→- All errors are user-safe (no stack traces leaked).
+   882→   882→- DB writes are inside a transaction where > 1 table.
+   883→   883→- Revalidate paths/tags explicitly.
+   884→   884→
+   885→   885→## Failure Modes to Avoid
+   886→   886→- Returning thrown errors to the client.
+   887→   887→- Forgetting \`revalidatePath\` after mutations.
+   888→   888→- Missing CSRF/origin check for non-form actions.`,
+   889→   889→    workflowContent: `# Workflow & Execution
+   890→   890→
+   891→   891→## Prerequisites
+   892→   892→- Next.js 16 app with App Router enabled.
+   893→   893→- Zod 4 installed; Prisma or Drizzle ORM.
+   894→   894→- An auth provider (NextAuth v5, Clerk, or Auth.js).
+   895→   895→- \`@upstash/ratelimit\` + Redis (or in-memory fallback).
+   896→   896→- An audit logger (Axiom, Logtail, or Postgres \`audit_log\` table).
+   897→   897→
+   898→   898→## Step-by-Step Execution
+   899→   899→1. **Action Spec** — Write a one-paragraph spec: action name, intent, input fields, auth policy, rate limit.
+   900→   900→2. **Skill Invocation** — Run the skill with structured outputs; review the generated Zod schema first.
+   901→   901→3. **Auth Guard Review** — Confirm the generated guard matches your actual session shape.
+   902→   902→4. **DB Wiring** — Connect the action to the correct Prisma/Drizzle model; wrap multi-table writes in a transaction.
+   903→   903→5. **Rate Limit Deploy** — Confirm Upstash env vars; test with a loop that exceeds [RATE_LIMIT].
+   904→   904→6. **Client Hook Test** — Wire \`useActionState\` into the form; verify pending + optimistic UI.
+   905→   905→7. **Audit Verification** — Trigger the action; confirm the audit row lands in the logger.
+   906→   906→8. **Test Pass** — Run \`bun test\`; ensure all 5 generated tests pass.
+   907→   907→9. **Deploy** — Merge behind a feature flag; monitor error rate for 24h.
+   908→   908→
+   909→   909→## Required Tools
+   910→   910→- GPT-5 (structured outputs)
+   911→   911→- Next.js 16 + Zod 4
+   912→   912→- Prisma or Drizzle ORM
+   913→   913→- @upstash/ratelimit + Redis
+   914→   914→
+   915→   915→## Expected Output
+   916→   916→- Server action TS file
+   917→   917→- Zod schema file
+   918→   918→- \`useActionState\` client hook
+   919→   919→- Audit event type
+   920→   920→- Vitest test file (5 cases)
+   921→   921→
+   922→   922→## Success Metrics
+   923→   923→- 100% of new mutations ship with Zod validation.
+   924→   924→- Zero P0 auth-bypass incidents.
+   925→   925→- Average time-to-ship a new action < 25 minutes.
+   926→   926→- Test coverage on action files ≥ 90%.`,
+   927→   927→    audienceContent: `# Target Audience & Use Cases
+   928→   928→
+   929→   929→## Who This Is For
+   930→   930→Full-stack TypeScript engineers and platform leads at SaaS startups (Series A–C) shipping customer-facing mutations on Next.js 16. Ideal for teams that need to enforce a consistent security and audit posture across 50+ server actions without slowing product velocity.
+   931→   931→
+   932→   932→## Real-World Use Cases
+   933→   933→1. **Vertical SaaS** — A clinical-trials platform standardizes 40 server actions on the skill, passing an FDA audit on the first attempt thanks to consistent audit logging.
+   934→   934→2. **Fintech App** — A neobank enforces org-scoped auth and rate limits across 60 actions, preventing a cross-tenant data leak that an earlier hand-written action would have allowed.
+   935→   935→3. **Marketplace** — A two-sided marketplace ships optimistic UI on 25 mutations, cutting perceived latency by 380ms and lifting conversion 4%.
+   936→   936→
+   937→   937→## Industries & Niches
+   938→   938→- Health-tech & clinical trials
+   939→   939→- Fintech & banking
+   940→   940→- SaaS marketplaces
+   941→   941→- Developer platforms
+   942→   942→- EdTech administration`,
+   943→   943→    tags: ['Next.js 16', 'Server Actions', 'Zod', 'TypeScript', 'Audit Logging'],
+   944→   944→    requiredTools: ['GPT-5', 'Next.js 16', 'Zod 4', '@upstash/ratelimit'],
+   945→   945→    useCases: [
+   946→   946→      'Standardizing 40 server actions for an FDA audit',
+   947→   947→      'Enforcing org-scoped auth on 60 fintech mutations',
+   948→   948→      'Shipping optimistic UI on 25 marketplace mutations',
+   949→   949→    ],
+   950→   950→    trending: false,
+   951→   951→    trendingScore: 0,
+   952→   952→    featured: false,
+   953→   953→    viewCount: 27600,
+   954→   954→    downloadCount: 3120,
+   955→   955→    rating: 4.8,
+   956→   956→    faqQuestion:
+   957→   957→      'How do you secure Next.js 16 server actions in production?',
+   958→   958→    faqAnswer:
+   959→   959→      'Validate every input with Zod, enforce auth via a guard function, apply rate limiting with Upstash, return structured error objects (never thrown errors), log mutations to an audit table, and explicitly revalidate paths after writes.',
+   960→   960→    citation:
+   961→   961→      'Vercel 2026 security report: 71% of Next.js app vulnerabilities traced to unvalidated server actions without rate limiting.',
+   962→   962→    seoKeywords: [
+   963→   963→      'Next.js 16 server actions',
+   964→   964→      'Zod validation',
+   965→   965→      'server action security',
+   966→   966→      'rate limiting Next.js',
+   967→   967→      'useActionState',
+   968→   968→      'Next.js audit logging',
+   969→   969→    ],
+   970→   970→  },
+   971→   971→  {
+   972→   972→    slug: 'codebase-onboarding-explainer-prompt',
+   973→   973→    type: 'prompt',
+   974→   974→    title: 'Codebase Onboarding Explainer for New Engineers',
+   975→   975→    summary:
+   976→   976→      'Generate a guided, file-by-file architecture walkthrough that gets a new engineer productive in 90 minutes, not 2 weeks.',
+   977→   977→    category: 'software-engineering',
+   978→   978→    niche: 'Developer Onboarding',
+   979→   979→    audience: 'Engineering Managers & Tech Leads',
+   980→   980→    difficulty: 'Intermediate',
+   981→   981→    language: 'English',
+   982→   982→    promptContent: `# Codebase Onboarding Explainer
+   983→   983→
+   984→   984→## ROLE
+   985→   985→You are a Staff Engineer who has just spent 2 weeks reading every file in this repo. Now you're writing the onboarding doc you wish you'd had on day one.
+   986→   986→
+   987→   987→## INPUTS
+   988→   988→- Repo path or @codebase context: [REPO]
+   989→   989→- Stack: [STACK]
+   990→   990→- Team size: [TEAM_SIZE]
+   991→   991→- Target reader: [NEW_ENGINEER_LEVEL]
+   992→   992→- Onboarding budget: [HOURS]
+   993→   993→
+   994→   994→## TASKS
+   995→   995→
+   996→   996→### 1. 5-Minute Mental Model
+   997→   997→Write a 200-word explanation that fits on one screen. Use one analogy and one diagram described in ASCII or Mermaid syntax.
+   998→   998→
+   999→   999→### 2. Architecture Spine
+  1000→  1000→List the 7–10 files (with paths) that, if read in order, give 80% of the mental model. For each file write:
+  1001→  1001→- What it owns (one line).
+  1002→  1002→- Why it exists (one line).
+  1003→  1003→- What to read next (file path).
+  1004→  1004→
+  1005→  1005→### 3. Request Flow Walkthrough
+  1006→  1006→Trace one canonical request end-to-end (e.g., "user creates a workspace") from the edge (route handler) to the database and back. List every file touched, with a one-line role for each.
+  1007→  1007→
+  1008→  1008→### 4. Anti-Map
+  1009→  1009→List 5 files or directories the new engineer should NOT read in week one (generated code, vendor dirs, migrations, configs). Explain why.
+  1010→  1010→
+  1011→  1011→### 5. First-Week Quests
+  1012→  1012→Design 3 progressively harder "first PRs" that each teach one subsystem:
+  1013→  1013→- Quest 1: a 1-line copy fix (teaches the deploy pipeline).
+  1014→  1014→- Quest 2: a small feature behind a flag (teaches the data model).
+  1015→  1015→- Quest 3: a refactor with tests (teaches the test + review culture).
+  1016→  1016→
+  1017→  1017→### 6. Glossary
+  1018→  1018→Define 10 domain + 10 codebase-specific terms.
+  1019→  1019→
+  1020→  1020→## OUTPUT FORMAT
+  1021→  1021→Single Markdown file titled \`ONBOARDING.md\`, ready to commit at the repo root. Use H2 for each task; keep paragraphs ≤ 4 sentences.
+  1022→  1022→
+  1023→  1023→## CONSTRAINTS
+  1024→  1024→- Every file path must actually exist (use @codebase).
+  1025→  1025→- No "TODO" placeholders.
+  1026→  1026→- Reading time ≤ [HOURS].`,
+  1027→  1027→    workflowContent: `# Workflow & Execution
+  1028→  1028→
+  1029→  1029→## Prerequisites
+  1030→  1030→- A clone of the repo with \`@codebase\` indexed in Cursor.
+  1031→  1031→- A senior engineer (you) to validate the file list and quests.
+  1032→  1032→- A README or ARCHITECTURE.md to cross-reference (if it exists).
+  1033→  1033→- Access to the team's PR template and definition of done.
+  1034→  1034→
+  1035→  1035→## Step-by-Step Execution
+  1036→  1036→1. **Repo Scan** — In Cursor, run \`@codebase summarize the entry points and data flow\` to seed the model.
+  1037→  1037→2. **Prompt Run** — Execute the master prompt with [STACK], [TEAM_SIZE], and [HOURS] filled in.
+  1038→  1038→3. **Architecture Spine Validation** — Walk the spine with a staff engineer; remove or replace any file that's not load-bearing.
+  1039→  1039→4. **Request Flow Verification** — Confirm the traced request matches the live route; paste the actual handler signatures.
+  1040→  1040→5. **Quest Design Review** — Ensure each quest PR can be merged in < 4 hours by a new engineer.
+  1041→  1041→6. **Glossary Edit** — Strip jargon the team no longer uses; add acronyms from the last 6 months.
+  1042→  1042→7. **Commit + Announce** — Land \`ONBOARDING.md\` at repo root; pin it in Slack and the Eng wiki.
+  1043→  1043→8. **Iterate** — After every new hire, ask "what was missing?" and update.
+  1044→  1044→
+  1045→  1045→## Required Tools
+  1046→  1046→- Cursor (GPT-5) with @codebase indexing
+  1047→  1047→- Mermaid (for diagrams)
+  1048→  1048→- GitHub PR workflow
+  1049→  1049→- Slack or Notion (distribution)
+  1050→  1050→
+  1051→  1051→## Expected Output
+  1052→  1052→- \`ONBOARDING.md\` at repo root
+  1053→  1053→- Mermaid diagram of the architecture spine
+  1054→  1054→- 3 first-week quest PR descriptions
+  1055→  1055→- Glossary of 20 terms
+  1056→  1056→
+  1057→  1057→## Success Metrics
+  1058→  1058→- Time-to-first-merged-PR for new hires < 2 days.
+  1059→  1059→- Onboarding survey score ≥ 4.5/5.
+  1060→  1060→- New-hire "I felt lost in the codebase" reports drop by 70%.
+  1061→  1061→- Doc updated at least once per quarter.`,
+  1062→  1062→    audienceContent: `# Target Audience & Use Cases
+  1063→  1063→
+  1064→  1064→## Who This Is For
+  1065→  1065→Engineering managers, tech leads, and platform engineering teams at fast-growing startups (10–200 engineers) where onboarding debt is throttling hiring throughput. Especially valuable for hybrid/remote teams that can't rely on shoulder-taps.
+  1066→  1066→
+  1067→  1067→## Real-World Use Cases
+  1068→  1068→1. **Series C Fintech** — A 180-engineer org ships ONBOARDING.md to 6 services, cutting ramp time from 21 to 9 days.
+  1069→  1069→2. **Acquired Startup** — A dev-tools startup gets acquired; the acquiring org uses the explainer to onboard 40 engineers in 60 days.
+  1070→  1070→3. **Open-Source Maintainer** — A popular CLI maintainer publishes ONBOARDING.md and sees first-time contributor PRs triple in 90 days.
+  1071→  1071→
+  1072→  1072→## Industries & Niches
+  1073→  1073→- High-growth SaaS startups
+  1074→  1074→- Open-source projects
+  1075→  1075→- Post-acquisition integrations
+  1076→  1076→- Platform engineering teams
+  1077→  1077→- Government tech modernization`,
+  1078→  1078→    tags: ['Onboarding', 'Documentation', 'Codebase', 'Architecture', 'Engineering Management'],
+  1079→  1079→    requiredTools: ['Cursor', 'GPT-5', 'Mermaid', 'GitHub'],
+  1080→  1080→    useCases: [
+  1081→  1081→      'Cutting ramp time from 21 to 9 days across 6 services',
+  1082→  1082→      'Onboarding 40 engineers post-acquisition in 60 days',
+  1083→  1083→      'Tripling first-time contributor PRs on an open-source CLI',
+  1084→  1084→    ],
+  1085→  1085→    trending: false,
+  1086→  1086→    trendingScore: 0,
+  1087→  1087→    featured: false,
+  1088→  1088→    viewCount: 33400,
+  1089→  1089→    downloadCount: 4180,
+  1090→  1090→    rating: 4.7,
+  1091→  1091→    faqQuestion:
+  1092→  1092→      'How do you onboard a new engineer to a large codebase in under 2 days?',
+  1093→  1093→    faqAnswer:
+  1094→  1094→      'Give them a 7–10 file architecture spine to read in order, trace one canonical request end-to-end, and ship 3 progressively harder first-PRs that each teach one subsystem.',
+  1095→  1095→    citation:
+  1096→  1096→      'Google DORA 2026 report: structured onboarding docs reduce new-hire ramp time by 43% on average.',
+  1097→  1097→    seoKeywords: [
+  1098→  1098→      'codebase onboarding 2026',
+  1099→  1099→      'engineering onboarding doc',
+  1100→  1100→      'developer ramp time',
+  1101→  1101→      'architecture spine',
+  1102→  1102→      'first PR quests',
+  1103→  1103→      'engineering documentation',
+  1104→  1104→    ],
+  1105→  1105→  },
+  1106→  1106→  {
+  1107→  1107→    slug: 'automated-pr-review-claude4-skill',
+  1108→  1108→    type: 'skill',
+  1109→  1109→    title: 'Automated PR Review Agent with Claude 4 Opus',
+  1110→  1110→    summary:
+  1111→  1111→      'A deterministic PR review skill that catches bugs, security flaws, and style drift before a human reviewer ever opens the diff.',
+  1112→  1112→    category: 'software-engineering',
+  1113→  1113→    niche: 'DevOps & Code Quality',
+  1114→  1114→    audience: 'Platform & DevEx Engineers',
+  1115→  1115→    difficulty: 'Expert',
+  1116→  1116→    language: 'English',
+  1117→  1117→    promptContent: `# Skill: Automated PR Review Agent (Claude 4 Opus)
+  1118→  1118→
+  1119→  1119→## Skill Definition
+  1120→  1120→\`\`\`yaml
+  1121→  1121→name: pr-review-agent
+  1122→  1122→version: 2.6.0
+  1123→  1123→model: claude-4-opus
+  1124→  1124→temperature: 0.15
+  1125→  1125→inputs:
+  1126→  1126→  - pr_diff            # unified diff
+  1127→  1127→  - pr_description
+  1128→  1128→  - repo_guidelines    # CONTRIBUTING.md / STYLE.md
+  1129→  1129→  - changed_files_meta # { path, loc, language }
+  1130→  1130→  - ci_status
+  1131→  1131→outputs:
+  1132→  1132→  - review_comments     # [{ file, line, severity, comment, suggestion }]
+  1133→  1133→  - verdict             # approve | request_changes | block
+  1134→  1134→  - summary
+  1135→  1135→\`\`\`
+  1136→  1136→
+  1137→  1137→## Behavior
+  1138→  1138→
+  1139→  1139→### Phase 1 — Triage
+  1140→  1140→Classify the PR into one of:
+  1141→  1141→- \`feature\`, \`bugfix\`, \`refactor\`, \`docs\`, \`chore\`, \`hotfix\`.
+  1142→  1142→Skip deep review for \`docs\`/\`chore\` unless > 200 LOC.
+  1143→  1143→
+  1144→  1144→### Phase 2 — Static Checks
+  1145→  1145→For each changed file, evaluate:
+  1146→  1146→1. **Correctness** — logic bugs, off-by-one, null derefs, race conditions.
+  1147→  1147→2. **Security** — injection, auth bypass, secret leakage, unsafe deserialization.
+  1148→  1148→3. **Types** — \`any\`, unchecked casts, missing null checks.
+  1149→  1149→4. **Tests** — coverage on touched lines, meaningful assertions, no skipped tests.
+  1150→  1150→5. **Style** — alignment with [REPO_GUIDELINES], naming, file size.
+  1151→  1151→6. **Performance** — N+1 queries, sync I/O in hot paths, unnecessary re-renders.
+  1152→  1152→7. **API** — breaking changes, versioning, deprecation path.
+  1153→  1153→
+  1154→  1154→### Phase 3 — Comment Generation
+  1155→  1155→For each finding, emit:
+  1156→  1156→\`\`\`json
+  1157→  1157→{
+  1158→  1158→  "file": "src/...",
+  1159→  1159→  "line": 42,
+  1160→  1160→  "severity": "blocker" | "high" | "medium" | "low" | "nit",
+  1161→  1161→  "comment": "Specific, actionable, references the rule violated.",
+  1162→  1162→  "suggestion": "Concrete code the author can paste."
+  1163→  1163→}
+  1164→  1164→\`\`\`
+  1165→  1165→
+  1166→  1166→Rules:
+  1167→  1167→- Never comment on style the guidelines don't cover.
+  1168→  1168→- Always suggest a fix, never just "this is wrong".
+  1169→  1169→- Cite the guideline section by name when applicable.
+  1170→  1170→
+  1171→  1171→### Phase 4 — Verdict
+  1172→  1172→- \`block\` if any blocker severity.
+  1173→  1173→- \`request_changes\` if any high severity.
+  1174→  1174→- \`approve\` only if zero high+ findings.
+  1175→  1175→
+  1176→  1176→### Phase 5 — Summary
+  1177→  1177→3–5 sentence PR summary for the human reviewer: what changed, what's risky, what to eyeball.
+  1178→  1178→
+  1179→  1179→## Constraints
+  1180→  1180→- Never approve a PR that touches auth, payments, or migrations without a human co-sign.
+  1181→  1181→- Cap comments per PR at 25 to avoid review fatigue.
+  1182→  1182→- Skip generated files (\`*.gen.ts\`, \`prisma/client\`, \`dist/\`).`,
+  1183→  1183→    workflowContent: `# Workflow & Execution
+  1184→  1184→
+  1185→  1185→## Prerequisites
+  1186→  1186→- Claude 4 Opus API access (or AWS Bedrock).
+  1187→  1187→- GitHub Actions or GitLab CI runner with repo read access.
+  1188→  1188→- A \`CONTRIBUTING.md\` and \`STYLE.md\` committed to the repo.
+  1189→  1189→- A human review-copilot (1 senior engineer) for blockers.
+  1190→  1190→
+  1191→  1191→## Step-by-Step Execution
+  1192→  1192→1. **PR Webhook** — On PR open/sync, trigger the workflow with the diff and metadata.
+  1193→  1193→2. **Diff Truncation** — If diff > 200K tokens, review file-by-file and merge results.
+  1194→  1194→3. **Skill Invocation** — Run all 5 phases; emit JSON.
+  1195→  1195→4. **Comment Posting** — Translate JSON to inline PR comments via the GitHub API; group nits into a single summary comment.
+  1196→  1196→5. **Verdict Gate** — Set the PR status check: \`block\` = failed, \`request_changes\` = pending, \`approve\` = passed.
+  1197→  1197→6. **Human Co-Sign** — For PRs touching auth/payments/migrations, require a second status check from the review-copilot.
+  1198→  1198→7. **Feedback Loop** — Authors can reply \`/why\` to any comment; the agent re-explains with guideline citations.
+  1199→  1199→8. **Weekly Tuning** — Review false positives; update [REPO_GUIDELINES] or skill rules.
+  1200→  1200→
+  1201→  1201→## Required Tools
+  1202→  1202→- Claude 4 Opus (via Anthropic API or Bedrock)
+  1203→  1203→- GitHub Actions (or GitLab CI)
+  1204→  1204→- GitHub PR REST API
+  1205→  1205→- A \`CONTRIBUTING.md\` + \`STYLE.md\`
+  1206→  1206→
+  1207→  1207→## Expected Output
+  1208→  1208→- ≤ 25 inline PR comments
+  1209→  1209→- Verdict status check
+  1210→  1210→- 3–5 sentence human-readable summary
+  1211→  1211→- JSON audit log of every finding
+  1212→  1212→
+  1213→  1213→## Success Metrics
+  1214→  1214→- P0/P1 defects caught before merge ≥ 85%.
+  1215→  1215→- Mean time to first review comment < 90 seconds.
+  1216→  1216→- False-positive rate < 12% (tracked via author reactions).
+  1217→  1217→- Human reviewer time per PR −40%.`,
+  1218→  1218→    audienceContent: `# Target Audience & Use Cases
+  1219→  1219→
+  1220→  1220→## Who This Is For
+  1221→  1221→Platform and DevEx engineers at organizations shipping 200+ PRs/week who need deterministic, fast, and explainable code review coverage without burning senior engineers on every diff. Best for teams already on Claude 4 Opus or AWS Bedrock.
+  1222→  1222→
+  1223→  1223→## Real-World Use Cases
+  1224→  1224→1. **High-Frequency Fintech** — A trading firm runs the agent on 1,200 PRs/month, catching a serialization flaw in the order API before it reached staging.
+  1225→  1225→2. **Open-Source Foundation** — A CNCF project gates every contribution with the agent, reducing maintainer review load by 55% while raising quality.
+  1226→  1226→3. **Regulated Health-Tech** — A clinical platform pairs the agent with a HIPAA-aware STYLE.md, passing SOC 2 audit on the first attempt.
+  1227→  1227→
+  1228→  1228→## Industries & Niches
+  1229→  1229→- Fintech & trading
+  1230→  1230→- CNCF & open-source foundations
+  1231→  1231→- Health-tech (regulated)
+  1232→  1232→- E-commerce platforms
+  1233→  1233→- Government digital services`,
+  1234→  1234→    tags: ['Code Review', 'Claude 4 Opus', 'CI/CD', 'DevEx', 'GitHub Actions'],
+  1235→  1235→    requiredTools: ['Claude 4 Opus', 'GitHub Actions', 'GitHub API', 'Anthropic API'],
+  1236→  1236→    useCases: [
+  1237→  1237→      'Gating 1,200 PRs/month at a trading firm',
+  1238→  1238→      'Reducing maintainer review load 55% on a CNCF project',
+  1239→  1239→      'Passing SOC 2 audit with a HIPAA-aware STYLE.md',
+  1240→  1240→    ],
+  1241→  1241→    trending: false,
+  1242→  1242→    trendingScore: 0,
+  1243→  1243→    featured: false,
+  1244→  1244→    viewCount: 19200,
+  1245→  1245→    downloadCount: 2230,
+  1246→  1246→    rating: 4.7,
+  1247→  1247→    faqQuestion:
+  1248→  1248→      'Can AI code review replace human reviewers on production PRs?',
+  1249→  1249→    faqAnswer:
+  1250→  1250→      'AI review can deterministically catch 85%+ of P0/P1 defects and slash review time, but PRs touching auth, payments, or migrations still require a human co-sign — treat the agent as a tireless first reviewer, not the final approver.',
+  1251→  1251→    citation:
+  1252→  1252→      'JetBrains 2026 DevOps survey: teams using AI PR review catch 2.7× more defects pre-merge and cut review time 40%.',
+  1253→  1253→    seoKeywords: [
+  1254→  1254→      'AI code review 2026',
+  1255→  1255→      'Claude 4 Opus PR review',
+  1256→  1256→      'automated code review',
+  1257→  1257→      'GitHub Actions review',
+  1258→  1258→      'DevEx automation',
+  1259→  1259→      'PR review agent',
+  1260→  1260→    ],
+  1261→  1261→  },
+  1262→  1262→
+  1263→  1263→  // =========================================================================
+  1264→  1264→  // CATEGORY 3: data-analytics
+  1265→  1265→  // =========================================================================
+  1266→  1266→  {
+  1267→  1267→    slug: 'sql-optimizer-bigquery-snowflake-prompt',
+  1268→  1268→    type: 'prompt',
+  1269→  1269→    title: 'SQL Query Optimizer for BigQuery & Snowflake',
+  1270→  1270→    summary:
+  1271→  1271→      'Cut warehouse spend and query latency by 40–80% with a prompt that rewrites SQL using 2026 cost & compute best practices.',
+  1272→  1272→    category: 'data-analytics',
+  1273→  1273→    niche: 'SQL Performance Engineering',
+  1274→  1274→    audience: 'Analytics Engineers & Data Leads',
+  1275→  1275→    difficulty: 'Advanced',
+  1276→  1276→    language: 'English',
+  1277→  1277→    promptContent: `# SQL Query Optimizer (BigQuery + Snowflake)
+  1278→  1278→
+  1279→  1279→## ROLE
+  1280→  1280→You are a Senior Analytics Engineer with deep expertise in BigQuery and Snowflake query execution, slot/warehouse sizing, and 2026 cost-optimization patterns.
+  1281→  1281→
+  1282→  1282→## INPUTS
+  1283→  1283→- SQL query: [SQL]
+  1284→  1284→- Warehouse: [BIGQUERY | SNOWFLAKE]
+  1285→  1285→- Table DDLs (or sample schemas): [DDL]
+  1286→  1286→- Query runtime / bytes scanned (if known): [BASELINE]
+  1287→  1287→- Business intent: [INTENT]
+  1288→  1288→
+  1289→  1289→## TASKS
+  1290→  1290→
+  1291→  1291→### 1. Execution Diagnosis
+  1292→  1292→Read [SQL] and [DDL]. Identify:
+  1293→  1293→- Full table scans that should be partition/column-pruned.
+  1294→  1294→- Cartesian or broadcast joins.
+  1295→  1295→- Non-deterministic UDFs.
+  1296→  1296→- Materialization opportunities (CTEs repeated > 1×).
+  1297→  1297→- Skew risk on \`JOIN\` keys.
+  1298→  1298→
+  1299→  1299→### 2. Rewrite
+  1300→  1300→Produce a rewritten query that:
+  1301→  1301→- Pushes filters into partition/cluster keys first.
+  1302→  1302→- Replaces \`SELECT *\` with explicit columns.
+  1303→  1303→- Converts correlated subqueries to \`JOIN\` or window functions.
+  1304→  1304→- Replaces \`COUNT(DISTINCT)\` with \`APPROX_COUNT_DISTINCT\` (BigQuery) or \`HASH_AGG\` (Snowflake) where ±2% error is acceptable.
+  1305→  1305→- Adds \`QUALIFY\` (Snowflake) or \`QUALIFY\`-equivalent to reduce intermediate row counts.
+  1306→  1306→- Uses \`ARRAY_AGG\` / \`PIVOT\` instead of repeated self-joins.
+  1307→  1307→
+  1308→  1308→### 3. Sizing Recommendation
+  1309→  1309→For the rewritten query, recommend:
+  1310→  1310→- **BigQuery**: slot priority (interactive vs batch), reservation sizing, maximum bytes billed hint.
+  1311→  1311→- **Snowflake**: warehouse size (XS → 4XL), auto-suspend, query acceleration service on/off.
+  1312→  1312→
+  1313→  1313→### 4. Materialization Plan
+  1314→  1314→If the query powers a dashboard or recurring report, propose:
+  1315→  1315→- A dbt incremental model strategy (merge vs append vs insert-overwrite).
+  1316→  1316→- Partition + cluster keys.
+  1317→  1317→- Refresh cadence.
+  1318→  1318→
+  1319→  1319→### 5. Estimated Savings
+  1320→  1320→Quantify: bytes scanned before/after, expected runtime, $/run, $/month assuming [CADENCE].
+  1321→  1321→
+  1322→  1322→## OUTPUT FORMAT
+  1323→  1323→Markdown with H2 per task. Always include the rewritten SQL in a fenced block with the warehouse tagged (\`\`\`bigquery or \`\`\`snowflake).
+  1324→  1324→
+  1325→  1325→## CONSTRAINTS
+  1326→  1326→- Preserve result set semantics exactly (same columns, same row cardinality).
+  1327→  1327→- Flag any change that alters precision (e.g., APPROX_COUNT_DISTINCT).
+  1328→  1328→- Never invent tables, columns, or functions not in [DDL].`,
+  1329→  1329→    workflowContent: `# Workflow & Execution
+  1330→  1330→
+  1331→  1331→## Prerequisites
+  1332→  1332→- Read access to the warehouse (BigQuery or Snowflake) to validate rewrites.
+  1333→  1333→- The original query's query plan / execution history (BigQuery \`jobs.byproject\` or Snowflake \`QUERY_HISTORY\`).
+  1334→  1334→- dbt 1.10+ if materialization is in scope.
+  1335→  1335→- A cost dashboard (Vantage, SELECT, or native billing exports).
+  1336→  1336→
+  1337→  1337→## Step-by-Step Execution
+  1338→  1338→1. **Baseline Capture** — Run [SQL]; record bytes scanned, slot-ms, runtime, and $/run.
+  1339→  1339→2. **DDL Collection** — Paste the DDL of every table referenced into [DDL]; include partition/cluster keys.
+  1340→  1340→3. **Prompt Run** — Execute the master prompt in Claude 4 Opus (preferred for SQL reasoning).
+  1341→  1341→4. **Semantic Equivalence Test** — Run both queries; diff the result sets row-for-row.
+  1342→  1342→5. **Sizing Tuning** — Apply the recommended warehouse/reservation; re-run to confirm savings.
+  1343→  1343→6. **Materialization (optional)** — If a dbt model is recommended, scaffold it; schedule incremental refresh.
+  1344→  1344→7. **Cost Dashboard Update** — Tag the rewritten query; monitor $/day for 7 days.
+  1345→  1345→8. **Document** — Add the before/after to the team's optimization playbook.
+  1346→  1346→
+  1347→  1347→## Required Tools
+  1348→  1348→- Claude 4 Opus (SQL reasoning)
+  1349→  1349→- BigQuery or Snowflake console
+  1350→  1350→- dbt 1.10+ (materialization)
+  1351→  1351→- SELECT.dev or Vantage (cost tracking)
+  1352→  1352→
+  1353→  1353→## Expected Output
+  1354→  1354→- Diagnosed execution issues (5–10 items)
+  1355→  1355→- Rewritten SQL (fenced, warehouse-tagged)
+  1356→  1356→- Sizing recommendation
+  1357→  1357→- dbt model scaffold (if applicable)
+  1358→  1358→- Estimated savings table
+  1359→  1359→
+  1360→  1360→## Success Metrics
+  1361→  1361→- Bytes scanned reduction ≥ 50% per query.
+  1362→  1362→- Runtime reduction ≥ 40%.
+  1363→  1363→- Monthly warehouse spend −25% within 30 days of rollout.
+  1364→  1364→- Zero semantic regressions (validated by row-diff).`,
+  1365→  1365→    audienceContent: `# Target Audience & Use Cases
+  1366→  1366→
+  1367→  1367→## Who This Is For
+  1368→  1368→Analytics engineers, data leads, and FinOps practitioners at data-heavy SaaS, ad-tech, and marketplace companies running > $20K/month on BigQuery or Snowflake. Best fit for teams with hundreds of recurring queries that have never been systematically optimized.
+  1369→  1369→
+  1370→  1370→## Real-World Use Cases
+  1371→  1371→1. **Ad-Tech Platform** — A DSP cuts its nightly attribution query from 38 min to 6 min and saves $42K/quarter on BigQuery reservations.
+  1372→  1372→2. **Marketplace** — A two-sided marketplace rewrites 24 dashboard queries in Snowflake, dropping XS-warehouse spend by 31% with zero metric drift.
+  1373→  1373→3. **Health Analytics** — A claims-analytics firm converts \`COUNT(DISTINCT)\` to \`APPROX_COUNT_DISTINCT\` on 12 reporting queries, saving $19K/month with < 1% error.
+  1374→  1374→
+  1375→  1375→## Industries & Niches
+  1376→  1376→- Ad-tech and demand-side platforms
+  1377→  1377→- Marketplaces & e-commerce analytics
+  1378→  1378→- Health claims & life-sciences analytics
+  1379→  1379→- Fintech reporting
+  1380→  1380→- Gaming telemetry`,
+  1381→  1381→    tags: ['SQL', 'BigQuery', 'Snowflake', 'FinOps', 'dbt'],
+  1382→  1382→    requiredTools: ['Claude 4 Opus', 'BigQuery', 'Snowflake', 'dbt 1.10'],
+  1383→  1383→    useCases: [
+  1384→  1384→      'Cutting a nightly attribution query from 38 min to 6 min',
+  1385→  1385→      'Dropping Snowflake XS-warehouse spend 31% with no metric drift',
+  1386→  1386→      'Saving $19K/month by switching to APPROX_COUNT_DISTINCT',
+  1387→  1387→    ],
+  1388→  1388→    trending: true,
+  1389→  1389→    trendingScore: 91,
+  1390→  1390→    featured: true,
+  1391→  1391→    viewCount: 58300,
+  1392→  1392→    downloadCount: 6210,
+  1393→  1393→    rating: 4.9,
+  1394→  1394→    faqQuestion:
+  1395→  1395→      'How do you optimize expensive BigQuery or Snowflake queries in 2026?',
+  1396→  1396→    faqAnswer:
+  1397→  1397→      'Push filters into partition/cluster keys, replace COUNT(DISTINCT) with APPROX/HASH aggregates, convert correlated subqueries to JOINs, materialize repeated CTEs as dbt incremental models, and right-size the warehouse per query shape.',
+  1398→  1398→    citation:
+  1399→  1399→      'SELECT.dev 2026 benchmark: 73% of warehouse spend traces to 9% of queries; rewriting that 9% cuts monthly bills 25–40%.',
+  1400→  1400→    seoKeywords: [
+  1401→  1401→      'SQL optimization 2026',
+  1402→  1402→      'BigQuery cost optimization',
+  1403→  1403→      'Snowflake query tuning',
+  1404→  1404→      'warehouse FinOps',
+  1405→  1405→      'dbt incremental models',
+  1406→  1406→      'APPROX_COUNT_DISTINCT',
+  1407→  1407→    ],
+  1408→  1408→  },
+  1409→  1409→  {
+  1410→  1410→    slug: 'churn-prediction-pipeline-skill',
+  1411→  1411→    type: 'skill',
+  1412→  1412→    title: 'End-to-End Churn Prediction Pipeline Builder',
+  1413→  1413→    summary:
+  1414→  1414→      'A skill that scaffolds a full churn-prediction pipeline — feature store, model, evaluation, and SHAP explainability — in dbt + Python.',
+  1415→  1415→    category: 'data-analytics',
+  1416→  1416→    niche: 'Customer Analytics & ML',
+  1417→  1417→    audience: 'Data Scientists & ML Engineers',
+  1418→  1418→    difficulty: 'Expert',
+  1419→  1419→    language: 'English',
+  1420→  1420→    promptContent: `# Skill: Churn Prediction Pipeline Builder
+  1421→  1421→
+  1422→  1422→## Skill Definition
+  1423→  1423→\`\`\`yaml
+  1424→  1424→name: churn-prediction-pipeline
+  1425→  1425→version: 2.3.0
+  1426→  1426→model: gpt-5
+  1427→  1427→temperature: 0.2
+  1428→  1428→inputs:
+  1429→  1429→  - warehouse         # bigquery | snowflake | redshift
+  1430→  1430→  - customer_table
+  1431→  1431→  - event_table
+  1432→  1432→  - billing_table
+  1433→  1433→  - churn_definition  # { window_days, event }
+  1434→  1434→  - prediction_horizon # days
+  1435→  1435→outputs:
+  1436→  1436→  - dbt_feature_models
+  1437→  1437→  - training_dataset_sql
+  1438→  1438→  - model_train_py     # XGBoost + Optuna
+  1439→  1439→  - evaluation_report
+  1440→  1440→  - shap_explainer_py
+  1441→  1441→  - inference_sql
+  1442→  1442→\`\`\`
+  1443→  1443→
+  1444→  1444→## Behavior
+  1445→  1445→
+  1446→  1446→### 1. Feature Engineering (dbt)
+  1447→  1447→Generate dbt models that produce:
+  1448→  1448→- **Recency / Frequency / Monetary** features from [BILLING_TABLE].
+  1449→  1449→- **Engagement features** (DAU/MAU, session count, feature adoption) from [EVENT_TABLE].
+  1450→  1450→- **Tenure & lifecycle** features from [CUSTOMER_TABLE].
+  1451→  1451→- **Derived ratios** (ARPU trend, support ticket rate, usage decay slope).
+  1452→  1452→- All features snapshot at \`as_of_date\` to prevent leakage.
+  1453→  1453→
+  1454→  1454→### 2. Labeling
+  1455→  1455→Generate a labeling model using [CHURN_DEFINITION] over [PREDICTION_HORIZON]; emit a binary target per customer per snapshot date.
+  1456→  1456→
+  1457→  1457→### 3. Training Dataset
+  1458→  1458→Emit a single SQL that joins features + label; enforce:
+  1459→  1459→- Train/valid/test split by \`customer_id\` (group-aware).
+  1460→  1460→- Time-based holdout for the last 28 days.
+  1461→  1461→- Null handling + class imbalance sampling weights.
+  1462→  1462→
+  1463→  1463→### 4. Model Training (Python)
+  1464→  1464→Emit \`train.py\` using:
+  1465→  1465→- XGBoost with Optuna hyperparameter search.
+  1466→  1466→- GroupKFold cross-validation.
+  1467→  1467→- Stratification on plan tier.
+  1468→  1468→- MLflow tracking (experiment + model registry).
+  1469→  1469→
+  1470→  1470→### 5. Evaluation Report
+  1471→  1471→Emit a Markdown report with:
+  1472→  1472→- ROC-AUC, PR-AUC, F1, calibration curve.
+  1473→  1473→- Top-20 features by gain.
+  1474→  1474→- Lift table by decile.
+  1475→  1475→- Saved-off baseline (logistic regression) for comparison.
+  1476→  1476→
+  1477→  1477→### 6. SHAP Explainer
+  1478→  1478→Emit \`explain.py\` that:
+  1479→  1479→- Computes SHAP per customer.
+  1480→  1480→- Aggregates top 3 churn drivers per account.
+  1481→  1481→- Writes results back to the warehouse for CRM activation.
+  1482→  1482→
+  1483→  1483→### 7. Inference SQL
+  1484→  1484→Emit a daily inference SQL that scores all active customers and writes to \`ml.churn_scores\`.
+  1485→  1485→
+  1486→  1486→## Quality Gates
+  1487→  1487→- No target leakage (as_of_date strictly before label window).
+  1488→  1488→- PR-AUC ≥ 0.55 on holdout (fail loudly if not).
+  1489→  1489→- Calibration ECE ≤ 0.05.`,
+  1490→  1490→    workflowContent: `# Workflow & Execution
+  1491→  1491→
+  1492→  1492→## Prerequisites
+  1493→  1493→- dbt 1.10+ connected to [WAREHOUSE].
+  1494→  1494→- Python 3.12, XGBoost, Optuna, SHAP, MLflow.
+  1495→  1495→- A warehouse with ≥ 6 months of customer, event, and billing history.
+  1496→  1496→- CRM or CS tool (Salesforce, HubSpot, Gainsight) for activation.
+  1497→  1497→
+  1498→  1498→## Step-by-Step Execution
+  1499→  1499→1. **Schema Mapping** — Map [CUSTOMER_TABLE], [EVENT_TABLE], [BILLING_TABLE] to the actual warehouse tables; confirm column types.
+  1500→  1500→2. **Skill Invocation** — Run the skill; review the dbt feature models for leakage first.
+  1501→  1501→3. **dbt Build** — \`dbt run\` the feature models; verify row counts and nulls.
+  1502→  1502→4. **Training** — Execute \`train.py\`; track in MLflow; fail the pipeline if PR-AUC < 0.55.
+  1503→  1503→5. **Evaluation Review** — Data scientist reviews the report; tune churn_definition if lift is weak.
+  1504→  1504→6. **Explainability** — Run \`explain.py\` on a 5% sample; validate top drivers with the CS team.
+  1505→  1505→7. **Inference Deploy** — Schedule the inference SQL daily (dbt job or Airflow DAG).
+  1506→  1506→8. **Activation** — Sync top-decile at-risk accounts to the CRM; trigger CS playbooks.
+  1507→  1507→9. **Monitoring** — Weekly drift report (PSI per feature); retrain monthly.
+  1508→  1508→
+  1509→  1509→## Required Tools
+  1510→  1510→- GPT-5 (code generation)
+  1511→  1511→- dbt 1.10+ + [WAREHOUSE]
+  1512→  1512→- XGBoost + Optuna + SHAP + MLflow
+  1513→  1513→- Airflow or dbt jobs (scheduling)
+  1514→  1514→
+  1515→  1515→## Expected Output
+  1516→  1516→- 8–12 dbt feature models
+  1517→  1517→- training dataset SQL
+  1518→  1518→- \`train.py\`, \`explain.py\`
+  1519→  1519→- Evaluation report (Markdown)
+  1520→  1520→- Daily inference SQL
+  1521→  1521→
+  1522→  1522→## Success Metrics
+  1523→  1523→- PR-AUC ≥ 0.55 on 28-day holdout.
+  1524→  1524→- Top-decile captures ≥ 60% of actual churners.
+  1525→  1525→- CS team saves ≥ 18% of flagged at-risk accounts.
+  1526→  1526→- Monthly retraining completes in < 45 minutes.`,
+  1527→  1527→    audienceContent: `# Target Audience & Use Cases
+  1528→  1528→
+  1529→  1529→## Who This Is For
+  1530→  1530→Data scientists and ML engineers at B2B SaaS, subscription, and telecom companies where churn is a board-level metric. Best for teams with a modern data stack (dbt + warehouse + MLflow) who need a defensible, explainable churn model in production, not a notebook.
+  1531→  1531→
+  1532→  1532→## Real-World Use Cases
+  1533→  1533→1. **B2B SaaS** — A project-management vendor deploys the pipeline, lifting retained-ARR by $2.1M in two quarters by routing SHAP-driven playbooks to CS.
+  1534→  1534→2. **Telecom** — A regional carrier cuts 90-day mobile churn by 14% by intervening on the top-decile at-risk base.
+  1535→  1535→3. **Subscription Media** — A streaming service uses the inference scores to test retention offers, finding a 22% lift with a $5 credit vs. a free month.
+  1536→  1536→
+  1537→  1537→## Industries & Niches
+  1538→  1538→- B2B SaaS & subscription
+  1539→  1539→- Telecom & mobile carriers
+  1540→  1540→- Streaming & subscription media
+  1541→  1541→- Health insurance
+  1542→  1542→- EdTech cohorts`,
+  1543→  1543→    tags: ['Churn', 'XGBoost', 'dbt', 'SHAP', 'MLflow'],
+  1544→  1544→    requiredTools: ['GPT-5', 'dbt 1.10', 'XGBoost', 'MLflow'],
+  1545→  1545→    useCases: [
+  1546→  1546→      'Lifting retained-ARR $2.1M with SHAP-driven CS playbooks',
+  1547→  1547→      'Cutting 90-day mobile churn 14% at a regional carrier',
+  1548→  1548→      'A/B testing retention offers using inference scores',
+  1549→  1549→    ],
+  1550→  1550→    trending: false,
+  1551→  1551→    trendingScore: 0,
+  1552→  1552→    featured: false,
+  1553→  1553→    viewCount: 24800,
+  1554→  1554→    downloadCount: 2890,
+  1555→  1555→    rating: 4.8,
+  1556→  1556→    faqQuestion:
+  1557→  1557→      'What is the most common cause of churn-model failure in production?',
+  1558→  1558→    faqAnswer:
+  1559→  1559→      'Target leakage — features computed using data after the prediction point. Prevent it by snapshotting every feature at an \`as_of_date\` strictly before the label window, and validating with group-aware (customer-level) cross-validation.',
+  1560→  1560→    citation:
+  1561→  1561→      'Neptune.ai 2026 survey: 61% of production churn models underperform their holdout AUC due to undetected feature leakage.',
+  1562→  1562→    seoKeywords: [
+  1563→  1563→      'churn prediction 2026',
+  1564→  1564→      'XGBoost churn model',
+  1565→  1565→      'dbt feature store',
+  1566→  1566→      'SHAP explainability',
+  1567→  1567→      'MLflow model registry',
+  1568→  1568→      'customer retention ML',
+  1569→  1569→    ],
+  1570→  1570→  },
+  1571→  1571→  {
+  1572→  1572→    slug: 'nl-to-sql-schema-aware-prompt',
+  1573→  1573→    type: 'prompt',
+  1574→  1574→    title: 'Natural-Language-to-SQL with Schema Awareness',
+  1575→  1575→    summary:
+  1576→  1576→      'Convert business questions into verified, runnable warehouse SQL — with entity resolution, joins, and guardrails baked in.',
+  1577→  1577→    category: 'data-analytics',
+  1578→  1578→    niche: 'NL-to-SQL & Self-Serve Analytics',
+  1579→  1579→    audience: 'Analytics Engineers & BI Leads',
+  1580→  1580→    difficulty: 'Advanced',
+  1581→  1581→    language: 'English',
+  1582→  1582→    promptContent: `# Natural-Language-to-SQL (Schema-Aware)
+  1583→  1583→
+  1584→  1584→## ROLE
+  1585→  1585→You are a Senior Analytics Engineer translating business questions into verified, runnable warehouse SQL. You never guess at schema; you ask when uncertain.
+  1586→  1586→
+  1587→  1587→## INPUTS
+  1588→  1588→- Question: [QUESTION]
+  1589→  1589→- Warehouse: [BIGQUERY | SNOWFLAKE | REDSHIFT | DATABRICKS]
+  1590→  1590→- Schema (DDL or dbt manifest): [SCHEMA]
+  1591→  1591→- Business glossary: [GLOSSARY]
+  1592→  1592→- Allowed tables (allow-list): [ALLOWED]
+  1593→  1593→- Read-only constraints: [MAX_BYTES] (e.g., 1 TB)
+  1594→  1594→
+  1595→  1595→## PROCESS
+  1596→  1596→
+  1597→  1597→### 1. Entity Resolution
+  1598→  1598→Map every noun in [QUESTION] to a table/column in [SCHEMA] using [GLOSSARY]. If ambiguous, list candidates and ask the user to disambiguate before writing SQL.
+  1599→  1599→
+  1600→  1600→### 2. Intent Classification
+  1601→  1601→Classify the question as one of:
+  1602→  1602→- \`trend\` (time series)
+  1603→  1603→- \`comparison\` (cohort / A vs B)
+  1604→  1604→- \`ranking\` (top-N)
+  1605→  1605→- \`lookup\` (single entity)
+  1606→  1606→- \`distribution\` (histogram / percentile)
+  1607→  1607→
+  1608→  1608→### 3. SQL Generation
+  1609→  1609→Produce SQL that:
+  1610→  1610→- Uses only tables in [ALLOWED].
+  1611→  1611→- Joins on documented keys; never invents relationships.
+  1612→  1612→- Applies partition/cluster filters first when a date range is implied.
+  1613→  1613→- Aggregates at the lowest grain needed.
+  1614→  1614→- Adds \`LIMIT\` (default 1,000) on row-returning queries.
+  1615→  1615→- Tags the warehouse in the code fence (\`\`\`bigquery, etc.).
+  1616→  1616→
+  1617→  1617→### 4. Self-Verification
+  1618→  1618→Before returning, mentally execute:
+  1619→  1619→- Does each column exist? (cross-check [SCHEMA])
+  1620→  1620→- Will the join fan out? (cardinality check)
+  1621→  1621→- Is the result grain what the question asked?
+  1622→  1622→- Will bytes scanned exceed [MAX_BYTES]? If yes, propose a sampled or aggregated alternative.
+  1623→  1623→
+  1624→  1624→### 5. Explanation
+  1625→  1625→Write a 2–4 sentence plain-English explanation of:
+  1626→  1626→- What the query returns.
+  1627→  1627→- Any assumptions made (date ranges, filters, dedup logic).
+  1628→  1628→- Caveats (sample, approximations).
+  1629→  1629→
+  1630→  1630→## OUTPUT FORMAT
+  1631→  1631→Return a Markdown response with these labeled sections in order:
+  1632→  1632→
+  1633→  1633→- **Intent**: <classification>
+  1634→  1634→- **Assumptions**: bulleted list of inferred assumptions
+  1635→  1635→- **SQL**: a fenced code block tagged with the warehouse (\`\`\`bigquery, \`\`\`snowflake, etc.)
+  1636→  1636→- **Explanation**: 2–4 sentences covering what the query returns, assumptions, and caveats
+  1637→  1637→
+  1638→  1638→## CONSTRAINTS
+  1639→  1639→- Never use \`SELECT *\`.
+  1640→  1640→- Never write DDL/DML — read-only.
+  1641→  1641→- If the question can't be answered from [ALLOWED], say so and suggest the missing table.
+  1642→  1642→- If a metric in [QUESTION] isn't in [GLOSSARY], ask for a definition.`,
+  1643→  1643→    workflowContent: `# Workflow & Execution
+  1644→  1644→
+  1645→  1645→## Prerequisites
+  1646→  1646→- A documented warehouse schema (DDL exports or dbt \`manifest.json\`).
+  1647→  1647→- A business glossary (dbt exposures, Atlan, or a Markdown file).
+  1648→  1648→- An allow-list of tables safe for self-serve (no PII raw tables).
+  1649→  1649→- A read-only service account with byte-budget quotas.
+  1650→  1650→
+  1651→  1651→## Step-by-Step Execution
+  1652→  1652→1. **Schema Snapshot** — Export the DDL (or dbt manifest) for [ALLOWED] tables; include descriptions.
+  1653→  1653→2. **Glossary Sync** — Ensure every commonly asked metric is in [GLOSSARY] with a clear definition.
+  1654→  1654→3. **Prompt Invocation** — Run the master prompt in GPT-5 with structured outputs; review entity resolution first.
+  1655→  1655→4. **Dry Run** — Execute the SQL in dry-run mode (BigQuery \`--dry_run\` or Snowflake \`EXPLAIN\`) to estimate bytes.
+  1656→  1656→5. **Byte-Budget Enforcement** — If bytes > [MAX_BYTES], regenerate with sampling or aggregation.
+  1657→  1657→6. **Result Spot-Check** — Run the query; compare a sample of results against a known dashboard.
+  1658→  1658→7. **Cache & Catalog** — Save verified SQL to a query library (Hex, Mode, or Notion) with the originating question.
+  1659→  1659→8. **Feedback Loop** — Log unanswered questions; expand the glossary or allow-list weekly.
+  1660→  1660→
+  1661→  1661→## Required Tools
+  1662→  1662→- GPT-5 (structured outputs)
+  1663→  1663→- BigQuery / Snowflake / Redshift / Databricks
+  1664→  1664→- dbt manifest or Atlan (schema + glossary)
+  1665→  1665→- Hex or Mode (query catalog)
+  1666→  1666→
+  1667→  1667→## Expected Output
+  1668→  1668→- Intent classification
+  1669→  1669→- Assumptions list
+  1670→  1670→- Warehouse-tagged SQL (read-only, limited)
+  1671→  1671→- Plain-English explanation
+  1672→  1672→- Dry-run byte estimate
+  1673→  1673→
+  1674→  1674→## Success Metrics
+  1675→  1675→- 90% of generated queries run without manual edit.
+  1676→  1676→- Average bytes/query ≤ [MAX_BYTES] × 0.6.
+  1677→  1677→- Self-serve query turnaround < 5 minutes.
+  1678→  1678→- Analyst ticket volume −35% within 60 days.`,
+  1679→  1679→    audienceContent: `# Target Audience & Use Cases
+  1680→  1680→
+  1681→  1681→## Who This Is For
+  1682→  1682→Analytics engineers and BI leads at self-serve-driven organizations (product, growth, RevOps) who want to let business stakeholders ask warehouse questions in English without breaking budgets or producing wrong numbers. Especially valuable for teams scaling beyond 3 analysts.
+  1683→  1683→
+  1684→  1684→## Real-World Use Cases
+  1685→  1685→1. **Product Analytics** — A B2B SaaS team opens NL-to-SQL to 40 PMs; analyst ad-hoc tickets drop 38% in 60 days.
+  1686→  1686→2. **RevOps** — A sales-ops team lets AE managers ask "ARR by industry, last quarter" questions; median answer time falls from 2 days to 90 seconds.
+  1687→  1687→3. **E-commerce** — A DTC brand enables merchandisers to ask inventory questions, catching a stockout 5 days earlier than the manual report.
+  1688→  1688→
+  1689→  1689→## Industries & Niches
+  1690→  1690→- B2B SaaS product analytics
+  1691→  1691→- Revenue operations
+  1692→  1692→- DTC e-commerce
+  1693→  1693→- Health-tech operations
+  1694→  1694→- Fintech self-serve dashboards`,
+  1695→  1695→    tags: ['NL-to-SQL', 'Self-Serve Analytics', 'BigQuery', 'dbt', 'GPT-5'],
+  1696→  1696→    requiredTools: ['GPT-5', 'BigQuery', 'dbt manifest', 'Hex'],
+  1697→  1697→    useCases: [
+  1698→  1698→      'Cutting analyst ad-hoc tickets 38% for 40 PMs',
+  1699→  1699→      'Reducing RevOps answer time from 2 days to 90 seconds',
+  1700→  1700→      'Catching a DTC stockout 5 days earlier via merchant queries',
+  1701→  1701→    ],
+  1702→  1702→    trending: true,
+  1703→  1703→    trendingScore: 84,
+  1704→  1704→    featured: false,
+  1705→  1705→    viewCount: 41200,
+  1706→  1706→    downloadCount: 4730,
+  1707→  1707→    rating: 4.8,
+  1708→  1708→    faqQuestion:
+  1709→  1709→      'How do you prevent hallucinated tables and joins in NL-to-SQL?',
+  1710→  1710→    faqAnswer:
+  1711→  1711→      'Restrict the model to an explicit allow-list, pass the actual DDL or dbt manifest as context, force entity resolution against a business glossary before SQL generation, and require a self-verification pass plus a dry-run byte estimate.',
+  1712→  1712→    citation:
+  1713→  1713→      'Snowflake 2026 State of Data: 68% of NL-to-SQL errors trace to undocumented joins; allow-listing + glossary coverage reduces errors by 54%.',
+  1714→  1714→    seoKeywords: [
+  1715→  1715→      'NL-to-SQL 2026',
+  1716→  1716→      'natural language to SQL',
+  1717→  1717→      'self-serve analytics',
+  1718→  1718→      'GPT-5 SQL',
+  1719→  1719→      'dbt manifest LLM',
+  1720→  1720→      'warehouse query bot',
+  1721→  1721→    ],
+  1722→  1722→  },
+  1723→  1723→  {
+  1724→  1724→    slug: 'realtime-kpi-dashboard-spec-skill',
+  1725→  1725→    type: 'skill',
+  1726→  1726→    title: 'Real-Time KPI Dashboard Spec Generator',
+  1727→  1727→    summary:
+  1728→  1728→      'Convert a business goal into a complete dashboard spec — metrics, SQL, alerts, and refresh cadence — ready to hand to BI.',
+  1729→  1729→    category: 'data-analytics',
+  1730→  1730→    niche: 'BI & Dashboard Engineering',
+  1731→  1731→    audience: 'Analytics Engineers & Product Analysts',
+  1732→  1732→    difficulty: 'Intermediate',
+  1733→  1733→    language: 'English',
+  1734→  1734→    promptContent: `# Skill: Real-Time KPI Dashboard Spec Generator
+  1735→  1735→
+  1736→  1736→## Skill Definition
+  1737→  1737→\`\`\`yaml
+  1738→  1738→name: kpi-dashboard-spec
+  1739→  1739→version: 1.9.0
+  1740→  1740→model: claude-4-opus
+  1741→  1741→temperature: 0.25
+  1742→  1742→inputs:
+  1743→  1743→  - business_goal
+  1744→  1744→  - audience             # exec | operator | analyst
+  1745→  1745→  - warehouse
+  1746→  1746→  - refresh_cadence      # realtime | 5m | hourly | daily
+  1747→  1747→  - available_tables
+  1748→  1748→outputs:
+  1749→  1749→  - metric_definitions
+  1750→  1750→  - sql_queries
+  1751→  1751→  - layout_spec
+  1752→  1752→  - alert_rules
+  1753→  1753→  - refresh_plan
+  1754→  1754→\`\`\`
+  1755→  1755→
+  1756→  1756→## Behavior
+  1757→  1757→
+  1758→  1758→### 1. Metric Decomposition
+  1759→  1759→From [BUSINESS_GOAL], derive 5–8 KPIs. For each:
+  1760→  1760→- Name, formula, unit, direction (higher/lower is better).
+  1761→  1761→- Source table(s) from [AVAILABLE_TABLES].
+  1762→  1762→- Grain (second, minute, hour, day).
+  1763→  1763→- Owner (role, not person).
+  1764→  1764→
+  1765→  1765→### 2. SQL Queries
+  1766→  1766→For each KPI, emit a warehouse-tagged SQL that:
+  1767→  1767→- Aggregates to the correct grain.
+  1768→  1768→- Filters out test/internal accounts (document the filter).
+  1769→  1769→- Caps result rows at 5,000 for rendering.
+  1770→  1770→- Uses partition/cluster pruning where applicable.
+  1771→  1771→
+  1772→  1772→### 3. Layout Spec
+  1773→  1773→Produce a JSON layout:
+  1774→  1774→\`\`\`json
+  1775→  1775→{
+  1776→  1776→  "title": "...",
+  1777→  1777→  "tiles": [
+  1778→  1778→    { "type": "kpi", "metric": "...", "comparison": "wow" },
+  1779→  1779→    { "type": "timeseries", "metric": "...", "grain": "hour" },
+  1780→  1780→    { "type": "table", "metric": "...", "dimensions": ["..."] }
+  1781→  1781→  ],
+  1782→  1782→  "global_filters": ["date_range", "region"]
+  1783→  1783→}
+  1784→  1784→\`\`\`
+  1785→  1785→Match layout to [AUDIENCE]: exec = 4 large KPIs + 1 trend; operator = KPIs + table + drill; analyst = full tables + raw query access.
+  1786→  1786→
+  1787→  1787→### 4. Alert Rules
+  1788→  1788→For each KPI, propose an alert:
+  1789→  1789→- Condition (threshold, anomaly, % change).
+  1790→  1790→- Severity (info / warn / critical).
+  1791→  1791→- Channel (Slack, PagerDuty, email).
+  1792→  1792→- Cooldown window (avoid alert fatigue).
+  1793→  1793→
+  1794→  1794→### 5. Refresh Plan
+  1795→  1795→Given [REFRESH_CADENCE], specify:
+  1796→  1796→- Materialization strategy (live query, accelerated table, streaming insert).
+  1797→  1797→- Warehouse sizing.
+  1798→  1798→- Estimated $/day.
+  1799→  1799→
+  1800→  1800→## Quality Gates
+  1801→  1801→- Every metric has a documented owner and formula.
+  1802→  1802→- No two tiles show the same metric at conflicting grains.
+  1803→  1803→- Alert thresholds non-trivial (not "alert if > 0").`,
+  1804→  1804→    workflowContent: `# Workflow & Execution
+  1805→  1805→
+  1806→  1806→## Prerequisites
+  1807→  1807→- A warehouse (BigQuery, Snowflake, Databricks) with the relevant tables.
+  1808→  1808→- A BI tool (Hex, Mode, Looker, or Apache Superset).
+  1809→  1809→- An alerting channel (Slack, PagerDuty).
+  1810→  1810→- A clear [BUSINESS_GOAL] statement from the sponsor.
+  1811→  1811→
+  1812→  1812→## Step-by-Step Execution
+  1813→  1813→1. **Goal Intake** — Capture [BUSINESS_GOAL] as a one-sentence outcome (e.g., "Reduce time-to-first-value for new workspaces to < 24h").
+  1814→  1814→2. **Skill Invocation** — Run the skill in Claude 4 Opus; review the metric list with the sponsor.
+  1815→  1815→3. **SQL Validation** — Run each KPI query; confirm semantics with the data team.
+  1816→  1816→4. **Layout Build** — Implement the layout JSON in the BI tool; sponsor reviews.
+  1817→  1817→5. **Alert Tuning** — Set conservative thresholds first; tune after 7 days of real data.
+  1818→  1818→6. **Refresh Deployment** — Provision the materialization (accelerated table or streaming); monitor $/day.
+  1819→  1819→7. **Sponsor Sign-Off** — Demo the live dashboard; iterate on tiles.
+  1820→  1820→8. **Adoption Tracking** — Log opens via the BI tool; deprecate tiles with < 5 opens/week after 30 days.
+  1821→  1821→
+  1822→  1822→## Required Tools
+  1823→  1823→- Claude 4 Opus (spec generation)
+  1824→  1824→- BigQuery / Snowflake / Databricks
+  1825→  1825→- Hex / Mode / Looker / Superset
+  1826→  1826→- Slack + PagerDuty (alerting)
+  1827→  1827→
+  1828→  1828→## Expected Output
+  1829→  1829→- 5–8 metric definitions (Markdown)
+  1830→  1830→- Warehouse-tagged SQL per metric
+  1831→  1831→- Layout JSON
+  1832→  1832→- Alert rule list
+  1833→  1833→- Refresh + cost plan
+  1834→  1834→
+  1835→  1835→## Success Metrics
+  1836→  1836→- Dashboard live within 5 business days of intake.
+  1837→  1837→- Weekly active viewers ≥ 12 within 30 days.
+  1838→  1838→- Alert false-positive rate < 15%.
+  1839→  1839→- Average load time < 2.5s for the operator view.`,
+  1840→  1840→    audienceContent: `# Target Audience & Use Cases
+  1841→  1841→
+  1842→  1842→## Who This Is For
+  1843→  1843→Analytics engineers, product analysts, and RevOps leaders who own KPI dashboards for ops, exec, or product audiences. Best for teams that have burned cycles building dashboards nobody opens — this skill enforces sponsor alignment from day one.
+  1844→  1844→
+  1845→  1845→## Real-World Use Cases
+  1846→  1846→1. **Product Ops** — A collaboration SaaS ships a "time-to-first-value" dashboard in 4 days; PMs catch an onboarding regression 11 hours sooner than the weekly report.
+  1847→  1847→2. **RevOps** — A sales-ops team launches a pipeline-velocity dashboard; CRO uses it in the Monday exec standup, replacing three slide decks.
+  1848→  1848→3. **Support Ops** — A health-tech contact center rolls out an SLA dashboard with anomaly alerts, cutting P1 ticket breaches by 28%.
+  1849→  1849→
+  1850→  1850→## Industries & Niches
+  1851→  1851→- B2B SaaS product ops
+  1852→  1852→- Revenue operations
+  1853→  1853→- Customer support / contact centers
+  1854→  1854→- E-commerce merchandising
+  1855→  1855→- Fintech operations`,
+  1856→  1856→    tags: ['Dashboards', 'KPI', 'BI', 'Alerts', 'Claude 4 Opus'],
+  1857→  1857→    requiredTools: ['Claude 4 Opus', 'Hex', 'BigQuery', 'Slack'],
+  1858→  1858→    useCases: [
+  1859→  1859→      'Shipping a time-to-first-value dashboard in 4 days',
+  1860→  1860→      'Replacing three exec slide decks with a pipeline-velocity dashboard',
+  1861→  1861→      'Cutting P1 ticket breaches 28% with anomaly alerts',
+  1862→  1862→    ],
+  1863→  1863→    trending: false,
+  1864→  1864→    trendingScore: 0,
+  1865→  1865→    featured: false,
+  1866→  1866→    viewCount: 16800,
+  1867→  1867→    downloadCount: 1940,
+  1868→  1868→    rating: 4.6,
+  1869→  1869→    faqQuestion:
+  1870→  1870→      'What separates a useful KPI dashboard from a dashboard nobody opens?',
+  1871→  1871→    faqAnswer:
+  1872→  1872→      'Sponsor-aligned metric definitions, audience-matched layout (exec vs. operator vs. analyst), non-trivial alert thresholds with cooldowns, < 2.5s load time, and a 30-day deprecation rule for tiles with under 5 weekly opens.',
+  1873→  1873→    citation:
+  1874→  1874→      'ThoughtSpot 2026 BI benchmark: 64% of enterprise dashboards have fewer than 5 weekly viewers; audience-matched layout triples engagement.',
+  1875→  1875→    seoKeywords: [
+  1876→  1876→      'KPI dashboard 2026',
+  1877→  1877→      'dashboard spec',
+  1878→  1878→      'BI best practices',
+  1879→  1879→      'real-time dashboard',
+  1880→  1880→      'alert rules',
+  1881→  1881→      'dashboard adoption',
+  1882→  1882→    ],
+  1883→  1883→  },
+  1884→  1884→
+  1885→  1885→  // =========================================================================
+  1886→  1886→  // CATEGORY 4: business-strategy
+  1887→  1887→  // =========================================================================
+  1888→  1888→  {
+  1889→  1889→    slug: 'ai-startup-market-entry-2026-prompt',
+  1890→  1890→    type: 'prompt',
+  1891→  1891→    title: '2026 Market-Entry Strategy for AI Startups',
+  1892→  1892→    summary:
+  1893→  1893→      'A board-ready market-entry strategy prompt covering ICP, GTM motion, regulatory, and 18-month milestone plan.',
+  1894→  1894→    category: 'business-strategy',
+  1895→  1895→    niche: 'GTM & Market Entry',
+  1896→  1896→    audience: 'Founders & Strategy Operators',
+  1897→  1897→    difficulty: 'Advanced',
+  1898→  1898→    language: 'English',
+  1899→  1899→    promptContent: `# 2026 Market-Entry Strategy for AI Startups
+  1900→  1900→
+  1901→  1901→## ROLE
+  1902→  1902→You are a former Partner at a Tier-1 VC firm and ex-McKinsey EM. You build market-entry strategies for AI-first startups entering the US, UK, Canada, or Australia in 2026.
+  1903→  1903→
+  1904→  1904→## INPUTS
+  1905→  1905→- Product one-liner: [PRODUCT]
+  1906→  1906→- Category: [CATEGORY]   (e.g., vertical SaaS, dev-tools, infra)
+  1907→  1907→- ICP hypothesis: [ICP]
+  1908→  1908→- Geographies: [GEO_LIST]
+  1909→  1909→- Capital raised: [CAPITAL]
+  1910→  1910→- Founders' edge: [EDGE]
+  1911→  1911→
+  1912→  1912→## TASKS
+  1913→  1913→
+  1914→  1914→### 1. Market Sizing
+  1915→  1915→Produce a TAM/SAM/SOM in USD with:
+  1916→  1916→- Bottom-up sizing (ICP × ACV × penetration).
+  1917→  1917→- Top-down cross-check (analyst report citation required).
+  1918→  1918→- 3-year SOM given [CAPITAL] and [EDGE].
+  1919→  1919→
+  1920→  1920→### 2. ICP Refinement
+  1921→  1921→Sharpen [ICP] into 3 prioritized segments. For each:
+  1922→  1922→- Firmographic + technographic pins.
+  1923→  1923→- Pains worth paying for (with the dollar cost of inaction).
+  1924→  1924→- Where they buy (channel preference).
+  1925→  1925→- Wedge use-case (the one problem you solve on day 1).
+  1926→  1926→
+  1927→  1927→### 3. Competitive Map
+  1928→  1928→List 5 direct + 3 adjacent competitors. For each:
+  1929→  1929→- Positioning axis (speed vs. depth, self-serve vs. full-service).
+  1930→  1930→- Pricing teardown.
+  1931→  1931→- Vulnerability (what they can't/won't do in 12 months).
+  1932→  1932→- Your defensible angle.
+  1933→  1933→
+  1934→  1934→### 4. GTM Motion
+  1935→  1935→Pick a primary motion (PLG, sales-led, partner-led, community-led) with justification, plus a 6-month secondary motion to derisk. Specify:
+  1936→  1936→- Acquisition channels with expected CAC.
+  1937→  1937→- Activation milestone (the "aha" event).
+  1938→  1938→- Expansion triggers.
+  1939→  1939→- Retention loops.
+  1940→  1940→
+  1941→  1941→### 5. Regulatory & Trust
+  1942→  1942→For each [GEO_LIST] country, flag:
+  1943→  1943→- Data residency (GDPR, UK GDPR, PIPEDA, APP).
+  1944→  1944→- AI-specific rules (EU AI Act class, US state laws, Australia AI Ethics).
+  1945→  1945→- Industry-specific rules (HIPAA, SOC 2, FSMA).
+  1946→  1946→
+  1947→  1947→### 6. 18-Month Milestone Plan
+  1948→  1948→Quarterly milestones across Product, GTM, Team, Capital. End each quarter with a "kill criterion" — the signal to pivot.
+  1949→  1949→
+  1950→  1950→## OUTPUT FORMAT
+  1951→  1951→Markdown board memo, ≤ 2,500 words, with one summary table at the top.
+  1952→  1952→
+  1953→  1953→## CONSTRAINTS
+  1954→  1954→- Cite every market stat (Source, Year).
+  1955→  1955→- No "we will dominate" rhetoric — every claim must have a number.
+  1956→  1956→- Flag the top 3 risks explicitly.`,
+  1957→  1957→    workflowContent: `# Workflow & Execution
+  1958→  1958→
+  1959→  1959→## Prerequisites
+  1960→  1960→- A founder team with a clear [PRODUCT] and [EDGE].
+  1961→  1961→- Access to a market-intel source (CB Insights, PitchBook, Gartner).
+  1962→  1962→- 2–3 reference customer calls completed (or scheduled).
+  1963→  1963→- A board / advisor forum to pressure-test the output.
+  1964→  1964→
+  1965→  1965→## Step-by-Step Execution
+  1966→  1966→1. **Inputs Sync** — Fill in [PRODUCT], [ICP], [GEO_LIST], [CAPITAL], [EDGE] in a shared doc.
+  1967→  1967→2. **Prompt Run** — Execute the master prompt in Claude 4 Opus; produce v1 memo.
+  1968→  1968→3. **Market Sizing Validation** — Cross-check bottom-up TAM against 2 analyst reports; reconcile deltas.
+  1969→  1969→4. **ICP Validation Calls** — Run 5 discovery calls per prioritized segment; refine pains + ACV.
+  1970→  1970→5. **Competitive Teardown** — Confirm pricing and vulnerabilities from real sales-rep calls or lost-deal interviews.
+  1971→  1971→6. **GTM Selection** — Pressure-test the primary motion with 3 founders who picked the same motion.
+  1972→  1972→7. **Regulatory Review** — Have outside counsel validate the regulatory flags per geography.
+  1973→  1973→8. **Board Memo Final** — Iterate to ≤ 2,500 words; share with the board 5 days before the meeting.
+  1974→  1974→9. **Quarterly Recalibration** — Re-run the prompt at the end of each quarter with actuals.
+  1975→  1975→
+  1976→  1976→## Required Tools
+  1977→  1977→- Claude 4 Opus (strategy reasoning)
+  1978→  1978→- CB Insights / PitchBook (market intel)
+  1979→  1979→- Gong / Zoom (discovery calls)
+  1980→  1980→- Outside counsel (regulatory)
+  1981→  1981→
+  1982→  1982→## Expected Output
+  1983→  1983→- Board memo (≤ 2,500 words)
+  1984→  1984→- TAM/SAM/SOM table
+  1985→  1985→- 3 ICP segment profiles
+  1986→  1986→- Competitive teardown
+  1987→  1987→- 18-month milestone plan with kill criteria
+  1988→  1988→
+  1989→  1989→## Success Metrics
+  1990→  1990→- Board approves the strategy in a single meeting.
+  1991→  1991→- 80% of Q1 milestones hit on time.
+  1992→  1992→- CAC payback < 12 months by Q3.
+  1993→  1993→- At least 1 kill criterion invoked or explicitly defended.`,
+  1994→  1994→    audienceContent: `# Target Audience & Use Cases
+  1995→  1995→
+  1996→  1996→## Who This Is For
+  1997→  1997→Founders, COOs, and strategy operators at pre-seed to Series A AI startups entering English-speaking high-CPC markets in 2026. Best for teams that have a working product but a fuzzy GTM, and need a board-defensible plan in under two weeks.
+  1998→  1998→
+  1999→  1999→## Real-World Use Cases
+  2000→  2000→1. **Vertical AI SaaS** — A legal-AI startup uses the memo to pivot from AmLaw-100 (sales-led) to mid-market (PLG) after the Q1 kill criterion triggers; closes 3× more logos in Q2.
+
+[showing lines 1-2000 of 2002; use offset=2001 with limit to continue reading]

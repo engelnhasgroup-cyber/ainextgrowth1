@@ -55,7 +55,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "/",
+    types: {
+      'application/rss+xml': "https://nexusai2026.example.com/rss.xml",
+    },
   },
+  sitemap: "https://nexusai2026.example.com/sitemap.xml",
   openGraph: {
     title: "NexusAI 2026 — The Largest AI Prompt & Skill Library",
     description:

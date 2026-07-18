@@ -1,7 +1,24 @@
 User-agent: Googlebot
 Allow: /
+Allow: /sitemap.xml
+Allow: /rss.xml
+
+User-agent: Google-Extended
+Allow: /
 
 User-agent: Bingbot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: CCBot
 Allow: /
 
 User-agent: Twitterbot
@@ -10,5 +27,17 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: LinkedInBot
+Allow: /
+
 User-agent: *
 Allow: /
+Disallow: /api/download
+Disallow: /api/generate
+
+# Sitemaps
+Sitemap: https://nexusai2026.example.com/sitemap.xml
+
+# RSS Feeds
+# https://nexusai2026.example.com/rss.xml
+# https://nexusai2026.example.com/feed/<category-slug>

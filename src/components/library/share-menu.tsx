@@ -1,0 +1,122 @@
+'use client'
+
+import { useState, useCallback } from 'react'
+import { toast } from 'sonner'
+import { Check, Copy, Share2, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import type { ItemDetail } from '@/lib/types'
+
+const SITE_URL = 'https://nexusai2026.example.com'
+
+export function ShareMenu({ item }: { item: ItemDetail }) {
+  const [copied, setCopied] = useState(false)
+
+  const url = `${SITE_URL}/?item=${encodeURIComponent(item.slug)}`
+  const text = `${item.title} — Free AI ${item.type} (Trinity Bundle download) on NexusAI 2026`
+
+  const copyLink = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      toast.success('Link copied to clipboard')
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      toast.error('Could not copy link')
+    }
+  }, [url])
+
+  const copyPrompt = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(item.promptContent)
+      toast.success('Prompt copied to clipboard')
+    } catch {
+      toast.error('Could not copy prompt')
+    }
+  }, [item.promptContent])
+
+  const tweet = useCallback(() => {
+    const u = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}&hashtags=AI,PromptEngineering,2026`
+    window.open(u, '_blank', 'noopener,noreferrer')
+  }, [text, url])
+
+  const linkedin = useCallback(() => {
+    const u = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`
+    window.open(u, '_blank', 'noopener,noreferrer')
+  }, [url])
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="h-8 rounded-full text-xs">
+          <Share2 className="mr-1.5 h-3.5 w-3.5" />
+          Share
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">
+          Share this {item.type}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={copyPrompt} className="cursor-pointer text-xs">
+          <Copy className="mr-2 h-3.5 w-3.5" /> Copy prompt to clipboard
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={copyLink} className="cursor-pointer text-xs">
+          {copied ? (
+            <Check className="mr-2 h-3.5 w-3.5 text-emerald-400" />
+          ) : (
+            <LinkIcon className="mr-2 h-3.5 w-3.5" />
+          )}
+          {copied ? 'Copied!' : 'Copy share link'}
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={tweet} className="cursor-pointer text-xs">
+          <Twitter className="mr-2 h-3.5 w-3.5" /> Share on X / Twitter
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={linkedin} className="cursor-pointer text-xs">
+          <Linkedin className="mr-2 h-3.5 w-3.5" /> Share on LinkedIn
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+export function CopyPromptButton({ item }: { item: ItemDetail }) {
+  const [copied, setCopied] = useState(false)
+  const copy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(item.promptContent)
+      setCopied(true)
+      toast.success('Prompt copied to clipboard')
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      toast.error('Could not copy')
+    }
+  }, [item.promptContent])
+
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      className="h-7 rounded-full text-xs"
+      onClick={copy}
+    >
+      {copied ? (
+        <>
+          <Check className="mr-1 h-3 w-3 text-emerald-400" /> Copied
+        </>
+      ) : (
+        <>
+          <Copy className="mr-1 h-3 w-3" /> Copy
+        </>
+      )}
+    </Button>
+  )
+}

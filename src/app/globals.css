@@ -166,7 +166,24 @@
   .card-hover:hover {
     transform: translateY(-3px);
   }
+  .ad-slot {
+    background:
+      repeating-linear-gradient(
+        135deg,
+        oklch(1 0 0 / 0.02) 0px,
+        oklch(1 0 0 / 0.02) 10px,
+        transparent 10px,
+        transparent 20px
+      ),
+      oklch(0.2 0.01 264 / 0.4);
+  }
 }
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 
 /* Custom scrollbar */
 * {

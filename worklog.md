@@ -79,3 +79,68 @@ Stage Summary:
 - DB: 33 items (32 seed + 1 agent), 8 categories, 99 Trinity files, 112K downloads.
 - Dev server healthy on :3000, no runtime errors.
 - Cron job (webDevReview, every 15 min) to be scheduled for autonomous QA + feature growth.
+
+---
+Task ID: 10
+Agent: Autonomous QA & Feature Growth (webDevReview cron)
+Task: QA assessment via agent-browser + VLM, fix visual issues, add new features (sitemap, RSS, bookmarks, share, TOC, progress bar, ticker, deep-links), expand seed library.
+
+## Current Project Status Assessment
+- Project was stable and functional from Task 9 (33 items, all golden-path interactions verified).
+- Dev server healthy on :3000, lint clean, no runtime errors.
+- VLM visual QA (glm-4.6v) identified: detail modal Ad-slot spacing/contrast, hero gradient consistency, tag color consistency, footer spacing — all addressed this round.
+
+## Completed Modifications & Verification
+
+### 1. SEO Infrastructure (NEW — high impact)
+- **Dynamic sitemap.xml** (`/sitemap.xml`): generated from DB, lists homepage + section anchors + all 40 items as `/?item=<slug>` virtual routes with lastmod/changefreq/priority. Cache-Control: 1h.
+- **Global RSS feed** (`/rss.xml`): RSS 2.0 with Atom self-link, latest 50 items, escaped XML, category tags. Supports distribution/backlink strategy.
+- **Per-category RSS feed** (`/feed/[category]`): topical RSS for niche distribution (8 categories).
+- **Improved robots.txt**: explicit allow for Googlebot, GPTBot, PerplexityBot, ChatGPT-User, CCBot, Bingbot, social crawlers; disallow /api/download & /api/generate; sitemap reference.
+- **Layout metadata**: added `sitemap` URL + `alternates.types` RSS link for crawler discovery.
+
+### 2. New Features (NEW)
+- **Bookmarks system**: `useBookmarks` hook (localStorage), bookmark button on every item card (top-right, toggles fill state), bookmarks Sheet drawer (accessible from header), count badge on header bookmark icon, clear-all + per-item remove. Persists across sessions.
+- **Copy-to-clipboard**: `CopyPromptButton` (copies full prompt markdown) in detail modal File 1 tab + in Share menu.
+- **Share menu** (DropdownMenu): Copy prompt, Copy share link, Share on X/Twitter, Share on LinkedIn. Generates `/?item=<slug>` deep links.
+- **Table of Contents**: `extractToc()` parses H2/H3 from current tab's markdown, Popover with scrollable heading list, active-heading highlight via IntersectionObserver, click-to-jump with smooth scroll.
+- **Reading progress bar**: `useScrollProgress` hook tracks modal scroll container, gradient bar (emerald→primary→violet) at top of detail modal.
+- **Trending topics ticker**: animated marquee in hero with 15 2026 trending topics (GPT-5, SGE, LangGraph 2.0, RAG, Sora 2, etc.), click sets search + scrolls to library.
+- **Deep-link support**: `/?item=<slug>` auto-opens detail modal on page load (URL cleaned via replaceState). Enables shareable permalinks for SEO + social.
+- **Header redesign**: bookmark button (with count badge), RSS feed button, theme toggle, AI Agent link — all consistent rounded-full icon buttons.
+
+### 3. Visual QA Fixes
+- **AdSlot redesign**: `.ad-slot` CSS class with diagonal stripe pattern + darker bg, "Advertisement" label (higher contrast), label + sublabel structure. Applied to all 3 ad slots in detail modal.
+- **Detail modal spacing**: tightened top-ad-to-CTA gap, aligned download CTA icon vertically, improved Quick Answer readability (leading-relaxed), FAQ moved to primary-tinted card.
+- **Search placeholder**: changed from "Search 2M+..." to "Search prompts & skills…" with `placeholder:text-foreground/50` for better contrast.
+- **Tags/keywords cards**: added icons (Tag, Wrench), split Required Tools + SEO Keywords into separate sections with distinct colors (primary for tools, violet for keywords).
+- **Replaced ScrollArea with plain div** in detail modal body (ScrollArea ref goes to Root not Viewport; plain div ensures scroll tracking + TOC jump work correctly).
+
+### 4. Seed Library Expansion (40 items, up from 32)
+- Created `src/lib/seed-expansion.ts` with 8 new items (1 per category): E-Commerce Product Schema, RSC Migration Audit, Churn Prediction Feature Store, AI Moat Assessment, Design Token Architecture, PLG Activation Funnel, Adaptive Learning Path, Multi-Modal Support Agent.
+- Each has full Trinity Bundle (prompt/workflow/audience), 2026 tools, FAQ, citations, SEO keywords.
+- Updated `scripts/seed.ts` to merge base + expansion items.
+- Re-seeded: 40 items (21 prompts, 19 skills), 19 trending, 120 Trinity files.
+
+### Verification Results (agent-browser + VLM)
+- **Homepage**: 8/10 visual rating. Hero CTAs clearly visible (green primary + dark secondary). Stats bar shows 40 items / 120 Trinity files / 151K downloads / 8 categories. Trending ticker visible and animated.
+- **Detail modal**: TOC popover opens with 11 headings, click-jump works. Bookmark toggles "Add"→"Remove". Share menu shows all 4 options. Copy prompt executes without error.
+- **Bookmarks drawer**: opens from header, shows saved item with metadata, clear-all works.
+- **Deep-link**: `/?item=langgraph2-multi-agent-planner-prompt` auto-opens detail modal.
+- **Mobile (390×844)**: header clean, hero readable, no horizontal overflow.
+- **Sitemap/RSS**: all 3 endpoints return valid XML with correct Content-Type.
+- **Lint**: 0 errors, 0 warnings. **Dev log**: no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Reading progress bar** not visually confirmed by VLM (modal internal scroll can't be triggered by `agent-browser scroll` which scrolls the page). Code is correct (tracks ref div). Low risk.
+2. **Subagent dispatch** failed twice (empty response) for seed expansion — fell back to manual expansion (8 items instead of planned 16-40). Library has 40 items total, sufficient for UI but below "millions" marketing claim. Future cron rounds can expand further.
+3. **AdSense slots are placeholders** (`<ins class="adsbygoogle">` commented in code) — real AdSense publisher ID needed before launch. Expected.
+4. **RSS/sitemap use placeholder domain** `nexusai2026.example.com` — replace with real domain before production.
+
+## Priority Recommendations for Next Phase
+1. **Bulk agent generation**: run `/api/generate` in a loop (via cron or script) to add 50-100+ items for a richer library grid and fuller trending section.
+2. **Real AdSense integration**: replace AdSlot placeholders with actual `<ins>` tags + AdSense script loader (needs publisher ID).
+3. **Search results page / dedicated category pages**: currently single-route with modal; consider adding real routes (`/category/[slug]`, `/prompt/[slug]`) for deeper SEO indexability if crawl budget allows.
+4. **Rate limiting** on `/api/generate` to prevent abuse of the LLM agent endpoint.
+5. **OG image generation**: dynamic per-item Open Graph images for social sharing (currently no og:image).
+6. **Analytics**: add view/download event tracking (Plausible/Umami) to measure real engagement.

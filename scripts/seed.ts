@@ -4,8 +4,10 @@
 
 import { db } from '../src/lib/db'
 import { seedCategories, seedItems } from '../src/lib/seed-data'
+import { expansionItems } from '../src/lib/seed-expansion'
 
 async function main() {
+  const allItems = [...seedItems, ...expansionItems]
   console.log('🌱 Seeding NexusAI 2026 database...')
 
   // Clean existing data
@@ -29,13 +31,13 @@ async function main() {
   }
 
   // Insert items (convert arrays → comma/pipe strings for SQLite)
-  console.log(`  · Inserting ${seedItems.length} items (Trinity Bundles)...`)
+  console.log(`  · Inserting ${allItems.length} items (Trinity Bundles)...`)
   const today = new Date().toISOString().slice(0, 10)
   let trendingCount = 0
   let promptCount = 0
   let skillCount = 0
 
-  for (const it of seedItems) {
+  for (const it of allItems) {
     await db.item.create({
       data: {
         slug: it.slug,
@@ -76,10 +78,10 @@ async function main() {
   // Compute internal links: for each item, link to 4 others sharing the same
   // category or overlapping tags.
   console.log('  · Computing internal link graph...')
-  const allItems = await db.item.findMany({ select: { id: true, slug: true, category: true, tags: true, type: true } })
-  for (const item of allItems) {
+  const dbItems = await db.item.findMany({ select: { id: true, slug: true, category: true, tags: true, type: true } })
+  for (const item of dbItems) {
     const myTags = item.tags.split(',').map((t) => t.trim().toLowerCase())
-    const candidates = allItems
+    const candidates = dbItems
       .filter((o) => o.id !== item.id)
       .map((o) => {
         let score = 0
@@ -109,9 +111,9 @@ async function main() {
 
   console.log('\n✅ Seed complete.')
   console.log(`   Categories: ${seedCategories.length}`)
-  console.log(`   Items:      ${seedItems.length} (${promptCount} prompts, ${skillCount} skills)`)
+  console.log(`   Items:      ${allItems.length} (${promptCount} prompts, ${skillCount} skills)`)
   console.log(`   Trending:   ${trendingCount}`)
-  console.log(`   Trinity files available: ${seedItems.length * 3}`)
+  console.log(`   Trinity files available: ${allItems.length * 3}`)
 }
 
 main()
