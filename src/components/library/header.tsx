@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Sparkles, Search, Github, Bookmark, Rss, History, LayoutDashboard } from 'lucide-react'
+import { AinextgrowthLogo } from './brand-logo'
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useLibrary } from './store'
@@ -21,17 +22,7 @@ export function Header({ stats }: { stats: Stats }) {
       <header className="sticky top-0 z-40 w-full border-b border-border/60 glass">
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-3 sm:gap-3 sm:px-6">
           <a href="#top" className="flex shrink-0 items-center gap-2.5">
-            <div className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-emerald-500 to-violet-600 shadow-lg shadow-emerald-500/20">
-              <Sparkles className="h-5 w-5 text-white" />
-            </div>
-            <div className="hidden flex-col leading-none sm:flex">
-              <span className="text-sm font-bold tracking-tight">
-                Nexus<span className="text-gradient">AI</span>
-              </span>
-              <span className="text-[10px] font-medium text-muted-foreground">
-                2026 Library
-              </span>
-            </div>
+            <AinextgrowthLogo size={32} showText={true} />
           </a>
 
           <div className="mx-auto max-w-md flex-1">

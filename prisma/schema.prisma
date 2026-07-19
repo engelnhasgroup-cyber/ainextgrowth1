@@ -145,15 +145,32 @@ model AdminSetting {
   id                      String   @id @default("singleton")
   googleVerificationCode  String   @default("")
   bingVerificationCode    String   @default("")
+  yandexVerification      String   @default("")
+  baiduVerification       String   @default("")
   googleAnalyticsId       String   @default("")
   adsenseClientId         String   @default("ca-pub-XXXXXXXXXXXXXXXX")
-  aiSystemPrompt          String   @default("You are the NexusAI 2026 Autonomous Content Agent. Generate professional, 2026-era AI prompts, skills, and workflows with full Trinity Bundles.")
+  aiSystemPrompt          String   @default("You are the ainextgrowth Autonomous Content Agent. Generate professional, 2026-era AI prompts, skills, and workflows with full Trinity Bundles.")
   aiDailyLimit            Int      @default(200)
-  siteName                String   @default("NexusAI 2026")
-  siteUrl                 String   @default("https://nexusai2026.example.com")
+  siteName                String   @default("ainextgrowth")
+  siteUrl                 String   @default("https://ainextgrowth.com")
   maintenanceMode         Boolean  @default(false)
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
+}
+
+model SocialIntegration {
+  id            String   @id @default(cuid())
+  platform      String   @unique // "twitter" | "linkedin" | "reddit" | "telegram"
+  connected     Boolean  @default(false)
+  apiKey        String   @default("")  // encrypted in production
+  apiSecret     String   @default("")
+  accessToken   String   @default("")
+  autoPost     Boolean  @default(true)
+  lastPostedAt DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([platform])
 }
 
 model Article {

@@ -1,4 +1,4 @@
-// NexusAI 2026 — Dynamic OG Image Generator
+// ainextgrowth — Dynamic OG Image Generator
 // Generates a branded Open Graph image for each item (1200×630 SVG).
 // GET /og/[slug] — returns image/svg+xml
 
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ slug
   <!-- Brand -->
   <g transform="translate(60, 50)">
     <rect width="32" height="32" rx="8" fill="url(#accent)"/>
-    <text x="48" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#ffffff">NexusAI 2026</text>
+    <text x="48" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700" fill="#ffffff">ainextgrowth</text>
     <text x="48" y="40" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#999999">AI Prompt &amp; Skill Library</text>
   </g>
 

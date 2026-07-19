@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { MasterSettings, CategoryManager } from './admin-settings'
+import { SocialCommandCenter } from './social-command-center'
 
 interface RevenueData {
   metrics: {
@@ -737,6 +738,13 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
           </BentoCard>
           <BentoCard title="Category Management" icon={Tag} delay={0.7}>
             <CategoryManager />
+          </BentoCard>
+        </div>
+
+        {/* Social Media Command Center */}
+        <div className="mt-4">
+          <BentoCard title="Social Media Command Center" icon={Network} delay={0.75}>
+            <SocialCommandCenter />
           </BentoCard>
         </div>
 

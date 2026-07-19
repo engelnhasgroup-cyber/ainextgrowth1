@@ -1576,3 +1576,123 @@ Task: Build professional blog system with Article model, humanized LLM generatio
 3. **Add article RSS feed**: `/blog/rss.xml` for article distribution.
 4. **Add comments**: Disqus or custom comment system for engagement.
 5. **Real AdSense slots**: replace AdSlot placeholders with actual `<ins class="adsbygoogle">` tags.
+
+---
+Task ID: 27
+Agent: ainextgrowth Brand + Global SEO + Social Autopilot (user request)
+Task: Rebrand to "ainextgrowth", build social media automation engine, IndexNow integration, global search verification.
+
+## Current Project Status Assessment
+- Project stable at 51 items + 1 article from Task 26.
+- Dev server running, lint clean.
+- User requested: rebrand to ainextgrowth, 300 articles, IndexNow, social media automation.
+
+## Completed Modifications & Verification
+
+### Phase 1: Branding & Visual Identity ("ainextgrowth")
+
+**1. Logo Component (`brand-logo.tsx`)**
+- SVG component combining upward-trending arrow (growth) + neural network nodes (AI).
+- Emerald (#10b981) → Purple (#8b5cf6) gradient.
+- `AinextgrowthLogo`: full logo with text ("ai**next**growth" + "2026 Ecosystem").
+- `AinextgrowthFavicon`: simplified SVG for browser tab.
+
+**2. Favicon (`public/favicon.svg`)**
+- SVG favicon with dark background, neural nodes, arrow, gradient.
+
+**3. Layout.tsx Updated**
+- `generateMetadata()`: uses "ainextgrowth" as site name, tagline "The 2026 Autonomous AI Prompt & Skill Ecosystem".
+- Favicon: `<link rel="icon" type="image/svg+xml" href="/favicon.svg" />` + Apple touch icon.
+- AdminSetting defaults: siteName="ainextgrowth", siteUrl="https://ainextgrowth.com".
+
+**4. Header Updated**
+- Replaced NexusAI Sparkles logo with `AinextgrowthLogo` component.
+- VLM confirmed: **"ainextgrowth branding 10/10"**.
+
+**5. OG Image Updated**
+- Brand text changed from "NexusAI 2026" to "ainextgrowth".
+- Footer copyright updated to "ainextgrowth".
+- Backlink strategy text updated.
+
+### Phase 2: Global Search Engine Verification (Auto-SEO)
+
+**6. AdminSetting Schema Updated**
+- Added `yandexVerification` and `baiduVerification` fields.
+- `db:push` completed.
+
+**7. IndexNow Integration (`src/lib/indexnow.ts`)**
+- `pingIndexNow(urls)`: pings Bing/Yandex IndexNow API with new URLs.
+- `pingItemCreated(slug)`: pings for new items.
+- `pingArticleCreated(slug)`: pings for new blog articles.
+- Integrated into `/api/generate` POST — pings IndexNow on every new item creation.
+- Mock mode (console.log) — structured for real API call.
+
+### Phase 3: Omnichannel Social Media Automation Engine
+
+**8. SocialIntegration Model (NEW — Prisma)**
+- Fields: platform (unique), connected, apiKey, apiSecret, accessToken, autoPost, lastPostedAt.
+- 4 platforms: Twitter, LinkedIn, Reddit, Telegram.
+
+**9. Social Broadcast Cron (`/api/cron/social-broadcast`)**
+- Runs daily (9 AM UTC via vercel.json).
+- Fetches top trending item + latest blog post.
+- Formats platform-specific messages:
+  - **Twitter**: short text + link + hashtags (#AI #PromptEngineering #2026).
+  - **LinkedIn**: long-form professional post with Trinity Bundle link.
+  - **Reddit**: markdown with bold titles + links.
+  - **Telegram**: markdown with emojis + direct links.
+- Mock API calls (structured for real Twitter API, LinkedIn API, Reddit API, Telegram Bot API).
+- Logs to CronJobLog.
+- Verified: success=True, sentTo=0 (no platforms connected — correct).
+
+**10. Social Dashboard API (`/api/dashboard/social`)**
+- GET: returns 4 platforms with connection status, autoPost toggle, lastPostedAt.
+- PUT: toggle autoPost, connect/disconnect platforms with API keys.
+- Auto-creates all 4 platform records on first GET.
+
+**11. Social Command Center UI (`social-command-center.tsx`)**
+- 4 platform cards with: colored icon, connection status badge, auto-post toggle, connect/disconnect button.
+- "Trigger Broadcast Now" button (calls cron endpoint manually).
+- Loading skeleton state.
+- Integrated into Dashboard as "Social Media Command Center" Bento card.
+
+**12. Vercel.json Updated**
+- Added 5th cron: `/api/cron/social-broadcast` at `0 9 * * *` (daily 9 AM UTC).
+
+### Verification Results
+- **Branding**: VLM confirmed "ainextgrowth 10/10" — logo with arrow + neural nodes.
+- **Social API**: 4 platforms, 0 connected (correct initial state).
+- **Social broadcast**: success=True, sentTo=0 (no connected platforms).
+- **Site name**: "ainextgrowth" (updated via PUT API).
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running.
+
+## New APIs Summary
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/dashboard/social` | GET | List social integrations |
+| `/api/dashboard/social` | PUT | Connect/disconnect/toggle |
+| `/api/cron/social-broadcast` | GET | Daily social autopilot broadcast |
+
+## New Models
+| Model | Purpose |
+|-------|---------|
+| `SocialIntegration` | Stores API keys + autoPost settings for 4 social platforms |
+
+## Cron Jobs (5 total in vercel.json)
+1. `daily-generation` — 1:00 AM UTC daily
+2. `seo-agent` — 3:00 AM UTC weekly (Sunday)
+3. `send-email-digest` — 8:00 AM UTC daily
+4. `send-whatsapp-digest` — 8:00 AM UTC daily
+5. **`social-broadcast`** — 9:00 AM UTC daily (NEW)
+
+## Unresolved Issues
+1. **Social platforms not connected**: mock mode — admin needs to plug in real API tokens.
+2. **Articles**: only 1 article in DB (rate-limited generation).
+3. **IndexNow key file**: needs `/ainextgrowth2026key.txt` in public/ for verification.
+
+## Priority Recommendations
+1. **Connect social platforms**: add API keys via Dashboard → Social Command Center.
+2. **Generate articles**: `bun run scripts/generate-articles.ts 30 1` on VPS.
+3. **Real AdSense ID**: replace placeholder.
+4. **Deploy to Vercel**: activates all 5 crons → full autonomous loop.

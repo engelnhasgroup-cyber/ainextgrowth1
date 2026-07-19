@@ -147,7 +147,7 @@ export function Footer({
               <div>
                 <p className="text-sm font-semibold">Backlink Strategy</p>
                 <p className="text-xs text-muted-foreground">
-                  Every downloaded .md file includes an attribution footer linking back to NexusAI 2026.
+                  Every downloaded .md file includes an attribution footer linking back to ainextgrowth.
                   Share bundles on GitHub, Discord &amp; Slack to grow organic high-DA backlinks.
                 </p>
               </div>
@@ -162,7 +162,7 @@ export function Footer({
         {/* bottom bar */}
         <div className="flex flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-center sm:flex-row sm:text-left">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} NexusAI 2026. All prompts &amp; skills are free to download
+            © {new Date().getFullYear()} ainextgrowth. All prompts &amp; skills are free to download
             and distribute with attribution.
           </p>
           <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">

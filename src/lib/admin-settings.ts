@@ -24,8 +24,8 @@ const DEFAULTS: AdminSettings = {
   adsenseClientId: 'ca-pub-XXXXXXXXXXXXXXXX',
   aiSystemPrompt: 'You are the NexusAI 2026 Autonomous Content Agent. Generate professional, 2026-era AI prompts, skills, and workflows with full Trinity Bundles.',
   aiDailyLimit: 200,
-  siteName: 'NexusAI 2026',
-  siteUrl: 'https://nexusai2026.example.com',
+  siteName: 'ainextgrowth',
+  siteUrl: 'https://ainextgrowth.com',
   maintenanceMode: false,
 }
 

@@ -210,6 +210,8 @@ export async function POST(req: NextRequest) {
         const gen = await generateOne(category, type, topic, customPrompt)
         const detail = await persistItem(gen, category, type, topic, today)
         created.push(detail)
+        // Ping IndexNow for instant indexing
+        import('@/lib/indexnow').then(({ pingItemCreated }) => pingItemCreated(detail.slug))
       } catch (e) {
         console.error('generate-one failed:', e)
       }
