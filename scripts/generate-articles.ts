@@ -1,15 +1,19 @@
-// NexusAI 2026 — Humanized Article Generation Script
+// ainextgrowth — Humanized Article Generation Script
 // Generates SEO-optimized, human-written-style articles using LLM.
+// Supports batch execution with progress saving for large runs (up to 300).
 //
 // Usage: bun run scripts/generate-articles.ts [count] [concurrency]
-//   count: number of articles (default 5, max 30 per run)
+//   count: number of articles (default 5, max 300)
 //   concurrency: parallel requests (default 1, max 3)
+// Processes in chunks of 10 with 5s delay between chunks.
 
 import { db } from '../src/lib/db'
 import ZAI from 'z-ai-web-dev-sdk'
 
-const COUNT = Math.min(Number(process.argv[2] || 5), 30)
+const COUNT = Math.min(Number(process.argv[2] || 5), 300)
 const CONCURRENCY = Math.min(Number(process.argv[3] || 1), 3)
+const CHUNK_SIZE = 10
+const DELAY_BETWEEN_CHUNKS = 5000
 
 // 30 highly-searched SEO topics for 2026
 const TOPICS = [
@@ -193,9 +197,10 @@ async function generateOne(topic: { title: string; category: string; keywords: s
 }
 
 async function main() {
-  console.log(`\n📝 NexusAI Article Generation`)
+  console.log(`\n📝 ainextgrowth Article Generation`)
   console.log(`   Target: ${COUNT} articles from ${TOPICS.length} topics`)
-  console.log(`   Concurrency: ${CONCURRENCY}\n`)
+  console.log(`   Concurrency: ${CONCURRENCY}`)
+  console.log(`   Chunk size: ${CHUNK_SIZE} (5s delay between chunks)\n`)
 
   // Select topics (cycle through if count > topics)
   const selected: { title: string; category: string; keywords: string }[] = []
@@ -204,11 +209,32 @@ async function main() {
   }
 
   let ok = 0
-  for (let i = 0; i < selected.length; i += CONCURRENCY) {
-    const chunk = selected.slice(i, i + CONCURRENCY)
-    const results = await Promise.all(chunk.map((t, j) => generateOne(t, i + j)))
-    ok += results.reduce((a, b) => a + b, 0)
-    if (i + CONCURRENCY < selected.length) await new Promise((r) => setTimeout(r, 5000))
+  let chunkNum = 0
+
+  // Process in chunks of CHUNK_SIZE
+  for (let i = 0; i < selected.length; i += CHUNK_SIZE) {
+    chunkNum++
+    const chunkEnd = Math.min(i + CHUNK_SIZE, selected.length)
+    const chunk = selected.slice(i, chunkEnd)
+    console.log(`\n--- Chunk ${chunkNum}/${Math.ceil(selected.length / CHUNK_SIZE)} (items ${i + 1}-${chunkEnd}) ---`)
+
+    // Process chunk with concurrency
+    for (let j = 0; j < chunk.length; j += CONCURRENCY) {
+      const batch = chunk.slice(j, j + CONCURRENCY)
+      const results = await Promise.all(batch.map((t, k) => generateOne(t, i + j + k)))
+      ok += results.reduce((a, b) => a + b, 0)
+      if (j + CONCURRENCY < chunk.length) await new Promise((r) => setTimeout(r, 3000))
+    }
+
+    // Progress save: report current DB count
+    const currentCount = await db.article.count()
+    console.log(`   📊 Progress: ${ok}/${COUNT} generated. DB total: ${currentCount}`)
+
+    // Delay between chunks (except last)
+    if (chunkEnd < selected.length) {
+      console.log(`   ⏳ Waiting ${DELAY_BETWEEN_CHUNKS / 1000}s before next chunk...`)
+      await new Promise((r) => setTimeout(r, DELAY_BETWEEN_CHUNKS))
+    }
   }
 
   const total = await db.article.count()

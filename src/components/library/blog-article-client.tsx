@@ -127,7 +127,7 @@ export function BlogArticleClient({
     headline: article.title,
     description: article.metaDescription,
     author: { '@type': 'Organization', name: article.author },
-    publisher: { '@type': 'Organization', name: 'NexusAI 2026' },
+    publisher: { '@type': 'Organization', name: 'ainextgrowth' },
     datePublished: article.publishedAt,
     dateModified: article.publishedAt,
   }

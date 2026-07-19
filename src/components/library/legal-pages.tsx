@@ -108,7 +108,7 @@ function LegalShell({
         <header className="mb-8 border-b border-border/60 pb-6">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <Sparkles className="h-3.5 w-3.5" />
-            NexusAI 2026
+            ainextgrowth
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h1>
           <p className="mt-2 text-base text-muted-foreground">{subtitle}</p>
@@ -118,7 +118,7 @@ function LegalShell({
 
         <footer className="mt-12 border-t border-border/60 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} NexusAI 2026 · Have questions? Reach us at{' '}
+            © {new Date().getFullYear()} ainextgrowth · Have questions? Reach us at{' '}
             <a href="mailto:contact@nexusai2026.example.com" className="text-primary underline">
               contact@nexusai2026.example.com
             </a>
@@ -133,12 +133,12 @@ function AboutContent() {
   return (
     <LegalShell
       page="about"
-      title="About NexusAI 2026"
+      title="About ainextgrowth"
       subtitle="The world's largest autonomous AI Prompt & Skill Library — engineered for professionals, researchers, and builders in 2026."
       updated="July 2026"
     >
       <P>
-        NexusAI 2026 is an autonomous AI Prompt & Skill Library built to serve the global
+        ainextgrowth is an autonomous AI Prompt & Skill Library built to serve the global
         community of developers, marketers, data scientists, designers, educators, and
         founders working with large language models. Our platform is powered by a coordinated
         swarm of 20 specialized AI agents that research trends, engineer prompts, author
@@ -170,7 +170,7 @@ function AboutContent() {
 
       <H2 icon={FileText}>The Trinity Bundle System</H2>
       <P>
-        Every item on NexusAI 2026 ships as a Trinity Bundle — three Markdown files that
+        Every item on ainextgrowth ships as a Trinity Bundle — three Markdown files that
         together form a complete, actionable resource:
       </P>
       <ul className="space-y-1">
@@ -185,10 +185,10 @@ function AboutContent() {
 
       <H2 icon={Shield}>Editorial Standards (E-E-A-T)</H2>
       <P>
-        While our content is AI-generated, every item passes through the NexusAI Editorial
+        While our content is AI-generated, every item passes through the ainextgrowth Editorial
         Team&apos;s review framework, which validates technical accuracy, checks for
         hallucinated tool references, and ensures the prompt produces the claimed output.
-        Each item displays a &quot;Reviewed by NexusAI Editorial Team&quot; attribution to
+        Each item displays a &quot;Reviewed by ainextgrowth Editorial Team&quot; attribution to
         signal trust to both users and search engines.
       </P>
 
@@ -204,7 +204,7 @@ function AboutContent() {
 
       <H2 icon={Heart}>Why We&apos;re Free</H2>
       <P>
-        NexusAI 2026 is free to use. The platform is supported by non-intrusive Google
+        ainextgrowth is free to use. The platform is supported by non-intrusive Google
         AdSense advertisements shown during a short countdown before file downloads. We never
         require users to click ads — the download unlocks automatically after a few seconds.
         This model lets us keep the library free while sustaining the autonomous generation
@@ -233,7 +233,7 @@ function ContactContent() {
     >
       <H2 icon={Mail}>Get in Touch</H2>
       <P>
-        The fastest way to reach the NexusAI 2026 team is via email. We respond to all
+        The fastest way to reach the ainextgrowth team is via email. We respond to all
         legitimate inquiries within 1-2 business days.
       </P>
 
@@ -284,7 +284,7 @@ function ContactContent() {
 
       <H2 icon={Globe}>Mailing Address</H2>
       <P>
-        NexusAI 2026<br />
+        ainextgrowth<br />
         Attn: Editorial Team<br />
         100 Market Street, Suite 400<br />
         San Francisco, CA 94105<br />
@@ -299,11 +299,11 @@ function PrivacyContent() {
     <LegalShell
       page="privacy"
       title="Privacy Policy"
-      subtitle="How NexusAI 2026 collects, uses, and protects your information. This policy complies with GDPR, CCPA, and Google AdSense requirements."
+      subtitle="How ainextgrowth collects, uses, and protects your information. This policy complies with GDPR, CCPA, and Google AdSense requirements."
       updated="July 2026"
     >
       <P>
-        This Privacy Policy describes how NexusAI 2026 (&quot;we&quot;, &quot;us&quot;, or
+        This Privacy Policy describes how ainextgrowth (&quot;we&quot;, &quot;us&quot;, or
         &quot;our&quot;) collects, uses, and protects information when you visit our website
         at nexusai2026.example.com (the &quot;Service&quot;). By using the Service, you agree
         to the practices described in this policy.
@@ -436,11 +436,11 @@ function TermsContent() {
     <LegalShell
       page="terms"
       title="Terms of Service"
-      subtitle="The terms and conditions governing your use of the NexusAI 2026 platform and the Markdown files you download."
+      subtitle="The terms and conditions governing your use of the ainextgrowth platform and the Markdown files you download."
       updated="July 2026"
     >
       <P>
-        Welcome to NexusAI 2026. By accessing or using our website at
+        Welcome to ainextgrowth. By accessing or using our website at
         nexusai2026.example.com (the &quot;Service&quot;), you agree to be bound by these
         Terms of Service (&quot;Terms&quot;). If you do not agree to these Terms, please do
         not use the Service.
@@ -448,15 +448,15 @@ function TermsContent() {
 
       <H2 icon={Info}>1. Description of Service</H2>
       <P>
-        NexusAI 2026 provides a free library of AI-generated prompts, skills, and workflows
+        ainextgrowth provides a free library of AI-generated prompts, skills, and workflows
         (collectively, &quot;Content&quot;), each available for download as a bundle of three
         Markdown files (the &quot;Trinity Bundle&quot;). The Content is generated by an
-        autonomous AI agent system and reviewed by the NexusAI Editorial Team.
+        autonomous AI agent system and reviewed by the ainextgrowth Editorial Team.
       </P>
 
       <H2 icon={FileText}>2. License to Use Content</H2>
       <P>
-        Subject to your compliance with these Terms, NexusAI 2026 grants you a worldwide,
+        Subject to your compliance with these Terms, ainextgrowth grants you a worldwide,
         non-exclusive, royalty-free license to:
       </P>
       <ul className="space-y-1">
@@ -466,7 +466,7 @@ function TermsContent() {
       </ul>
       <H3>Attribution Requirement</H3>
       <P>
-        Each downloaded Markdown file includes a footer crediting NexusAI 2026 with a
+        Each downloaded Markdown file includes a footer crediting ainextgrowth with a
         backlink. You agree not to remove, alter, or obscure this attribution when
         distributing the files. Bulk removal of attribution for redistribution as a competing
         service is strictly prohibited.
@@ -514,7 +514,7 @@ function TermsContent() {
       <H2 icon={Shield}>6. Intellectual Property</H2>
       <P>
         The Service&apos;s design, branding, code, and editorial framework are the
-        intellectual property of NexusAI 2026. The AI-generated Content is licensed to you
+        intellectual property of ainextgrowth. The AI-generated Content is licensed to you
         under the terms in Section 2. Third-party trademarks and tool names referenced in
         Content belong to their respective owners.
       </P>
@@ -530,7 +530,7 @@ function TermsContent() {
 
       <H2 icon={AlertTriangle}>8. Limitation of Liability</H2>
       <P>
-        To the maximum extent permitted by law, NexusAI 2026 and its team shall not be liable
+        To the maximum extent permitted by law, ainextgrowth and its team shall not be liable
         for any indirect, incidental, special, consequential, or punitive damages, including
         loss of profits, data, or goodwill, arising from your use of the Service or the
         Content, even if advised of the possibility of such damages.

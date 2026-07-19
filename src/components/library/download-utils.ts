@@ -3,7 +3,7 @@
 
 import type { ItemDetail } from '@/lib/types'
 
-const BRAND = 'NexusAI 2026'
+const BRAND = 'ainextgrowth'
 const SITE_URL = 'https://nexusai2026.example.com'
 
 function fileHeader(item: ItemDetail, fileLabel: string): string {

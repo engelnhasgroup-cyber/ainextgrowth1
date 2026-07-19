@@ -81,7 +81,7 @@ export function AgentPanel({
               A 20-Agent Swarm Writes the Library Daily
             </h2>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-              The NexusAI orchestrator runs a coordinated crew of 20 specialized AI agents. Each
+              The ainextgrowth orchestrator runs a coordinated crew of 20 specialized AI agents. Each
               day they forecast trends, engineer neuro-prompts, author workflows, map audiences,
               wire internal links, inject schema markup, and ship — producing 100 trending prompts
               and 100 trending skills with full Trinity Bundles.

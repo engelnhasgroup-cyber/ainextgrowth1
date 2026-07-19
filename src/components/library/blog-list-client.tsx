@@ -87,14 +87,14 @@ export function BlogListClient({
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
             <BookOpen className="h-3.5 w-3.5" />
-            NexusAI Blog · Expert Insights
+            ainextgrowth Blog · Expert Insights
           </div>
           <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
             AI Prompt Engineering <span className="text-gradient">Insights</span> for 2026
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground">
             Deep-dive articles on prompt engineering, agentic workflows, and AI automation strategies.
-            Written by the NexusAI Editorial Team with real-world examples and Trinity Bundle solutions.
+            Written by the ainextgrowth Editorial Team with real-world examples and Trinity Bundle solutions.
           </p>
         </div>
       </section>
