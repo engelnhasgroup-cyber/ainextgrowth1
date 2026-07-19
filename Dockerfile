@@ -1,13 +1,11 @@
-FROM oven/bun:latest
-
-# تثبيت مكتبة OpenSSL المطلوبة لـ Prisma
+FROM node:20-slim
 RUN apt-get update && apt-get install -y openssl libssl-dev ca-certificates && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
+COPY package.json package-lock.json* ./
+COPY prisma ./prisma/
+RUN npm install
+RUN npx prisma generate
 COPY . .
-RUN bun install
-RUN bunx prisma generate
-RUN bun run build
-
+RUN npm run build
 EXPOSE 3000
-CMD ["bun", "run", "start"]
+CMD ["npm", "run", "start"]
