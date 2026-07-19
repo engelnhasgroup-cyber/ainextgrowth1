@@ -57,6 +57,22 @@ export async function GET() {
     })
   }
 
+  // Blog articles
+  const articles = await db.article.findMany({
+    select: { slug: true, updatedAt: true },
+    orderBy: { publishedAt: 'desc' },
+  })
+  for (const a of articles) {
+    urls.push({
+      loc: `${SITE_URL}/blog/${encodeURIComponent(a.slug)}`,
+      lastmod: a.updatedAt instanceof Date ? a.updatedAt.toISOString() : now,
+      changefreq: 'weekly',
+      priority: '0.8',
+    })
+  }
+  // Blog list page
+  urls.push({ loc: `${SITE_URL}/blog`, lastmod: now, changefreq: 'daily', priority: '0.85' })
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls

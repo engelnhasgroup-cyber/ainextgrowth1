@@ -155,3 +155,26 @@ model AdminSetting {
   createdAt               DateTime @default(now())
   updatedAt               DateTime @updatedAt
 }
+
+model Article {
+  id              String   @id @default(cuid())
+  title           String
+  slug            String   @unique
+  metaDescription String   @default("")
+  keywords        String   @default("")   // comma-separated
+  category        String   @default("AI")
+  content         String   @default("")   // Markdown (1500-2000 words)
+  tableOfContents String   @default("[]") // JSON array of {id, text, level}
+  author          String   @default("NexusAI Editorial Team")
+  readingTime     Int      @default(5)
+  faqs            String   @default("[]") // JSON array of {question, answer}
+  featured        Boolean  @default(false)
+  publishedAt     DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([featured])
+  @@index([publishedAt])
+}

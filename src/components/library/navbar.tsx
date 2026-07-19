@@ -28,6 +28,7 @@ export function Navbar({ onOpenSearch }: { onOpenSearch?: () => void }) {
     { label: 'Prompts', action: () => goLibrary('prompt') },
     { label: 'Skills', action: () => goLibrary('skill') },
     { label: 'Workflows', action: () => goLibrary('workflow'), badge: 'NEW' },
+    { label: 'Blog', action: () => { setMobileOpen(false); window.location.href = '/blog' } },
     { label: 'About', action: () => { openLegal('about'); setMobileOpen(false) } },
     { label: 'Contact', action: () => { openLegal('contact'); setMobileOpen(false) } },
   ]
