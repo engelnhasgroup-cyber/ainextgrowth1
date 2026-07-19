@@ -880,3 +880,104 @@ Task: QA assessment via agent-browser + VLM, add animated tabs indicator, Top Ra
 4. **Dedicated category routes**: `/category/[slug]` for SEO.
 5. **Analytics**: Plausible/Umami integration.
 6. **Category landing sections**: SEO content blocks per category on homepage.
+
+---
+Task ID: 21
+Agent: Dashboard + SEO Agent + Mass Generator (user request)
+Task: Build professional admin dashboard (Bento Grid), SEO/AEO/GEO autonomous agent, enhanced mass generation script — Enterprise-level features.
+
+## Current Project Status Assessment
+- Project stable at 50 items (24 prompts, 21 skills, 5 workflows) from Task 20.
+- Dev server running, lint clean, no runtime errors.
+- All prior features stable (compare, history, command palette, G-keys, etc.).
+- User requested: Dashboard UI, SEO Agent, Mass Generator for 600 items.
+
+## Completed Modifications & Verification
+
+### 1. Dashboard API Routes (NEW — 5 endpoints)
+- **`/api/dashboard/revenue`**: AdSense revenue estimator.
+  - Calculates estimated clicks (views × CTR × ad_slots), revenue (clicks × CPC).
+  - Daily potential + monthly projection (30 days).
+  - Revenue by type breakdown (prompts/skills/workflows).
+  - Assumptions: $2.50 CPC, 4% CTR, 3 ad slots/page (high-CPC AI/tech niche).
+  - Returns: $410,585 estimated total, $246,360/month projection.
+- **`/api/dashboard/health`**: System health + AdSense readiness.
+  - Content quality score (intro + FAQ coverage).
+  - DB latency measurement.
+  - 12-point AdSense readiness checklist (all pass = 100%).
+  - Returns: 50 items, 65% quality, 100% AdSense ready.
+- **`/api/dashboard/trends`**: Trend radar with today's generated items.
+  - Indexing status simulation (indexed/pending/not_submitted).
+  - Recent generation logs.
+  - Top trending topics.
+- **`/api/dashboard/agents`**: Agent swarm status.
+  - 20 agents with phase + status.
+  - Daily progress (todayGenerated / dailyTarget × 100).
+  - Total agent-generated count.
+  - POST handler to trigger generation (delegates to /api/generate).
+- **`/api/dashboard/knowledge-graph`**: Internal link graph data.
+  - Nodes (items) + edges (relatedIds + shared tags).
+  - Stats: total nodes, edges, avg connections.
+
+### 2. SEO/AEO/GEO Autonomous Agent (NEW — cron endpoint)
+- **`/api/cron/seo-agent`**: weekly SEO optimization agent.
+  - Auth-protected (Bearer CRON_SECRET, dev mode bypasses).
+  - Fetches existing items + FAQs to identify gaps.
+  - Uses LLM to generate optimization plan:
+    - 5 content gaps (missing prompt/skill ideas).
+    - 3 FAQ optimizations (AEO-rewritten for Google SGE extraction).
+    - 3 GEO citations (statistical citations with source + year).
+    - 5 long-tail keyword opportunities.
+  - Logs run to GenerationLog.
+  - Verified: returned 5 gaps, 3 FAQ opts, 3 citations, 5 keywords.
+
+### 3. Dashboard UI (NEW — Bento Grid, glassmorphism)
+- **`dashboard.tsx`**: full admin dashboard with Bento Grid layout.
+  - **Revenue Estimator** (2-col): total/daily/monthly revenue, revenue by type.
+  - **AdSense Readiness**: 100% score, 12-point checklist, ready badge.
+  - **Content Quality**: quality score, intro/FAQ coverage progress bars.
+  - **Library Overview**: 6 stat pills (items, prompts, skills, workflows, trinity files, categories).
+  - **Engagement**: views, downloads, trending, featured.
+  - **Agent Swarm** (2-col): 20-agent numbered grid, daily progress bar, active count.
+  - **Trend Radar** (2-col): today's items with indexing status badges.
+  - **Recent Agent Runs**: generation log entries.
+  - Glassmorphism: `backdrop-blur-xl`, border, bg-card/40.
+  - Refresh button, DB latency badge, Back to Library button.
+  - Framer-motion entrance animations per card.
+- Accessible from Header (LayoutDashboard icon) + Footer (Dashboard link).
+- VLM rated 9/10: "Agent Swarm card with 20-cell grid, Trend Radar with today's items".
+
+### 4. Enhanced Mass Generation Script (NEW)
+- **`scripts/generate-mass.ts`**: generates items across 10 niches.
+  - Even type distribution (prompts/skills/workflows).
+  - 10 niche-topic pairs mapped to 8 categories.
+  - Concurrency control (default 2).
+  - Retry with exponential backoff on 429s (3 attempts, 8s/16s).
+  - 2s delay between chunks.
+  - Usage: `bun run scripts/generate-mass.ts 600 2` for full 600-item generation.
+
+### Verification Results (agent-browser + VLM + API tests)
+- **Revenue API**: $410,585 estimated, $246,360/month projection.
+- **Health API**: 50 items, 65% quality, 100% AdSense readiness.
+- **Agents API**: 20 agents, 1 today, daily progress tracked.
+- **SEO Agent**: returned 5 content gaps, 3 FAQ opts, 3 GEO citations, 5 keywords.
+- **Dashboard UI**: Bento Grid with all cards rendering. VLM 9/10.
+- **Dashboard access**: Header button + Footer link both work.
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Backfill still incomplete**: ~12 items still need intros. Chunked approach continuing.
+2. **Dashboard not a real route**: rendered as view-state within `/` (no `/dashboard` route). Sufficient for single-route constraint.
+3. **Revenue is estimated**: based on assumptions, not real AdSense data. Real integration requires AdSense API.
+4. **SEO agent is manual trigger**: needs cron job setup (Vercel Cron or external) for weekly automation.
+5. **Mass generation rate-limited**: 600 items would take ~5 hours due to LLM rate limits.
+
+## Priority Recommendations for Next Phase
+1. **Complete backfill**: run `bun run scripts/backfill-chunk.ts 3` in cron.
+2. **Run mass generation**: `bun run scripts/generate-mass.ts 100 2` in background sessions to reach 600 items.
+3. **Real AdSense ID**: replace `ca-pub-XXXXXXXXXXXXXXXX` placeholder.
+4. **Cron setup**: configure Vercel Cron or external service for weekly SEO agent runs.
+5. **Knowledge graph visualization**: add a D3/visx graph visualization component to dashboard.
+6. **Dedicated category routes**: `/category/[slug]` for SEO.
+7. **Analytics**: Plausible/Umami integration for real engagement tracking.

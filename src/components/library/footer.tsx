@@ -20,6 +20,7 @@ export function Footer({
   const setFilterCategory = useLibrary((s) => s.setFilterCategory)
   const setFilterType = useLibrary((s) => s.setFilterType)
   const openLegal = useLibrary((s) => s.openLegal)
+  const setDashboardOpen = useLibrary((s) => s.setDashboardOpen)
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -116,6 +117,7 @@ export function Footer({
               <li><button onClick={() => openLegal('privacy')} className="text-muted-foreground transition-colors hover:text-primary">Privacy Policy</button></li>
               <li><button onClick={() => openLegal('terms')} className="text-muted-foreground transition-colors hover:text-primary">Terms of Service</button></li>
               <li><button onClick={() => openLegal('contact')} className="text-muted-foreground transition-colors hover:text-primary">Contact</button></li>
+              <li><button onClick={() => setDashboardOpen(true)} className="text-muted-foreground transition-colors hover:text-primary">Dashboard</button></li>
               <li><a href="/rss.xml" target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">RSS Feed</a></li>
               <li><a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" className="text-muted-foreground transition-colors hover:text-primary">Sitemap</a></li>
             </ul>

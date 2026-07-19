@@ -24,6 +24,7 @@ import { CompareModal, CompareBar } from './compare-modal'
 import { HistorySheet } from './history-sheet'
 import { ShortcutsHelp, useShortcutsHelpTrigger } from './shortcuts-help'
 import { useGKeyNavigation } from './use-gkeys'
+import { Dashboard } from './dashboard'
 import { useLibrary } from './store'
 import { useHistory } from './use-history'
 
@@ -48,7 +49,7 @@ export function LibraryApp({
   initialItems: ItemSummary[]
   initialTotal: number
 }) {
-  const { openDetail, openLegal, legalPage, historyOpen, setHistoryOpen } = useLibrary()
+  const { openDetail, openLegal, legalPage, historyOpen, setHistoryOpen, dashboardOpen, setDashboardOpen } = useLibrary()
   const { add: addHistory } = useHistory()
   const { open: shortcutsOpen, setOpen: setShortcutsOpen } = useShortcutsHelpTrigger()
   useGKeyNavigation()
@@ -80,6 +81,16 @@ export function LibraryApp({
       openLegal(page as any)
     }
   }, [openDetail, openLegal])
+
+  // Dashboard view (full-screen)
+  if (dashboardOpen) {
+    return (
+      <div id="top" className="flex min-h-screen flex-col">
+        <Header stats={stats} />
+        <Dashboard onClose={() => setDashboardOpen(false)} />
+      </div>
+    )
+  }
 
   // Hide main content when a legal page is open (full-screen view)
   if (legalPage) {
