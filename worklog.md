@@ -1778,3 +1778,23 @@ Task: Execute mass article/item generation, verify sitemap, create .env.example,
 4. **Configure .env**: copy `.env.example` to `.env` and fill in real API keys.
 5. **Submit to Google Search Console**: submit `sitemap.xml` for indexing.
 6. **Apply for AdSense**: with 300+ articles + 200+ items + legal pages + blog, approval is guaranteed.
+
+---
+Task ID: 29
+Agent: QA Fix + Deployment Guide (user request)
+Task: Fix all errors, test all routes, create deployment guide for Hostinger.
+
+## Bug Found & Fixed
+- **Blog article page 500 error**: `contentRef` was referenced but not declared (removed during the progress bar refactor in Task 26).
+  - **Fix**: Added `const contentRef = useRef<HTMLDivElement>(null)` back to `BlogArticleClient`.
+  - **Result**: `/blog/[slug]` now returns 200 ✅.
+
+## Full QA Verification (all routes)
+- **13 API routes**: ALL return 200 ✅
+- **6 pages**: `/`, `/blog`, `/rss.xml`, `/sitemap.xml`, `/robots.txt`, `/favicon.svg` — ALL 200 ✅
+- **Blog article page**: 200 ✅ (after fix)
+- **Lint**: 0 errors ✅
+- **VLM scores**: Homepage 9/10, Blog 9/10, Article 8/10, Dashboard all cards visible ✅
+
+## .env.example Created
+- All environment variables documented (DB, Cron, AdSense, GA, Verification, IndexNow, Resend, Twilio, Social, Site config).

@@ -107,6 +107,7 @@ export function BlogArticleClient({
 }) {
   const [copied, setCopied] = useState(false)
   const progress = useWindowScrollProgress()
+  const contentRef = useRef<HTMLDivElement>(null)
 
   // Copy link
   const copyLink = async () => {
