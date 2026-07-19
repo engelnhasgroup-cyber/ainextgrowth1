@@ -981,3 +981,85 @@ Task: Build professional admin dashboard (Bento Grid), SEO/AEO/GEO autonomous ag
 5. **Knowledge graph visualization**: add a D3/visx graph visualization component to dashboard.
 6. **Dedicated category routes**: `/category/[slug]` for SEO.
 7. **Analytics**: Plausible/Umami integration for real engagement tracking.
+
+---
+Task ID: 22
+Agent: WhatsApp Daily Newsletter Engine (user request)
+Task: Build WhatsApp community loop — Lead model, subscribe API, floating button, footer section, dashboard broadcast card.
+
+## Current Project Status Assessment
+- Project stable at 51 items (24 prompts, 21 skills, 6 workflows) from Task 21.
+- Dev server running, lint clean, no runtime errors.
+- Dashboard, SEO agent, command palette, compare, history all working.
+- User requested WhatsApp newsletter engine to replace email (98% open rate vs 20%).
+
+## Completed Modifications & Verification
+
+### 1. Lead Database Model (NEW)
+- **Prisma `Lead` model**: `phone` (unique), `channel` (whatsapp/email/sms), `subscribed` (boolean), `countryCode`, `source` (footer/floating/dashboard).
+- Indexed on `channel` and `subscribed` for fast queries.
+- `db:push` + `db:generate` completed; dev server restarted to pick up new client.
+
+### 2. WhatsApp Subscribe API (NEW)
+- **`/api/leads/subscribe-whatsapp`**:
+  - **POST**: validates phone (8-15 digits, E.164), deduplicates (resubscribes if unsubscribed), creates new lead.
+  - **GET**: returns subscriber count (public, for display).
+  - Sanitizes phone (strips non-digits), supports country code.
+  - Verified: subscribed "+14155552671" → success → duplicate → "Already subscribed!" → count = 1.
+
+### 3. WhatsApp Dashboard API (NEW)
+- **`/api/dashboard/whatsapp`**:
+  - **GET**: returns total/active/today/unsubscribed counts, by-source breakdown, recent 5 subscribers, autoDailyEnabled flag.
+  - **POST**: broadcasts message to all active subscribers (mock Twilio — logs to console, structured for real API key plugin).
+  - Supports both manual `message` and `topPrompts` (auto-generates "Top 5 Trending Prompts Today" format with links).
+  - Verified: broadcast "Test broadcast from dashboard!" → sent to 1 subscriber, 200 OK.
+
+### 4. WhatsAppSubscribe Component (NEW — footer)
+- **`whatsapp-subscribe.tsx`**: 
+  - `WhatsAppSubscribe`: form with 20 country codes (US, UK, CA, AU, AE, SA, EG, KW, QA, BH, OM, MA, DZ, TN, ID, IN, BR, ES, DE, FR), phone input, Send button.
+  - Success state: green checkmark + "You're in! 🎉" + resubscribe option.
+  - `WhatsAppFooterSection`: gradient emerald card replacing email newsletter, "98% Open Rate" badge, "WhatsApp Daily Top 5" heading.
+  - VLM confirmed: "green WhatsApp-themed subscription box with phone number input and country code selector".
+
+### 5. Floating WhatsApp Button (NEW — mobile sticky)
+- **`floating-whatsapp.tsx`**: 
+  - Fixed bottom-LEFT (avoids back-to-top which is bottom-right).
+  - Green circle with MessageCircle icon + animated "5" notification badge (pinging).
+  - Appears after 400px scroll.
+  - Clicking opens expandable panel with: header (green), "Daily Top 5 Prompts" pitch, country code selector, phone input, "Get Daily Prompts" button.
+  - Success state: green checkmark + confirmation.
+  - Framer-motion entrance animations (scale + opacity).
+  - Verified via agent-browser: button present in DOM, panel opens with form fields.
+
+### 6. Dashboard WhatsApp Community Card (NEW)
+- **Dashboard enhanced** with 2 new Bento cards:
+  - **WhatsApp Community** (2-col): subscriber stats (total/active/today), auto-daily toggle switch (green when ON), manual broadcast input + Send button, recent subscribers list.
+  - **Acquisition Sources** (1-col): subscriber count by source (footer/floating/dashboard), 98% open rate insight.
+- Auto-daily toggle: animated switch, toast notification on toggle.
+- Manual broadcast: input + Send button, calls `/api/dashboard/whatsapp` POST, toast confirmation.
+- VLM rated 9/10: "All required elements present: WhatsApp Community card, Auto-daily toggle, Manual broadcast input, Acquisition Sources card".
+
+### Verification Results (agent-browser + VLM + API tests)
+- **Subscribe API**: success + duplicate detection + count = 1. ✅
+- **Broadcast API**: sent to 1 subscriber, 200 OK, console log confirms. ✅
+- **Footer section**: VLM confirmed "green WhatsApp-themed subscription box". ✅
+- **Floating button**: present in DOM, panel opens with form. ✅
+- **Dashboard card**: VLM 9/10, all elements confirmed. ✅
+- **Auto-daily toggle**: switches ON/OFF visually confirmed by VLM. ✅
+- **Broadcast from dashboard**: typed message → Send → 200 OK → console log. ✅
+- **Lint**: 0 errors, 0 warnings.
+- **Dev server**: running, no runtime errors.
+
+## Unresolved Issues / Risks
+1. **Mock Twilio**: broadcast is mock (logs to console). Real delivery requires Twilio WhatsApp API key (`TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_NUMBER`).
+2. **Auto-daily not scheduled**: toggle is UI-only. Real automation requires cron job calling `/api/dashboard/whatsapp` POST with `topPrompts` at 9 AM daily.
+3. **Floating button position**: bottom-left to avoid back-to-top (bottom-right). On very small screens, may overlap content — tested and acceptable.
+4. **Backfill still incomplete**: ~9 items still need intros.
+
+## Priority Recommendations for Next Phase
+1. **Twilio integration**: plug in real Twilio WhatsApp API credentials for actual message delivery.
+2. **Cron auto-daily**: schedule daily broadcast at 9 AM sending top 5 trending items.
+3. **Complete backfill**: run `bun run scripts/backfill-chunk.ts 3` in cron.
+4. **Real AdSense publisher ID**: replace placeholder.
+5. **Mass generation**: run `bun run scripts/generate-mass.ts 100 2` for more items.
+6. **Unsubscribe API**: add `/api/leads/unsubscribe` endpoint for compliance.

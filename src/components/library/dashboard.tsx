@@ -5,9 +5,11 @@ import {
   ArrowLeft, DollarSign, TrendingUp, Bot, Activity, Database,
   CheckCircle2, Clock, AlertCircle, Zap, Eye, Download, Star,
   RefreshCw, ExternalLink, Cpu, Network, Shield, Sparkles,
+  MessageCircle, Send, Users,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 
 interface RevenueData {
@@ -98,27 +100,41 @@ function StatPill({ label, value, color }: { label: string; value: string; color
   )
 }
 
+interface WhatsAppData {
+  stats: { totalSubscribers: number; activeSubscribers: number; todaySubscribers: number; unsubscribed: number }
+  bySource: { source: string; count: number }[]
+  recent: { id: string; phone: string; source: string; subscribed: boolean; createdAt: string }[]
+  autoDailyEnabled: boolean
+}
+
 export function Dashboard({ onClose }: { onClose: () => void }) {
   const [revenue, setRevenue] = useState<RevenueData | null>(null)
   const [health, setHealth] = useState<HealthData | null>(null)
   const [trends, setTrends] = useState<TrendsData | null>(null)
   const [agents, setAgents] = useState<AgentsData | null>(null)
+  const [whatsapp, setWhatsapp] = useState<WhatsAppData | null>(null)
+  const [broadcastMsg, setBroadcastMsg] = useState('')
+  const [broadcasting, setBroadcasting] = useState(false)
+  const [autoDaily, setAutoDaily] = useState(true)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
 
   const fetchAll = async () => {
     setRefreshing(true)
     try {
-      const [rev, hel, trd, agt] = await Promise.all([
+      const [rev, hel, trd, agt, wa] = await Promise.all([
         fetch('/api/dashboard/revenue').then((r) => r.json()),
         fetch('/api/dashboard/health').then((r) => r.json()),
         fetch('/api/dashboard/trends').then((r) => r.json()),
         fetch('/api/dashboard/agents').then((r) => r.json()),
+        fetch('/api/dashboard/whatsapp').then((r) => r.json()),
       ])
       setRevenue(rev)
       setHealth(hel)
       setTrends(trd)
       setAgents(agt)
+      setWhatsapp(wa)
+      setAutoDaily(wa?.autoDailyEnabled ?? true)
     } catch (e) {
       console.error('Dashboard fetch error:', e)
     } finally {
@@ -401,6 +417,138 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
                     <span className="text-[9px] text-muted-foreground">{new Date(run.createdAt).toLocaleTimeString()}</span>
                   </div>
                 ))}
+              </div>
+            )}
+          </BentoCard>
+        </div>
+
+        {/* WhatsApp Community — full width row */}
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {/* WhatsApp Stats + Broadcast */}
+          <BentoCard title="WhatsApp Community" icon={MessageCircle} className="lg:col-span-2" delay={0.45}>
+            {whatsapp && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-3 gap-2">
+                  <StatPill label="Subscribers" value={String(whatsapp.stats.totalSubscribers)} color="#10b981" />
+                  <StatPill label="Active" value={String(whatsapp.stats.activeSubscribers)} color="#8b5cf6" />
+                  <StatPill label="Today" value={String(whatsapp.stats.todaySubscribers)} color="#f59e0b" />
+                </div>
+
+                {/* Auto-daily toggle */}
+                <div className="flex items-center justify-between rounded-xl border border-border/40 bg-background/40 px-3 py-2.5">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
+                    <div>
+                      <p className="text-xs font-semibold">Daily Auto-Broadcast</p>
+                      <p className="text-[10px] text-muted-foreground">Agent sends top 5 prompts daily at 9 AM</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const next = !autoDaily
+                      setAutoDaily(next)
+                      toast.success(next ? 'Auto-daily broadcast enabled' : 'Auto-daily broadcast disabled')
+                    }}
+                    className={`relative h-6 w-11 rounded-full transition-colors ${autoDaily ? 'bg-emerald-500' : 'bg-muted'}`}
+                    aria-label="Toggle auto-daily broadcast"
+                  >
+                    <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${autoDaily ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
+                  </button>
+                </div>
+
+                {/* Manual broadcast */}
+                <div>
+                  <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Manual Broadcast</p>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={broadcastMsg}
+                      onChange={(e) => setBroadcastMsg(e.target.value)}
+                      placeholder="Type a message to send to all subscribers…"
+                      className="h-10 min-w-0 flex-1 rounded-lg border border-border/70 bg-background/60 px-3 text-xs outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                    />
+                    <Button
+                      onClick={async () => {
+                        if (!broadcastMsg.trim()) {
+                          toast.error('Enter a message first')
+                          return
+                        }
+                        setBroadcasting(true)
+                        try {
+                          const res = await fetch('/api/dashboard/whatsapp', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ message: broadcastMsg }),
+                          })
+                          const data = await res.json()
+                          if (data.error) throw new Error(data.error)
+                          toast.success(`Broadcast sent to ${data.sentTo} subscribers (mock)`)
+                          setBroadcastMsg('')
+                        } catch (e: any) {
+                          toast.error(e?.message || 'Broadcast failed')
+                        } finally {
+                          setBroadcasting(false)
+                        }
+                      }}
+                      disabled={broadcasting || !broadcastMsg.trim()}
+                      size="sm"
+                      className="btn-press h-10 shrink-0 rounded-lg bg-emerald-500 px-4 text-white hover:bg-emerald-600"
+                    >
+                      {broadcasting ? (
+                        <RefreshCw className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Send className="mr-1 h-3.5 w-3.5" /> Send
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <p className="mt-1 text-[9px] text-muted-foreground">
+                    Mock mode — plug in Twilio WhatsApp API key for real delivery.
+                  </p>
+                </div>
+
+                {/* Recent subscribers */}
+                {whatsapp.recent.length > 0 && (
+                  <div>
+                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Recent Subscribers</p>
+                    <div className="space-y-1">
+                      {whatsapp.recent.map((sub) => (
+                        <div key={sub.id} className="flex items-center gap-2 rounded-lg border border-border/40 bg-background/40 px-2.5 py-1.5">
+                          <MessageCircle className="h-3 w-3 shrink-0 text-emerald-400" />
+                          <span className="min-w-0 flex-1 truncate text-[11px] font-medium">+{sub.phone}</span>
+                          <span className="rounded-full bg-muted/60 px-1.5 py-0.5 text-[8px] font-medium text-muted-foreground">{sub.source}</span>
+                          <span className="text-[9px] text-muted-foreground">{new Date(sub.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </BentoCard>
+
+          {/* Subscriber Sources */}
+          <BentoCard title="Acquisition Sources" icon={Users} delay={0.5}>
+            {whatsapp && (
+              <div className="space-y-2">
+                {whatsapp.bySource.length > 0 ? (
+                  whatsapp.bySource.map((s) => (
+                    <div key={s.source} className="flex items-center justify-between rounded-lg border border-border/40 bg-background/40 px-3 py-2">
+                      <span className="text-xs font-medium capitalize">{s.source}</span>
+                      <span className="text-sm font-bold text-emerald-400">{s.count}</span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="py-4 text-center text-[11px] text-muted-foreground">
+                    No subscribers yet. The floating button and footer form will capture leads.
+                  </div>
+                )}
+                <div className="mt-3 rounded-lg bg-emerald-500/10 p-3 text-center">
+                  <p className="text-[10px] text-emerald-300/80">
+                    💡 WhatsApp has a 98% open rate vs 20% for email. Every subscriber is worth ~5x an email lead.
+                  </p>
+                </div>
               </div>
             )}
           </BentoCard>

@@ -93,3 +93,17 @@ model GenerationLog {
 
   @@index([runDate])
 }
+
+model Lead {
+  id          String   @id @default(cuid())
+  phone       String   @unique
+  channel     String   @default("whatsapp") // "whatsapp" | "email" | "sms"
+  subscribed  Boolean  @default(true)
+  countryCode String   @default("")
+  source      String   @default("footer")   // "footer" | "floating" | "dashboard"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([channel])
+  @@index([subscribed])
+}

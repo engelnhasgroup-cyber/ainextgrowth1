@@ -25,6 +25,7 @@ import { HistorySheet } from './history-sheet'
 import { ShortcutsHelp, useShortcutsHelpTrigger } from './shortcuts-help'
 import { useGKeyNavigation } from './use-gkeys'
 import { Dashboard } from './dashboard'
+import { FloatingWhatsApp } from './floating-whatsapp'
 import { useLibrary } from './store'
 import { useHistory } from './use-history'
 
@@ -139,6 +140,7 @@ export function LibraryApp({
       <CompareBar />
       <HistorySheet open={historyOpen} onOpenChange={setHistoryOpen} />
       <ShortcutsHelp open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+      <FloatingWhatsApp />
       <BackToTop />
     </div>
   )
