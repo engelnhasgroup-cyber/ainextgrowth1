@@ -151,7 +151,7 @@ export function LibrarySection({
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search titles, tags, niches…"
-                className="h-10 w-full rounded-full border border-border/70 bg-background/60 pl-10 pr-9 text-sm outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                className="h-10 w-full rounded-full border border-border/70 bg-background/60 pl-10 pr-9 text-sm outline-none placeholder:text-foreground/70 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
                 aria-label="Search library"
               />
               {searchInput && (

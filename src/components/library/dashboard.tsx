@@ -112,8 +112,21 @@ function CronHealthMonitor() {
     }).catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="py-8 text-center text-xs text-muted-foreground">Loading cron status…</div>
-  if (!data) return <div className="py-8 text-center text-xs text-muted-foreground">Failed to load</div>
+  if (loading) return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-3 gap-2">
+        <div className="h-14 animate-pulse rounded-xl border border-border/40 bg-muted/20" />
+        <div className="h-14 animate-pulse rounded-xl border border-border/40 bg-muted/20" />
+        <div className="h-14 animate-pulse rounded-xl border border-border/40 bg-muted/20" />
+      </div>
+      <div className="space-y-2">
+        {[1,2,3,4].map((i) => (
+          <div key={i} className="h-12 animate-pulse rounded-lg border border-border/40 bg-muted/20" />
+        ))}
+      </div>
+    </div>
+  )
+  if (!data) return <div className="py-8 text-center text-xs text-muted-foreground">Failed to load cron data. Check ErrorLog.</div>
 
   return (
     <div className="space-y-3">

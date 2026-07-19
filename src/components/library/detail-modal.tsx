@@ -288,27 +288,12 @@ export function DetailModal() {
                 {/* Trinity Bundle tabs */}
                 <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)} className="w-full">
                   <TabsList className="relative grid h-11 w-full grid-cols-3 rounded-full border border-border/60 bg-card/40 p-1">
-                    {tab === 'prompt' && (
-                      <motion.div
-                        layoutId="tab-indicator"
-                        className="absolute inset-y-1 left-1 z-0 w-[calc(33.333%-0.333rem)] rounded-full bg-primary shadow-lg"
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                      />
-                    )}
-                    {tab === 'workflow' && (
-                      <motion.div
-                        layoutId="tab-indicator"
-                        className="absolute inset-y-1 left-[33.333%] z-0 w-[calc(33.333%-0.333rem)] rounded-full bg-primary shadow-lg"
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                      />
-                    )}
-                    {tab === 'audience' && (
-                      <motion.div
-                        layoutId="tab-indicator"
-                        className="absolute inset-y-1 left-[66.666%] z-0 w-[calc(33.333%-0.333rem)] rounded-full bg-primary shadow-lg"
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                      />
-                    )}
+                    <div
+                      className="absolute inset-y-1 z-0 w-[calc(33.333%-0.333rem)] rounded-full bg-primary shadow-lg transition-all duration-300 ease-out"
+                      style={{
+                        left: tab === 'prompt' ? '0.25rem' : tab === 'workflow' ? '33.333%' : '66.666%',
+                      }}
+                    />
                     <TabsTrigger value="prompt" className="relative z-10 rounded-full text-xs data-[state=active]:text-primary-foreground">
                       <FileText className="mr-1.5 h-3.5 w-3.5" />
                       <span className="hidden sm:inline">The </span>Prompt

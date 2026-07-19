@@ -70,7 +70,7 @@ function StatCard({
   return (
     <div
       ref={ref}
-      className="group relative flex items-center gap-2.5 overflow-hidden rounded-xl border border-border/60 bg-card/50 px-3 py-2.5 transition-colors hover:border-primary/40"
+      className="group relative flex items-center gap-2.5 overflow-hidden rounded-xl border border-border/60 bg-card/50 px-3.5 py-2.5 transition-colors hover:border-primary/40"
       style={{ animationDelay: `${delay}ms` }}
     >
       <div

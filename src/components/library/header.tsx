@@ -47,7 +47,7 @@ export function Header({ stats }: { stats: Stats }) {
                 type="search"
                 placeholder="Search prompts & skills…"
                 onChange={(e) => setSearch(e.target.value)}
-                className="h-10 w-full rounded-full border border-border/70 bg-background/70 pl-10 pr-4 text-sm outline-none transition placeholder:text-foreground/50 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+                className="h-10 w-full rounded-full border border-border/70 bg-background/70 pl-10 pr-4 text-sm outline-none transition placeholder:text-foreground/70 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
                 aria-label="Search the library"
               />
             </form>

@@ -11,9 +11,8 @@ import {
   fetchTopRated,
 } from '@/lib/queries'
 
-// Revalidate frequently so newly-generated agent items appear.
-export const revalidate = 60
-export const dynamic = 'force-dynamic'
+// ISR — revalidate every 5 minutes (balances freshness with performance)
+export const revalidate = 300
 
 export default async function Home() {
   const [stats, categories, trending, initial, recent, workflows, featured, topRated] = await Promise.all([

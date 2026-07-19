@@ -34,6 +34,9 @@ User-agent: *
 Allow: /
 Disallow: /api/download
 Disallow: /api/generate
+Disallow: /api/cron/
+Disallow: /api/dashboard/
+Disallow: /api/leads/
 
 # Sitemaps
 Sitemap: https://nexusai2026.example.com/sitemap.xml
