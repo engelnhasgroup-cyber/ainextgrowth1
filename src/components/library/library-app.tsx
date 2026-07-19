@@ -64,12 +64,21 @@ export function LibraryApp({
     }
   }, [selectedItem?.id, addHistory])
 
-  // Deep-link support: /?item=<slug> or /?page=<legal> on load
+  // Deep-link support: /?item=<slug>, /?page=<legal>, /?unsubscribe=<channel>
   useEffect(() => {
     if (typeof window === 'undefined') return
     const params = new URLSearchParams(window.location.search)
     const itemSlug = params.get('item')
     const page = params.get('page')
+    const unsubChannel = params.get('unsubscribe')
+
+    if (unsubChannel) {
+      // Redirect to unsubscribe API endpoint (handles HTML response)
+      const identifier = params.get('identifier') || params.get('email') || params.get('phone') || ''
+      window.location.href = `/api/leads/unsubscribe?channel=${unsubChannel}&identifier=${encodeURIComponent(identifier)}`
+      return
+    }
+
     if (itemSlug) {
       const url = new URL(window.location.href)
       url.searchParams.delete('item')

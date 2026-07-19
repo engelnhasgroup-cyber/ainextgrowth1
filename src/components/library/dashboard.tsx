@@ -5,7 +5,7 @@ import {
   ArrowLeft, DollarSign, TrendingUp, Bot, Activity, Database,
   CheckCircle2, Clock, AlertCircle, Zap, Eye, Download, Star,
   RefreshCw, ExternalLink, Cpu, Network, Shield, Sparkles,
-  MessageCircle, Send, Users,
+  MessageCircle, Send, Users, Mail,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -96,6 +96,158 @@ function StatPill({ label, value, color }: { label: string; value: string; color
     <div className="rounded-xl border border-border/40 bg-background/40 p-3">
       <div className="text-lg font-bold tabular-nums" style={{ color }}>{value}</div>
       <div className="truncate text-[10px] text-muted-foreground">{label}</div>
+    </div>
+  )
+}
+
+// Cron Health Monitor sub-component
+function CronHealthMonitor() {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/dashboard/cron-health').then((r) => r.json()).then((d) => {
+      setData(d)
+      setLoading(false)
+    }).catch(() => setLoading(false))
+  }, [])
+
+  if (loading) return <div className="py-8 text-center text-xs text-muted-foreground">Loading cron status…</div>
+  if (!data) return <div className="py-8 text-center text-xs text-muted-foreground">Failed to load</div>
+
+  return (
+    <div className="space-y-3">
+      <div className="grid grid-cols-3 gap-2">
+        <StatPill label="Cron Jobs" value={String(data.summary.totalJobs)} color="#8b5cf6" />
+        <StatPill label="Healthy" value={String(data.summary.healthyJobs)} color="#10b981" />
+        <StatPill label="Errors" value={String(data.summary.errorCount)} color="#f43f5e" />
+      </div>
+      <div className="space-y-2">
+        {data.jobs.map((job: any) => (
+          <div key={job.name} className="rounded-lg border border-border/40 bg-background/40 px-3 py-2">
+            <div className="flex items-center justify-between">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-semibold">{job.label}</p>
+                <p className="truncate text-[9px] text-muted-foreground">{job.schedule}</p>
+              </div>
+              <span className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[8px] font-bold ${
+                !job.lastRun ? 'bg-muted/60 text-muted-foreground' :
+                job.lastRun.status === 'completed' ? 'bg-emerald-500/15 text-emerald-400' : 'bg-rose-500/15 text-rose-400'
+              }`}>
+                {!job.lastRun ? 'Never run' : job.lastRun.status}
+              </span>
+            </div>
+            {job.lastRun && (
+              <div className="mt-1 flex items-center gap-3 text-[9px] text-muted-foreground">
+                <span>{new Date(job.lastRun.timestamp).toLocaleString()}</span>
+                {job.lastRun.itemsAffected > 0 && <span>· {job.lastRun.itemsAffected} items</span>}
+                <span>· {job.stats.successRate}% success</span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      {data.recentErrors.length > 0 && (
+        <div>
+          <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Recent Errors</p>
+          <div className="space-y-1">
+            {data.recentErrors.slice(0, 3).map((err: any) => (
+              <div key={err.id} className="flex items-center gap-2 rounded-lg border border-rose-500/20 bg-rose-500/5 px-2.5 py-1.5">
+                <AlertCircle className="h-3 w-3 shrink-0 text-rose-400" />
+                <span className="min-w-0 flex-1 truncate text-[10px] text-rose-300/80">{err.message}</span>
+                <span className="text-[8px] text-muted-foreground">{new Date(err.createdAt).toLocaleTimeString()}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Broadcast Commander sub-component
+function BroadcastCommander() {
+  const [message, setMessage] = useState('')
+  const [channels, setChannels] = useState({ email: true, whatsapp: true })
+  const [sending, setSending] = useState(false)
+
+  const handleSend = async () => {
+    if (!message.trim()) {
+      toast.error('Enter a message first')
+      return
+    }
+    setSending(true)
+    try {
+      const targetChannels: string[] = []
+      if (channels.email) targetChannels.push('email')
+      if (channels.whatsapp) targetChannels.push('whatsapp')
+
+      const res = await fetch('/api/dashboard/broadcast', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, channels: targetChannels }),
+      })
+      const data = await res.json()
+      if (data.error) throw new Error(data.error)
+      toast.success(data.message)
+      setMessage('')
+    } catch (e: any) {
+      toast.error(e?.message || 'Broadcast failed')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Custom Message</p>
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type a custom message to broadcast to all subscribers…"
+          rows={3}
+          className="w-full resize-none rounded-lg border border-border/70 bg-background/60 px-3 py-2 text-xs outline-none focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+        />
+      </div>
+      <div className="flex items-center gap-4">
+        <label className="flex items-center gap-1.5 text-xs">
+          <input
+            type="checkbox"
+            checked={channels.email}
+            onChange={(e) => setChannels({ ...channels, email: e.target.checked })}
+            className="h-3.5 w-3.5 rounded"
+          />
+          <Mail className="h-3 w-3 text-primary" />
+          Email
+        </label>
+        <label className="flex items-center gap-1.5 text-xs">
+          <input
+            type="checkbox"
+            checked={channels.whatsapp}
+            onChange={(e) => setChannels({ ...channels, whatsapp: e.target.checked })}
+            className="h-3.5 w-3.5 rounded"
+          />
+          <MessageCircle className="h-3 w-3 text-emerald-400" />
+          WhatsApp
+        </label>
+      </div>
+      <Button
+        onClick={handleSend}
+        disabled={sending || !message.trim() || (!channels.email && !channels.whatsapp)}
+        size="sm"
+        className="btn-press w-full rounded-lg"
+      >
+        {sending ? (
+          <RefreshCw className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+        ) : (
+          <Send className="mr-1.5 h-3.5 w-3.5" />
+        )}
+        Broadcast Now
+      </Button>
+      <p className="text-center text-[9px] text-muted-foreground">
+        Bypasses daily automation — sends immediately to selected channels (mock mode).
+      </p>
     </div>
   )
 }
@@ -551,6 +703,16 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
                 </div>
               </div>
             )}
+          </BentoCard>
+        </div>
+
+        {/* Automation Health Monitor + Broadcast Commander */}
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <BentoCard title="Automation Health" icon={Zap} delay={0.55}>
+            <CronHealthMonitor />
+          </BentoCard>
+          <BentoCard title="Broadcast Commander" icon={Send} delay={0.6}>
+            <BroadcastCommander />
           </BentoCard>
         </div>
 

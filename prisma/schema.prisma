@@ -96,8 +96,9 @@ model GenerationLog {
 
 model Lead {
   id          String   @id @default(cuid())
-  phone       String   @unique
-  channel     String   @default("whatsapp") // "whatsapp" | "email" | "sms"
+  email       String?  @unique
+  phone       String?  @unique
+  channel     String   @default("whatsapp") // "whatsapp" | "email" | "both"
   subscribed  Boolean  @default(true)
   countryCode String   @default("")
   source      String   @default("footer")   // "footer" | "floating" | "dashboard"
@@ -106,4 +107,36 @@ model Lead {
 
   @@index([channel])
   @@index([subscribed])
+  @@index([email])
+  @@index([phone])
+}
+
+model ErrorLog {
+  id          String   @id @default(cuid())
+  source      String   // "cron" | "api" | "agent" | "broadcast"
+  endpoint    String   @default("")
+  message     String
+  stack       String   @default("")
+  severity    String   @default("error") // "error" | "warn" | "info"
+  resolved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([source])
+  @@index([severity])
+  @@index([resolved])
+  @@index([createdAt])
+}
+
+model CronJobLog {
+  id          String   @id @default(cuid())
+  jobName     String   // "daily-generation" | "seo-agent" | "send-email-digest" | "send-whatsapp-digest"
+  status      String   @default("completed") // "completed" | "failed" | "running"
+  duration    Int      @default(0)           // milliseconds
+  itemsAffected Int    @default(0)
+  message     String   @default("")
+  createdAt   DateTime @default(now())
+
+  @@index([jobName])
+  @@index([status])
+  @@index([createdAt])
 }
