@@ -5,12 +5,13 @@ import {
   ArrowLeft, DollarSign, TrendingUp, Bot, Activity, Database,
   CheckCircle2, Clock, AlertCircle, Zap, Eye, Download, Star,
   RefreshCw, ExternalLink, Cpu, Network, Shield, Sparkles,
-  MessageCircle, Send, Users, Mail,
+  MessageCircle, Send, Users, Mail, Tag,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
+import { MasterSettings, CategoryManager } from './admin-settings'
 
 interface RevenueData {
   metrics: {
@@ -726,6 +727,16 @@ export function Dashboard({ onClose }: { onClose: () => void }) {
           </BentoCard>
           <BentoCard title="Broadcast Commander" icon={Send} delay={0.6}>
             <BroadcastCommander />
+          </BentoCard>
+        </div>
+
+        {/* God-Mode: Master Settings + Category Management */}
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <BentoCard title="Master Settings (God-Mode)" icon={Shield} delay={0.65}>
+            <MasterSettings />
+          </BentoCard>
+          <BentoCard title="Category Management" icon={Tag} delay={0.7}>
+            <CategoryManager />
           </BentoCard>
         </div>
 

@@ -140,3 +140,18 @@ model CronJobLog {
   @@index([status])
   @@index([createdAt])
 }
+
+model AdminSetting {
+  id                      String   @id @default("singleton")
+  googleVerificationCode  String   @default("")
+  bingVerificationCode    String   @default("")
+  googleAnalyticsId       String   @default("")
+  adsenseClientId         String   @default("ca-pub-XXXXXXXXXXXXXXXX")
+  aiSystemPrompt          String   @default("You are the NexusAI 2026 Autonomous Content Agent. Generate professional, 2026-era AI prompts, skills, and workflows with full Trinity Bundles.")
+  aiDailyLimit            Int      @default(200)
+  siteName                String   @default("NexusAI 2026")
+  siteUrl                 String   @default("https://nexusai2026.example.com")
+  maintenanceMode         Boolean  @default(false)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+}

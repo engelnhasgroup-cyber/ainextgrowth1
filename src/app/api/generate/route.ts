@@ -79,7 +79,7 @@ function typeLabel(t: ItemType): string {
   return 'workflow'
 }
 
-function buildSystemPrompt(category: string, type: ItemType, topic: string) {
+function buildSystemPrompt(category: string, type: ItemType, topic: string, customPrompt?: string) {
   const typeDesc =
     type === 'prompt'
       ? 'a master prompt using 2026 techniques (role, system instructions, chain-of-thought, constraints, [BRACKET] variables, output format)'
@@ -87,7 +87,9 @@ function buildSystemPrompt(category: string, type: ItemType, topic: string) {
       ? 'a reusable skill definition (YAML front-matter with name/version/description/tools/inputs/outputs, followed by SYSTEM INSTRUCTIONS)'
       : 'an end-to-end workflow that orchestrates prompts + skills + tools to complete a full real-world task (numbered phases, agent roles, handoffs, success criteria)'
 
-  return `You are the NexusAI 2026 Autonomous Content Agent — an expert multi-agent orchestrator producing a single ${type} for the world's largest AI Prompt & Skill Library.
+  const basePrompt = customPrompt || 'You are the NexusAI 2026 Autonomous Content Agent — an expert multi-agent orchestrator producing a single ' + type + ' for the world\'s largest AI Prompt & Skill Library.'
+
+  return `${basePrompt}
 
 You output STRICT, VALID JSON only (no markdown fences, no commentary). The JSON must conform to this TypeScript interface:
 
@@ -124,11 +126,11 @@ Rules:
 - Output ONLY the JSON object.`;
 }
 
-export async function generateOne(category: string, type: ItemType, topic: string): Promise<any> {
+export async function generateOne(category: string, type: ItemType, topic: string, customPrompt?: string): Promise<any> {
   const zai = await ZAI.create()
   const completion = await zai.chat.completions.create({
     messages: [
-      { role: 'assistant', content: buildSystemPrompt(category, type, topic) },
+      { role: 'assistant', content: buildSystemPrompt(category, type, topic, customPrompt) },
       { role: 'user', content: `Generate one high-quality ${typeLabel(type)} about: "${topic}" for category "${category}". Return JSON only.` },
     ],
     thinking: { type: 'disabled' },
@@ -195,12 +197,17 @@ export async function POST(req: NextRequest) {
     const topic = body.topic?.trim() || TRENDING_TOPICS_2026[Math.floor(Math.random() * TRENDING_TOPICS_2026.length)]
     const count = Math.min(Math.max(body.count ?? 1, 1), 5)
 
+    // Fetch admin settings for custom AI system prompt
+    const { getAdminSettings } = await import('@/lib/admin-settings')
+    const adminSettings = await getAdminSettings()
+    const customPrompt = adminSettings.aiSystemPrompt
+
     const created: any[] = []
     const today = new Date().toISOString().slice(0, 10)
 
     for (let i = 0; i < count; i++) {
       try {
-        const gen = await generateOne(category, type, topic)
+        const gen = await generateOne(category, type, topic, customPrompt)
         const detail = await persistItem(gen, category, type, topic, today)
         created.push(detail)
       } catch (e) {
